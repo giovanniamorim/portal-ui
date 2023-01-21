@@ -4,8 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './containers';
 import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
-import { LoginComponent } from './views/pages/login/login.component';
+// import { LoginComponent } from './views/pages/login/login.component';
+
 import { RegisterComponent } from './views/pages/register/register.component';
+import { AuthGuard } from './seguranca/auth.guard';
+import { LoginFormComponent } from './seguranca/login-form/login-form.component';
 
 const routes: Routes = [
   {
@@ -17,13 +20,17 @@ const routes: Routes = [
     path: '',
     component: DefaultLayoutComponent,
     data: {
-      title: 'Home'
+      title: 'Home',
+      canActivate: [AuthGuard],
+      data: { roles: ['ROLE_PESQUISAR_PESSOA'] }
     },
     children: [
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
+          import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule),
+          canActivate: [AuthGuard],
+          data: { roles: ['ROLE_PESQUISAR_PESSOA'] }
       },
       {
         path: 'theme',
@@ -88,7 +95,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent,
+    component: LoginFormComponent,
     data: {
       title: 'Login Page'
     }
