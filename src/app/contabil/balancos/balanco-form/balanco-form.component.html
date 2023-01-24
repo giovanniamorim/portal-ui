@@ -1,0 +1,80 @@
+<div class="page-container">
+  <div class="card-body">
+    <button class="header-button" mat-raised-button color="primary" routerLink="/balancos" >
+      <mat-icon>arrow_circle_left</mat-icon>
+      Voltar
+    </button>
+    <h5 class="header-title">Balanço</h5>
+    <h6 class="header-subtitle mb-1">
+      Formulário de inclusão de novo balanço
+    </h6>
+  </div>
+  
+  <mat-card class="mt-3">
+    <div class="mt-3 mb-3">
+      <span class="material-icons card-title-icon">edit_attributes</span>     
+      <h3 class="card-title" *ngIf="isEditBalanco">
+        Editando Balanço. ID: {{currentId}}</h3>
+        <h3 class="card-title" *ngIf="!isEditBalanco">Novo Balanço </h3>
+    </div>
+
+    <mat-card-content class="toolbar-card-content">
+      <form [formGroup]="form">
+        <div class="row">
+          
+            <mat-form-field appearance="fill">
+              <mat-label>Descrição</mat-label>
+              <input
+                matInput
+                placeholder="Descrição"
+                formControlName="descricao"
+                required
+              />
+            </mat-form-field>
+          
+        </div>
+       
+        <div hi  class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>Arquivo</mat-label>
+            <input
+              readonly
+              matInput
+              placeholder="Arquivo"
+              formControlName="fileUrl"
+            />
+            <mat-hint>O Nome e o Caminho do arquivo são gerados automaticamente e só estarão disponiveis para download após o upload.</mat-hint>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>  
+    
+    <mat-card-actions class="mt-3 mb-3" align="end">
+      
+      <button *ngIf="!isEditBalanco" 
+        class="header-button" 
+        mat-raised-button color="third"
+        (click)="onSubmit()"
+        [disabled]="!form.valid"
+        >
+        <mat-icon>save_circle_outline</mat-icon>
+        Salvar Balanço
+      </button>
+
+      <button  *ngIf="isEditBalanco"
+        class="header-button" 
+        mat-raised-button color="third"
+        (click)="onEdit()"
+        [disabled]="!form.valid"
+        >
+        <mat-icon>save_circle_outline</mat-icon>
+        Atualizar Balanço
+      </button>
+
+      
+
+    </mat-card-actions>
+  </mat-card>
+
+
+</div>

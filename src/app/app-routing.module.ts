@@ -9,6 +9,8 @@ import { Page500Component } from './views/pages/page500/page500.component';
 import { RegisterComponent } from './views/pages/register/register.component';
 import { AuthGuard } from './seguranca/auth.guard';
 import { LoginFormComponent } from './seguranca/login-form/login-form.component';
+import { PaginaNaoEncontradaComponent } from './_core/pagina-nao-encontrada.component';
+import { NaoAutorizadoComponent } from './_core/nao-autorizado.component';
 
 const routes: Routes = [
   {
@@ -31,6 +33,14 @@ const routes: Routes = [
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule),
           canActivate: [AuthGuard],
           data: { roles: ['ROLE_PESQUISAR_PESSOA'] }
+      },
+      {
+        path: 'balancetes',
+        loadChildren: () => import('./contabil/balancetes/balancetes.module').then( m => m.BalancetesModule)
+      },
+      {
+        path: 'balancos',
+        loadChildren: () => import('./contabil/balancos/balancos.module').then( m => m.BalancosModule)
       },
       {
         path: 'theme',
@@ -77,6 +87,12 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/pages/pages.module').then((m) => m.PagesModule)
       },
+      {
+        path: 'uploads',
+        loadChildren: () =>
+          import('./upload/upload.module').then((m) => m.UploadModule)
+      },
+      
     ]
   },
   {
@@ -107,7 +123,10 @@ const routes: Routes = [
       title: 'Register Page'
     }
   },
-  {path: '**', redirectTo: 'dashboard'}
+  
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, { path: 'nao-autorizado', component: NaoAutorizadoComponent },
+  { path: 'pagina-nao-encontrada', component: PaginaNaoEncontradaComponent },
+  { path: '**', redirectTo: 'pagina-nao-encontrada' }
 ];
 
 @NgModule({

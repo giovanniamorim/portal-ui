@@ -1,0 +1,110 @@
+table {
+    width: 100%;
+}
+
+.card-body {
+    display: block;
+    align-content: space-between;
+}
+
+
+.header-button {
+    display: flex;
+    font-family: 'Roboto';
+    font-weight: 300;
+    float: right;
+}
+
+.toolbar-actions-buttons {
+    font-size: 10px;
+    display: flex;
+    font-family: 'Roboto';
+    font-weight: 300;
+    float: right;
+    margin-left: 10px;
+
+}
+
+.toolbar-card-content {
+    display: inline-flexbox;
+
+}
+
+.header-title {
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 500;
+    color: #303c54;
+}
+.title-icon {
+    margin-top: 5px;
+}
+.header-toolbar {
+    background-color: #fff;
+}
+
+.header-subtitle {
+    font-family: Roboto;
+    font-weight: 300;
+    font-size: 12px;
+    color: #303c54;
+}
+
+.header-last-column {
+    text-align: right;
+    justify-content: flex-end;
+}
+
+.last-column {
+    text-align: right;
+    justify-content: flex-end;
+}
+
+.card-title {
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 500;
+    color: #303c54;
+    margin-left: 30px;
+    margin-top: -30px;
+}
+.card-title-icon {
+    color: #303c54;
+}
+
+.mat-card {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
+    color: #73cd74;
+  }
+  
+.field-arquivo {
+    width: 99%;
+    padding-left: 10px;
+}
+
+.field-data {
+    width: 49%;
+    padding-left: 10px;
+}
+
+.field-desc {
+    width: 49%;
+    padding-left: 10px;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-atach {
+    color: white;
+}
+
+.file-text {
+    color: #fff;
+    margin-bottom: 5px;;
+}

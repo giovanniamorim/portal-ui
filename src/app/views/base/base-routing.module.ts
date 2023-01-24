@@ -16,6 +16,7 @@ import { TablesComponent } from './tables/tables.component';
 import { TooltipsComponent } from './tooltips/tooltips.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { PlaceholdersComponent } from './placeholders/placeholders.component';
+import { BalancetesComponent } from 'src/app/contabil/balancetes/balancetes/balancetes.component';
 
 const routes: Routes = [
   {
@@ -132,6 +133,14 @@ const routes: Routes = [
         component: TooltipsComponent,
         data: {
           title: 'Tooltips',
+        },
+      },
+
+      {
+        path: 'balancetes',
+        component: BalancetesComponent,
+        data: {
+          title: 'Balancetes',
         },
       },
     ],

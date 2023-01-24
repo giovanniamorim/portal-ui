@@ -1,0 +1,122 @@
+<div class="page-container mb-5">
+    <div class="card-body">
+      <button
+        class="header-button"
+        mat-raised-button
+        color="primary"
+        (click)="addBalancete()"
+      >
+        <mat-icon>add_circle_outline</mat-icon>
+        Novo Balancete
+      </button>
+      <h5 class="header-title">Balancetes</h5>
+      <h6 class="header-subtitle mb-1">Lista de registros de Balancetes</h6>
+    </div>
+    
+     <!-- Inicio do Card de busca -->
+    <mat-card class="mb-3 mt-3">
+      <mat-card-content class="toolbar-card-content">
+        <app-balancete-search (balanceteSearch)="balanceteSearch($event)"></app-balancete-search>
+
+        <form class="form" [formGroup]="form" (ngSubmit)="applyFilter()">
+                <div class="row">
+                  <div class="col col-lg-3 col-md-6 col-sm-12">
+                      <mat-form-field appearance="outline" floatLabel="never">
+                          <mat-select formControlName="ano" placeholder="Escolher Ano">
+                            <mat-option *ngFor="let ano of anos" [value]="ano">{{ano}}</mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                  </div>
+                  <div class="col col-lg-3 col-md-6 col-sm-12">
+                    <mat-form-field appearance="outline" floatLabel="never">
+                        <mat-select formControlName="mes" placeholder="Escolher mes">
+                          <mat-option *ngFor="let mes of meses" [value]="mes">{{mes}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                  
+                <div class="col col-lg-3 col-md-6 col-sm-12" style="margin: 10px;">
+                    <button type="submit" class="btn btn-primary" [disabled]="form.pristine">Filtrar</button>
+                </div>
+                <div class="col col-lg-3 col-md-6 col-sm-12" style="margin: 10px;">
+                    <button type="button" class="btn btn-light" *ngIf="!form.pristine" (click)="clearFilter()">Limpar</button>
+                </div>
+              </div>
+              </form>
+      </mat-card-content>
+    </mat-card>
+    <!-- Fim do Card de busca -->
+    <div class="alert alert-warning" *ngIf="!carregando && totalElements == 0">
+      <i class="fa-regular fa-circle-xmark"></i>
+      <div class="icon hidden-xs">
+        <i class="fa fa-exclamation-circle"></i>
+      </div>
+      <strong>Opps!</strong>
+      <Br /> Nenhum registro encontrado para sua busca
+    </div>
+    <div class="table-container" *ngIf="totalElements > 0">
+      <table mat-table 
+            [dataSource]="datasource"
+            class="mat-elevation-z8"
+            matSort
+            >
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por Id">#</th>
+          <td mat-cell *matCellDef="let balancete">{{ balancete.id }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="ano">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header >Ano</th>
+          <td mat-cell *matCellDef="let balancete">
+            {{ balancete.ano }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="mes">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header >Mês</th>
+          <td mat-cell *matCellDef="let balancete">
+            {{ balancete.mes }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="fileUrl">
+          <th mat-header-cell *matHeaderCellDef >Arquivo</th>
+          <td mat-cell *matCellDef="let balancete">
+            <span *ngIf="balancete.fileUrl && balancete.fileUrl !== this.s3Url + 'undefined.pdf'">
+              <a href="{{ balancete.fileUrl }}">
+                <span class="material-icons">picture_as_pdf</span>
+              </a>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell class="header-last-column" *matHeaderCellDef></th>
+          <td mat-cell class="last-column" *matCellDef="let balancete">
+            <button (click)="onEdit(balancete)" mat-icon-button color="primary" aria-label="Editar Balancete">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button (click)="onDelete(balancete)" mat-icon-button color="accent" aria-label="Excluir Balancete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator 
+          [length]="totalElements"
+          [pageSize]="5"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          (page)="pageNavigate($event)"
+          >
+      </mat-paginator>
+  
+    </div>
+    
+      <div *ngIf="carregando" class="spinner">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+    
+  </div>
+  

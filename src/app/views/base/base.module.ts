@@ -99,7 +99,7 @@ import { BaseRoutingModule } from './base-routing.module';
     TablesComponent,
     TooltipsComponent,
     TabsComponent,
-    PlaceholdersComponent,
+    PlaceholdersComponent
   ],
 })
 export class BaseModule {}

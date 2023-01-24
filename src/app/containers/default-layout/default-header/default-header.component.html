@@ -13,7 +13,7 @@
       ></svg>
     </button>
     <c-header-nav class="d-none d-lg-flex me-auto">
-      <c-nav-item>
+      <!-- <c-nav-item>
         <a cNavLink routerLink="/dashboard" routerLinkActive="active">
           Dashboard
         </a>
@@ -25,11 +25,11 @@
         <a cNavLink routerLink="/settings" routerLinkActive="active">
           Settings
         </a>
-      </c-nav-item>
+      </c-nav-item> -->
     </c-header-nav>
 
     <c-header-nav class="d-none d-lg-flex">
-      <c-nav-item>
+      <!-- <c-nav-item>
         <a routerLink="./" cNavLink>
           <svg cIcon name="cilBell" size="lg"></svg>
         </a>
@@ -43,7 +43,7 @@
         <a routerLink="./" cNavLink>
           <svg cIcon name="cilEnvelopeOpen" size="lg"></svg>
         </a>
-      </c-nav-item>
+      </c-nav-item> -->
     </c-header-nav>
     <c-header-nav class="ms-3">
       <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
@@ -78,7 +78,7 @@
     <ul cDropdownMenu class="pt-0 pr-5 w-auto">
       <li>
         <h6 cDropdownHeader class="bg-light fw-semibold py-2">Account</h6>
-      </li>
+      <!-- </li>
       <li>
         <a routerLink="./" cDropdownItem>
           <svg cIcon class="me-2" name="cilBell"></svg>
@@ -117,38 +117,15 @@
       </li>
       <li>
         <h6 cDropdownHeader class="bg-light fw-semibold py-2">Settings</h6>
-      </li>
+      </li> -->
       <li></li>
       <li>
         <a routerLink="./" cDropdownItem>
           <svg cIcon class="me-2" name="cilUser"></svg>
-          Profile
+          Perfil
         </a>
       </li>
-      <li>
-        <a routerLink="./" cDropdownItem>
-          <svg cIcon class="me-2" name="cilSettings"></svg>
-          Settings
-        </a>
-      </li>
-      <li>
-        <a routerLink="./" cDropdownItem>
-          <svg cIcon class="me-2" name="cilCreditCard"></svg>
-          Payments
-          <c-badge class="ms-2 float-end" color="secondary">
-            42
-          </c-badge>
-        </a>
-      </li>
-      <li>
-        <a routerLink="./" cDropdownItem>
-          <svg cIcon class="me-2" name="cilFile"></svg>
-          Projects
-          <c-badge class="ms-2 float-end" color="primary">
-            42
-          </c-badge>
-        </a>
-      </li>
+     
       <li>
         <hr cDropdownDivider/>
       </li>

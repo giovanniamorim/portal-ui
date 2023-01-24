@@ -48,6 +48,7 @@ import {
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { HttpClientModule } from '@angular/common/http';
+import { CoreSharedModule } from './_core/core-shared.module'
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -56,7 +57,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 const APP_CONTAINERS = [
   DefaultFooterComponent,
   DefaultHeaderComponent,
-  DefaultLayoutComponent,
+  DefaultLayoutComponent
 ];
 
 @NgModule({
@@ -81,14 +82,15 @@ const APP_CONTAINERS = [
     UtilitiesModule,
     ButtonGroupModule,
     ReactiveFormsModule,
-    SharedModule,
     TabsModule,
     ListGroupModule,
     ProgressModule,
     BadgeModule,
     ListGroupModule,
     CardModule,
-    SegurancaModule
+    SegurancaModule,
+    SharedModule,
+    CoreSharedModule
   ],
   providers: [
     {

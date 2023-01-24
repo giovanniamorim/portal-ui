@@ -24,3 +24,35 @@ $enable-rtl: true;
 
 // If you want to add something do it here
 @import "custom";
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+
+.page-container {
+    padding: 0px 0px 0 0px;
+}
+
+
+.mat-toolbar.mat-primary {
+    background-color: #1e376d;
+    color: #f1f4f9;
+}
+
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+    background-color: #1e376d;
+    padding: 2px 15px 2px 15px;
+}
+
+.mat-flat-button.mat-third, .mat-raised-button.mat-third, .mat-fab.mat-third, .mat-mini-fab.mat-third {
+  background-color: #73cd74;
+  color: #f1f4f9;
+  padding: 2px 15px 2px 15px;
+}
+
+.sidebar-nav {
+    margin-top: 5px;
+}
+  
+.sidebar-brand-full {
+    margin-left: -30px;
+}
