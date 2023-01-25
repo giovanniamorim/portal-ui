@@ -2,15 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DefaultLayoutComponent } from './containers';
-import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
-// import { LoginComponent } from './views/pages/login/login.component';
 
 import { RegisterComponent } from './views/pages/register/register.component';
 import { AuthGuard } from './seguranca/auth.guard';
 import { LoginFormComponent } from './seguranca/login-form/login-form.component';
-import { PaginaNaoEncontradaComponent } from './_core/pagina-nao-encontrada.component';
-import { NaoAutorizadoComponent } from './_core/nao-autorizado.component';
+import { Page403Component } from './seguranca/page-403/page-403.component';
+import { Page404Component } from './seguranca/page-404/page-404.component';
 
 const routes: Routes = [
   {
@@ -36,11 +34,29 @@ const routes: Routes = [
       },
       {
         path: 'balancetes',
-        loadChildren: () => import('./contabil/balancetes/balancetes.module').then( m => m.BalancetesModule)
+        loadChildren: () => import('./contabil/balancetes/balancetes.module').then( m => m.BalancetesModule),
+        canActivate: [AuthGuard],
+          data: { roles: ['ROLE_PESQUISAR_BALANCETE', 'ROLE_CADASTRAR_BALANCETE', 'ROLE_REMOVER_BALANCETE'] }
       },
       {
         path: 'balancos',
         loadChildren: () => import('./contabil/balancos/balancos.module').then( m => m.BalancosModule)
+      },
+      {
+        path: 'planejamentos',
+        loadChildren: () => import('./contabil/planejamentos/planejamentos.module').then( m => m.PlanejamentosModule)
+      },
+      {
+        path: 'execucoes',
+        loadChildren: () => import('./contabil/execucoes/execucoes.module').then( m => m.ExecucoesModule),
+        canActivate: [AuthGuard],
+          data: { roles: ['ROLE_PESQUISAR_EXECUCAO', 'ROLE_CADASTRAR_EXECUCAO', 'ROLE_REMOVER_EXECUCAO'] }
+      },
+      {
+        path: 'inventario',
+        loadChildren: () => import('./contabil/inventario/inventario.module').then( m => m.InventarioModule),
+        canActivate: [AuthGuard],
+          data: { roles: ['ROLE_PESQUISAR_INVENTARIO', 'ROLE_CADASTRAR_INVENTARIO', 'ROLE_REMOVER_INVENTARIO'] }
       },
       {
         path: 'theme',
@@ -95,13 +111,13 @@ const routes: Routes = [
       
     ]
   },
-  {
-    path: '404',
-    component: Page404Component,
-    data: {
-      title: 'Page 404'
-    }
-  },
+  // {
+  //   path: '404',
+  //   component: Page404Component,
+  //   data: {
+  //     title: 'Page 404'
+  //   }
+  // },
   {
     path: '500',
     component: Page500Component,
@@ -124,8 +140,9 @@ const routes: Routes = [
     }
   },
   
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, { path: 'nao-autorizado', component: NaoAutorizadoComponent },
-  { path: 'pagina-nao-encontrada', component: PaginaNaoEncontradaComponent },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, 
+  { path: 'nao-autorizado', component: Page403Component },
+  { path: 'pagina-nao-encontrada', component: Page404Component },
   { path: '**', redirectTo: 'pagina-nao-encontrada' }
 ];
 

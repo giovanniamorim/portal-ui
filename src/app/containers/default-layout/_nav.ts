@@ -33,6 +33,29 @@ export const navItems: INavData[] = [
     ]
   },
   {
+    name: 'Orçamentos',
+    url: '',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Execução',
+        url: '/execucoes'
+      },
+      {
+        name: 'Planejamento',
+        url: '/planejamentos'
+      },
+      
+    ]
+  },
+  {
+    name: 'Inventário',
+    url: '/inventario',
+    iconComponent: { name: 'cil-file' }
+  },
+  
+
+  {
     name: 'Configurações',
     title: true
   },

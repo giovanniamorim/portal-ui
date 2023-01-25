@@ -1,0 +1,139 @@
+<div class="page-container">
+  <div class="card-body">
+    <button
+      class="header-button"
+      mat-raised-button
+      color="primary"
+      routerLink="/inventario"
+    >
+      <mat-icon>arrow_circle_left</mat-icon>
+      Voltar
+    </button>
+    <h5 class="header-title">Inventário</h5>
+    <h6 class="header-subtitle mb-1">
+      Formulário de inclusão de novo item no inventário
+    </h6>
+  </div>
+  <mat-card class="mt-3">
+    <div class="mt-3 mb-3">
+      <span class="material-icons card-title-icon">edit_attributes</span>
+      <h3 class="card-title" *ngIf="isEditInventario">
+        Editando Item do Inventário. ID: {{ currentId }}
+      </h3>
+      <h3 class="card-title" *ngIf="!isEditInventario">Novo Item</h3>
+    </div>
+
+    <mat-card-content class="toolbar-card-content">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col col-lg-4 col-md-4 col-sm-12">
+             <mat-form-field appearance="fill">
+              <mat-label>Data de Aquisição</mat-label>
+              <input
+                matInput 
+                [matDatepicker]="picker"
+                type="text"
+                placeholder="Data de Aquisição"
+                formControlName="dataAquisicao"
+                />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          </div>
+
+          <div class="col col-lg-4 col-md-4 col-sm-12">
+            <mat-form-field appearance="fill">
+              <mat-label>Departamento</mat-label>
+              <mat-select placeholder="Selecione um departamento" formControlName="departamento" >
+                <mat-option *ngFor="let option of departamentos" [value]="option.nome">{{ option.nome }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          </div>
+          <div class="col col-lg-4 col-md-4 col-sm-12">
+            <mat-form-field appearance="fill">
+              <mat-label>Nº da Placa</mat-label>
+              <input
+                matInput
+                placeholder="Nº da Placa"
+                formControlName="numero"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-lg-4 col-md-4 col-sm-12">
+            <mat-form-field appearance="fill">
+              <mat-label>Quantidade</mat-label>
+              <input
+                matInput
+                placeholder="Quantidade"
+                formControlName="quant"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col col-lg-4 col-md-4 col-sm-12">
+            <mat-form-field appearance="fill">
+              <mat-label>Descrição</mat-label>
+              <input
+                matInput
+                placeholder="Descrição"
+                formControlName="descricao"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col col-lg-4 col-md-4 col-sm-12">
+            <mat-form-field appearance="fill">
+              <mat-label>Estado de Conservação</mat-label>
+              <mat-select placeholder="Selecione um estado" formControlName="estadoConservacao" >
+                <mat-option *ngFor="let option of estadosConservacao" [value]="option.nome">{{ option.nome }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>Arquivo</mat-label>
+            <input
+              readonly
+              matInput
+              placeholder="Arquivo"
+              formControlName="fileUrl"
+            />
+            <mat-hint>
+              O Nome e o Caminho do arquivo são gerados automaticamente e só
+              estarão disponiveis para download após o upload.
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions class="mt-3 mb-3" align="end">
+      <button
+        *ngIf="!isEditInventario"
+        class="header-button"
+        mat-raised-button
+        color="third"
+        (click)="onSubmit()"
+        [disabled]="!form.valid"
+      >
+        <mat-icon>save_circle_outline</mat-icon>
+        Salvar Inventario
+      </button>
+
+      <button
+        *ngIf="isEditInventario"
+        class="header-button"
+        mat-raised-button
+        color="third"
+        (click)="onEdit()"
+        [disabled]="!form.valid"
+      >
+        <mat-icon>save_circle_outline</mat-icon>
+        Atualizar Inventario
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

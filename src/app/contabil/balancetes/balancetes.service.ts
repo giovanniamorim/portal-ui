@@ -100,6 +100,8 @@ export class BalancetesService {
 	}
 
   create(balancete: IBalancete){
+    console.log("Chegou no service: ", balancete);
+    
     return this.httpClient.post<IBalancete>(this.BaseUrl, balancete);
   }
 

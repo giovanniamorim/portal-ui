@@ -14,13 +14,17 @@ import { SegurancaRoutingModule } from './seguranca-routing.module';
 import {MatCardModule} from '@angular/material/card'; 
 import {MatInputModule} from '@angular/material/input'; 
 import {MatButtonModule} from '@angular/material/button';
+import { Page403Component } from './page-403/page-403.component'
+import { Page404Component } from './page-404/page-404.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token')!;
 }
 @NgModule({
   declarations: [
-    LoginFormComponent
+    LoginFormComponent,
+    Page403Component,
+    Page404Component
   ],
   imports: [
     CommonModule,

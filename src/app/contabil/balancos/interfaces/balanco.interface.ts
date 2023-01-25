@@ -1,7 +1,13 @@
 export interface IBalanco {
 
     id: number,
-    descricao: string,
+    ano: number,
+    mes: IMeses,
     fileUrl: string
 
+}
+
+export interface IMeses {
+    id: number,
+    nome: string
 }

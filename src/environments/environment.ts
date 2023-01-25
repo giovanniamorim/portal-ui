@@ -8,7 +8,6 @@ export const environment = {
   tokenAllowedDomains: [/localhost:8080/],
   tokenDisallowedRoutes: [/\/oauth\/token/],
   
-  s3Url: "https://portal-sindifisco.s3.sa-east-1.amazonaws.com/",
 
 
 

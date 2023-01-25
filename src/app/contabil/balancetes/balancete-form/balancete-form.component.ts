@@ -21,7 +21,7 @@ export class BalanceteFormComponent implements OnInit {
 
   showInputFile = false
   showInputFileUrl = false
-  isEditBalance!: boolean
+  isEditBalancete!: boolean
   editar: any
   currentId!: number
   submitted = false;
@@ -65,11 +65,11 @@ export class BalanceteFormComponent implements OnInit {
       if(this.router.url.includes(`/balancetes/editar/`)){
         console.log("Chegou aqui if", this.router.url.substring(19));
         
-        this.isEditBalance = true
+        this.isEditBalancete = true
         this.currentId =  parseInt(this.router.url.substring(19))
       } else if(this.router.url.includes('/balancetes/novo')) {
         console.log("Chegou aqui else");
-        this.isEditBalance = false
+        this.isEditBalancete = false
       }
     }
 

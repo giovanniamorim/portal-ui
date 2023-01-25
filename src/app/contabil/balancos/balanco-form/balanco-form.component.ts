@@ -3,7 +3,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
-import { IBalanco } from '../interfaces/balanco.interface';
+import { IBalanco, IMeses } from '../interfaces/balanco.interface';
 import { BalancoService } from '../balanco.service';
 import { environment } from 'src/environments/environment';
 
@@ -22,6 +22,22 @@ export class BalancoFormComponent implements OnInit {
   editar: any
   currentId!: number
   submitted = false;
+  anos: string[] = ['2022', '2024']
+  meses: IMeses[] = [
+    { id: 1, nome: 'Janeiro' },
+    { id: 2, nome: 'Fevereiro' },
+    { id: 3, nome: 'Março' },
+    { id: 4, nome: 'Abril' },
+    { id: 5, nome: 'Maio' },
+    { id: 6, nome: 'Junho' },
+    { id: 7, nome: 'Julho' },
+    { id: 8, nome: 'Agosto' },
+    { id: 9, nome: 'Setembro' },
+    { id: 10, nome: 'Outubro' },
+    { id: 11, nome: 'Novembro' },
+    { id: 12, nome: 'Dezembro' }
+  ]
+
   
   isDisabled: boolean = true;
 
@@ -36,7 +52,8 @@ export class BalancoFormComponent implements OnInit {
     private route: ActivatedRoute,
     ) {
         this.form =  this.formBuilder.group({
-        descricao: [null, [Validators.required]],
+          ano: [null, [Validators.required]],
+          mes: [null, [Validators.required]],
         fileUrl: [`${this.s3Url}${this.currentId}.pdf`]
       })
 
@@ -66,7 +83,8 @@ export class BalancoFormComponent implements OnInit {
   updateForm(balanco: IBalanco){
     this.form.patchValue({
       id: this.currentId,
-      descricao: balanco.descricao,
+      ano: balanco.ano,
+      mes: balanco.mes,
       fileUrl: `${this.s3Url}${this.currentId}.pdf`
     })
     console.log("chegou no updateForm", this.form);
@@ -83,7 +101,7 @@ export class BalancoFormComponent implements OnInit {
         Swal.fire({
           position: 'top-end',
           icon: 'success',
-          title: 'Balanco adicionado com sucesso!',
+          title: 'Balanço adicionado com sucesso!',
           showConfirmButton: false,
           timer: 2000
         }) 

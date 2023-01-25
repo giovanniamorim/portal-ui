@@ -32,7 +32,6 @@ import { BalanceteSearchComponent } from './balancete-search/balancete-search.co
   imports: [
     CommonModule,
     BalancetesRoutingModule,
-    CommonModule,
     FormsModule,
     MatTableModule,
     MatCardModule,

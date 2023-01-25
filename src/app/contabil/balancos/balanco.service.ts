@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 })
 export class BalancoService {
 
-  private readonly BaseUrl = environment.apiUrl + '/balancos'
+  private readonly BaseUrl = environment.apiUrl + '/api/balancos'
 
   constructor(private  httpClient: HttpClient) { }
 

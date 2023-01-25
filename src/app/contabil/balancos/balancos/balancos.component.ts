@@ -18,7 +18,7 @@ import { environment } from 'src/environments/environment';
 })
 export class BalancosComponent implements OnInit, AfterViewInit  {
 
-  displayedColumns: string[] = ['id', 'descricao', 'fileUrl', 'actions'];
+  displayedColumns: string[] = ['id', 'ano', 'mes', 'fileUrl', 'actions'];
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
