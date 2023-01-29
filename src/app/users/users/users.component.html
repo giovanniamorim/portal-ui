@@ -1,0 +1,102 @@
+<div class="page-container mb-5">
+  <div class="card-body">
+    <button
+      class="header-button"
+      mat-raised-button
+      color="primary"
+      (click)="addUser()"
+    >
+      <mat-icon>add_circle_outline</mat-icon>
+      Novo Usuário
+    </button>
+    <h5 class="header-title">Usuários</h5>
+    <h6 id="header1" class="header-subtitle mb-1">Lista de registros de Usuários</h6>
+  </div>
+   <!-- Inicio do Card de busca -->
+  <mat-card class="mb-3 mt-3">
+    <mat-card-content class="toolbar-card-content">
+      <div class="row mt-2">
+        <div class="col col-lg-8 col-md-6 col-sm-12">
+          <mat-form-field>
+            <input matInput autocomplete="off" (keyup)="filterData($event)" placeholder="Busca" type="search" />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+        
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <!-- Fim do Card de busca -->
+  <div class="alert alert-warning" *ngIf="!carregando && totalElements == 0">
+    <i class="fa-regular fa-circle-xmark"></i>
+    <div class="icon hidden-xs">
+      <i class="fa fa-exclamation-circle"></i>
+    </div>
+    <strong>Opps!</strong>
+    <Br /> Nenhum registro encontrado para sua busca
+  </div>
+  <div class="table-container" *ngIf="totalElements > 0">
+    <table id="my-table" mat-table id="contentTable"
+          [dataSource]="datasource" 
+          matSort (matSortChange)="listarUsers($event)"
+          class="mat-elevation-z8">
+      <ng-container matColumnDef="codigo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por Id">#</th>
+        <td mat-cell *matCellDef="let user">{{ user.codigo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header >Nome</th>
+        <td mat-cell *matCellDef="let user">
+          {{ user.nome }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef >Email</th>
+        <td mat-cell *matCellDef="let user">
+          {{ user.email }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="permissoes">
+        <th mat-header-cell *matHeaderCellDef >Perfil</th>
+        <td mat-cell *matCellDef="let user">
+          <span *ngFor="let role of user?.permissoes">
+            <button class="btn btn-danger btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_SUPER_ADMIN'"> Analista de Sistemas </button>
+            <button class="btn btn-warning btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_ADMIN'"> Administrador </button>
+            <button class="btn btn-success btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_SINDICALIZADO'"> Sindicalizado </button>
+          </span>
+          
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell class="header-last-column" *matHeaderCellDef></th>
+        <td mat-cell class="last-column" *matCellDef="let user">
+          <button (click)="onEdit(user)" mat-icon-button color="primary" aria-label="Editar Usuário">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button (click)="onDelete(user)" mat-icon-button color="accent" aria-label="Excluir Usuário">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator 
+        [length]="totalElements"
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        (page)="nextPage($event)"
+        >
+    </mat-paginator>
+
+  </div>
+  
+    <div *ngIf="carregando" class="spinner">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+  
+</div>

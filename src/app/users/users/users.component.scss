@@ -1,0 +1,151 @@
+table {
+    width: 100%;
+}
+
+.card-body {
+    display: block;
+    align-content: space-between;
+}
+
+
+.header-button {
+    display: flex;
+    font-family: 'Roboto';
+    font-weight: 300;
+    float: right;
+}
+
+.toolbar-actions-buttons {
+    
+    margin-top: 12px;
+    font-size: 10px;
+    display: flex;
+    font-family: 'Roboto';
+    font-weight: 300;
+    float: right;
+    margin-left: 10px;
+
+}
+
+.toolbar-card-content {
+    display: inline-flexbox;
+
+}
+
+.header-title {
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 500;
+    color: #1e376d;
+}
+.title-icon {
+    margin-top: 5px;
+}
+.header-toolbar {
+    background-color: #fff;
+}
+
+.header-subtitle {
+    font-family: Roboto;
+    font-weight: 300;
+    font-size: 12px;
+    color: #1e376d;
+}
+
+.header-last-column {
+    text-align: right;
+    justify-content: flex-end;
+}
+
+.last-column {
+    text-align: right;
+    justify-content: flex-end;
+}
+
+.mat-card {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
+    color: #8b8b8b;
+  }
+
+ .toolbar-btn {
+   display: flex;
+}
+
+.mat-row:hover .mat-cell{
+   background-color: #dcedf8;
+}
+
+.mat-column-id {
+    word-wrap: normal !important;
+    white-space: unset !important;
+    flex: 0 0 28% !important;
+    width: 10% !important;
+    overflow-wrap: normal;
+    word-wrap: normal;
+  
+    word-break: normal;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-descricao {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 28% !important;
+    width: 60% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+.mat-column-fileUrl {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 28% !important;
+    width: 15% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-actions {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 28% !important;
+    width: 15% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .btn-custom {
+    margin-left: 5px;
+    cursor: default;
+    color: #fff;
+    font-size: 11px;
+  }

@@ -1,35 +1,44 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { IBalanco } from '../interfaces/balanco.interface';
 
-import { BalancoService } from '../balanco.service';
-import { environment } from 'src/environments/environment';
+import { IProcesso } from '../interfaces/processo.interface';
+import { ProcessoService } from '../processo.service';
+
 
 @Component({
-  selector: 'app-balancos',
-  templateUrl: './balancos.component.html',
-  styleUrls: ['./balancos.component.scss']
+  selector: 'app-processos',
+  templateUrl: './processos.component.html',
+  styleUrls: ['./processos.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
-export class BalancosComponent implements OnInit, AfterViewInit  {
-
-  displayedColumns: string[] = ['id', 'ano', 'mes', 'fileUrl', 'actions'];
-  datasource = new MatTableDataSource()
-  carregando = false
-  totalElements: any
-  s3Url = environment.s3Url + 'balanco_'
+export class ProcessosComponent implements OnInit, AfterViewInit  {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  displayedColumns: string[] = [ 'id', 'numero', 'exequente', 'executado', 'assunto', 'eventos', 'actions'];
+  datasource = new MatTableDataSource();
+
+  carregando = false
+  totalElements: any
+
+
   
   constructor(
-    private balancoService: BalancoService, 
+    private processoService: ProcessoService, 
     private router: Router,
     private route: ActivatedRoute,
     private _liveAnnouncer: LiveAnnouncer
@@ -42,7 +51,7 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   ngAfterViewInit() {
-    this.listarBalancos({ page: "0", size: "5" })
+    this.listarProcessos({ page: "0", size: "5" })
     this.datasource.sort = this.sort;
   }
 
@@ -63,30 +72,31 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
     })
   }
 
-  public addBalanco() {
+  public addProcesso() {
     this.router.navigate(['novo'], {relativeTo: this.route})
   }
 
-  public listarBalancos = (request:any) => {
+  public listarProcessos = (request:any) => {
+
+
     this.carregando = true;
-    this.balancoService
+    this.processoService
         .listAll( request)
-        .pipe(take(1))
+        .pipe(
+          take(1))
         .subscribe(
-            (Balanco) => {
-                this.datasource = new MatTableDataSource(Balanco.content) ;
+            (processo) => {
+                this.datasource = new MatTableDataSource(processo.content) ;
                 this.datasource.sort = this.sort;
-                // this.datasource.paginator = this.paginator;
                 this.carregando = false;
-                this.totalElements = Balanco.totalElements
+                this.totalElements = processo.totalElements
             },
             (error) => {
                 this.datasource = new MatTableDataSource();
                 this.carregando = false;
-                console.log("Erro ao listar itens");
                 Swal.fire({
                   title: 'Error!',
-                  text: 'Erro ao listar itens',
+                  text: error,
                   icon: 'error',
                   confirmButtonText: 'Ok'
                 })
@@ -95,22 +105,20 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   filterData($event : any){
-    // this.datasource.filter = $event.target.value;
-    this.datasource.filter = $event.target.value.trim().toLocaleLowerCase();
+    this.datasource.filter = $event.target.value;
   }
 
-    nextPage(event: PageEvent) {
+  nextPage(event: PageEvent) {
         const request:any = {};
         request['page'] = event.pageIndex.toString();
         request['size'] = event.pageSize.toString();
-        this.listarBalancos(request);
-    }
+        this.listarProcessos(request);
+  }
 
 
-  onDelete(Balanco: IBalanco){
-
+  onDelete(Processo: IProcesso){
     Swal.fire({
-      title: 'Deseja remover o Balanço?',
+      title: 'Deseja remover o Processo?',
       text: "ATENÇÃO: Esta operação é irreversível!",
       icon: 'warning',
       showCancelButton: true,
@@ -119,12 +127,12 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
       confirmButtonText: 'Sim, pode remover!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.balancoService.remove(Balanco).subscribe( res => {
-          this.listarBalancos({ page: "0", size: "5" })
+        this.processoService.remove(Processo).subscribe( res => {
+          this.listarProcessos({ page: "0", size: "5" })
         })
         Swal.fire(
           'Removido!',
-          'O Balanço foi removido com sucesso.',
+          'O Processo foi removido com sucesso.',
           'success'
         )
       } 
@@ -132,13 +140,16 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
 
   }
 
-  onEdit(balanco: IBalanco){
-
-    this.router.navigate(['editar', balanco.id], {relativeTo: this.route})
-    console.log("rota dos balanços no editar: ", this.route);
-    
-
+  onEdit(processo: IProcesso){
+    this.router.navigate(['editar', processo.id], {relativeTo: this.route})
   }
+
+  onDetail(processo: IProcesso){
+    console.log("Chegou no ondetail button", processo);
+    
+    this.router.navigate(['detalhe', processo.id], {relativeTo: this.route})
+  }
+  
 
 }
 

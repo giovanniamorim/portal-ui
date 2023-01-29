@@ -6,9 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { IBalanco } from '../interfaces/balanco.interface';
 
-import { BalancoService } from '../balanco.service';
+import { BalancoService } from '../plano-contas.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -18,7 +17,7 @@ import { environment } from 'src/environments/environment';
 })
 export class BalancosComponent implements OnInit, AfterViewInit  {
 
-  displayedColumns: string[] = ['id', 'ano', 'mes', 'fileUrl', 'actions'];
+  displayedColumns: string[] = ['id', 'descricao', 'fileUrl', 'actions'];
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
@@ -76,7 +75,6 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
             (Balanco) => {
                 this.datasource = new MatTableDataSource(Balanco.content) ;
                 this.datasource.sort = this.sort;
-                // this.datasource.paginator = this.paginator;
                 this.carregando = false;
                 this.totalElements = Balanco.totalElements
             },
@@ -95,7 +93,6 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   filterData($event : any){
-    // this.datasource.filter = $event.target.value;
     this.datasource.filter = $event.target.value.trim().toLocaleLowerCase();
   }
 
@@ -135,8 +132,6 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   onEdit(balanco: IBalanco){
 
     this.router.navigate(['editar', balanco.id], {relativeTo: this.route})
-    console.log("rota dos balanços no editar: ", this.route);
-    
 
   }
 

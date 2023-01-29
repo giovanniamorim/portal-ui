@@ -1,0 +1,177 @@
+<div class="page-container">
+  <div class="card-body">
+    <button
+      class="header-button"
+      mat-raised-button
+      color="primary"
+      routerLink="/juridico/processos"
+    >
+      <mat-icon>arrow_circle_left</mat-icon>
+      Voltar
+    </button>
+    <h5 class="header-title">Detalhe de Processo</h5>
+    <h6 class="header-subtitle mb-1">
+      Página de detalhes do Processo 
+    </h6>
+  </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-6 mt-2">
+        <mat-card>
+          <mat-card-content>
+            <ul class="list-processo">
+              <li class="title-inner-card">Processo Número:</li>
+              <li class="text-blue">{{processo?.numero}}</li>
+            </ul> 
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-6 mt-2">
+        <mat-card>
+          <mat-card-content>
+            <ul class="list-processo">
+              <li class="title-inner-card">Valor do Processo:</li>
+              <li class="text-green">{{processo?.valor | currency : 'BRL'}}</li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-6 mt-2">
+        <mat-card>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-sm-12 col-md-4 col-lg-4 card-processo">
+                <ul class="list-processo">
+                  <li><mat-icon class="icon-color">accessibility</mat-icon></li>
+                  <li class="title-inner-card">Exequente</li>
+                  <li>{{processo?.exequente}}</li>
+                </ul> 
+              </div>
+              <div class="col-sm-12 col-md-4 col-lg-4 card-processo">
+                <ul class="list-processo">
+                  <li><mat-icon class="icon-color">directions_run</mat-icon></li>
+                  <li class="title-inner-card">Executado</li>
+                  <li>{{processo?.executado}}</li>
+                </ul> 
+              </div>
+               <div class="col-sm-12 col-md-4 col-lg-4 card-processo">
+                <ul class="list-processo">
+                  <li><mat-icon class="icon-color">summarize</mat-icon></li>
+                  <li class="title-inner-card">Assunto</li>
+                  <li>{{processo?.assunto}}</li>
+                </ul> 
+              </div>
+            </div>
+      
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="col-sm-12 col-md-12 col-lg-6 mt-2">
+        <mat-card>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-sm-12 col-md-6 col-lg-6 card-processo">
+                <ul class="list-processo">
+                  <li><mat-icon class="icon-color">account_balance</mat-icon></li>
+                  <li class="title-inner-card">Juizo</li>
+                  <li>{{processo?.juizo}}</li>
+                </ul> 
+              </div>
+              <div class="col-sm-12 col-md-6 col-lg-6 card-processo">
+                <ul class="list-processo">
+                  <li><mat-icon class="icon-color">perm_contact_calendar</mat-icon></li>
+                  <li class="title-inner-card">Juiz</li>
+                  <li>{{processo?.juiz}}</li>
+                </ul> 
+              </div>
+
+            </div>
+      
+          </mat-card-content>
+        </mat-card>
+      </div>
+  </div>
+  <div class="alert alert-warning mt-3" *ngIf="!carregando && processo.eventos.length == 0">
+    <i class="fa-regular fa-circle-xmark"></i>
+    <div class="icon hidden-xs">
+      <i class="fa fa-exclamation-circle"></i>
+    </div>
+    <strong>Opps!</strong>
+    <Br /> Nenhum registro associado a este processo
+  </div>
+
+  <mat-card class="mb-3 mt-3">
+    <mat-card-content class="toolbar-card-content">
+      <div class="row mt-2">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <mat-form-field>
+            <input matInput autocomplete="off" (keyup)="filterData($event)"  placeholder="Busca" type="search" />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+          <button  
+            class="header-button" 
+            mat-raised-button
+            color="primary"
+            routerLink="/juridico/eventos/novo"
+          >
+            <mat-icon>add</mat-icon>
+            Adicionar Eventos
+          </button>
+      </div>
+
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <div class="table-container mb-5">
+    
+    <div class="table-responsive mt-3 mat-elevation-z8" >
+      <table class="table table-hover table-striped">
+        <thead class="th ">
+          <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Arquivo</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr *ngFor="let p of processo.eventos ">
+            <th> {{p.id}} </th>
+            <th> {{p.nome}} </th>
+            <th> {{p.data}} </th>
+            <th> {{p.descricao}} </th>
+            <th> 
+              <span *ngIf="p.fileUrl !== this.s3Url + 'undefined.pdf' && p.fileUrl">
+                <a href="{{ p.fileUrl }}">
+                  <span class="material-icons">picture_as_pdf</span>
+                </a>
+              </span> 
+            </th>
+
+            <th> <button (click)="onEditEvento(p)" mat-icon-button color="primary" aria-label="Editar Evento">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button (click)="onDeleteEvento(p)" mat-icon-button color="accent" aria-label="Excluir Evento">
+              <mat-icon>delete</mat-icon>
+            </button> </th>
+          
+          </tr>
+        </tbody>
+        
+      </table>
+    </div>
+  </div>
+  
+</div>
+
+

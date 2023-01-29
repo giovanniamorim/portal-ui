@@ -1,35 +1,41 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { IBalanco } from '../interfaces/balanco.interface';
 
-import { BalancoService } from '../balanco.service';
-import { environment } from 'src/environments/environment';
+
+import { IUser } from '../interfaces/user.interface';
+import { UserService } from '../user.service';
+
 
 @Component({
-  selector: 'app-balancos',
-  templateUrl: './balancos.component.html',
-  styleUrls: ['./balancos.component.scss']
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss']
 })
-export class BalancosComponent implements OnInit, AfterViewInit  {
-
-  displayedColumns: string[] = ['id', 'ano', 'mes', 'fileUrl', 'actions'];
+export class UsersComponent implements OnInit, AfterViewInit  {
+  
+  displayedColumns: string[] = ['codigo', 'nome', 'email', 'permissoes', 'actions'];
+  headerPdf = [['ID', 'NOME', 'USUÁRIO', 'PERFIS']]
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
-  s3Url = environment.s3Url + 'balanco_'
+  userRoles: any
+  roleSuperAdmin: string =  'ROLE_PESQUISAR_ASSEMBLEIA'.substring(0, 14)
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  test: any;
+  dataTeste: any;
+  perfil!: string;
 
   
   constructor(
-    private balancoService: BalancoService, 
+    private userService: UserService, 
     private router: Router,
     private route: ActivatedRoute,
     private _liveAnnouncer: LiveAnnouncer
@@ -38,11 +44,10 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   ngOnInit() {
-    
   }
 
   ngAfterViewInit() {
-    this.listarBalancos({ page: "0", size: "5" })
+    this.listarUsers({ page: "0", size: "5" })
     this.datasource.sort = this.sort;
   }
 
@@ -63,22 +68,35 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
     })
   }
 
-  public addBalanco() {
+  public addUser() {
     this.router.navigate(['novo'], {relativeTo: this.route})
   }
 
-  public listarBalancos = (request:any) => {
+  public listarUsers = (request:any) => {
     this.carregando = true;
-    this.balancoService
+    this.userService
         .listAll( request)
-        .pipe(take(1))
+        .pipe(
+          take(1)
+          )
         .subscribe(
-            (Balanco) => {
-                this.datasource = new MatTableDataSource(Balanco.content) ;
+            (users) => {
+              console.log("users: ", users);
+                this.datasource = new MatTableDataSource(users.content) ;
                 this.datasource.sort = this.sort;
-                // this.datasource.paginator = this.paginator;
+                this.test = users.content
                 this.carregando = false;
-                this.totalElements = Balanco.totalElements
+                users.content.forEach((user:any) => {
+                  user.permissoes.forEach((role: any) => {
+                    this.userRoles = role.descricao;
+                    console.log("role name: ", this.userRoles);
+                    
+                  });
+                  user.roleName = this.userRoles;
+                });
+                
+                this.totalElements = users.totalElements
+                console.log("Usuários:", users);
             },
             (error) => {
                 this.datasource = new MatTableDataSource();
@@ -95,22 +113,20 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   filterData($event : any){
-    // this.datasource.filter = $event.target.value;
-    this.datasource.filter = $event.target.value.trim().toLocaleLowerCase();
+    this.datasource.filter = $event.target.value;
   }
 
     nextPage(event: PageEvent) {
         const request:any = {};
         request['page'] = event.pageIndex.toString();
         request['size'] = event.pageSize.toString();
-        this.listarBalancos(request);
+        this.listarUsers(request);
     }
 
 
-  onDelete(Balanco: IBalanco){
-
+  onDelete(user: IUser){
     Swal.fire({
-      title: 'Deseja remover o Balanço?',
+      title: 'Deseja remover o Usuário?',
       text: "ATENÇÃO: Esta operação é irreversível!",
       icon: 'warning',
       showCancelButton: true,
@@ -119,12 +135,12 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
       confirmButtonText: 'Sim, pode remover!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.balancoService.remove(Balanco).subscribe( res => {
-          this.listarBalancos({ page: "0", size: "5" })
+        this.userService.remove(user).subscribe( res => {
+          this.listarUsers({ page: "0", size: "5" })
         })
         Swal.fire(
           'Removido!',
-          'O Balanço foi removido com sucesso.',
+          'O Usuário foi removido com sucesso.',
           'success'
         )
       } 
@@ -132,13 +148,11 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
 
   }
 
-  onEdit(balanco: IBalanco){
-
-    this.router.navigate(['editar', balanco.id], {relativeTo: this.route})
-    console.log("rota dos balanços no editar: ", this.route);
-    
-
+  onEdit(user: IUser){
+    this.router.navigate(['editar', user.codigo], {relativeTo: this.route})
   }
+
+
 
 }
 

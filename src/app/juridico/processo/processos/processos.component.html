@@ -1,0 +1,121 @@
+<div class="page-container mb-5">
+  <div class="card-body">
+    <button
+      class="header-button"
+      mat-raised-button
+      color="primary"
+      (click)="addProcesso()"
+    >
+      <mat-icon>add_circle_outline</mat-icon>
+      Novo Processo
+    </button>
+    <h5 class="header-title">Processos</h5>
+    <h6 class="header-subtitle mb-1">Lista de registros de Processos</h6>
+  </div>
+   <!-- Inicio do Card de busca -->
+  <mat-card class="mb-3 mt-3">
+    <mat-card-content class="toolbar-card-content">
+      <div class="row mt-2">
+        <div class="col col-lg-8 col-md-6 col-sm-12">
+          <mat-form-field>
+            <input matInput autocomplete="off" (keyup)="filterData($event)" placeholder="Busca" type="search" />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+        
+      </div>
+
+      
+      
+    </mat-card-content>
+  </mat-card>
+  <div class="alert alert-warning" *ngIf="!carregando && totalElements == 0">
+    <i class="fa-regular fa-circle-xmark"></i>
+    <div class="icon hidden-xs">
+      <i class="fa fa-exclamation-circle"></i>
+    </div>
+    <strong>Opps!</strong>
+    <Br /> Nenhum registro encontrado para sua busca
+  </div>
+  <!-- Fim do Card de busca -->
+  <div class="table-container" *ngIf="totalElements > 0">
+    <table mat-table 
+          [dataSource]="datasource"
+          multiTemplateDataRows 
+          matSort (matSortChange)="listarProcessos($event)"
+          class="mat-elevation-z8">
+          
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por Id">#</th>
+        <td mat-cell *matCellDef="let processo">{{ processo.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="numero">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header >Número</th>
+        <td mat-cell *matCellDef="let processo">
+          {{ processo.numero }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="exequente">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header >Exequente</th>
+        <td mat-cell *matCellDef="let processo">
+          {{ processo.exequente }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="executado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header >Executado</th>
+        <td mat-cell *matCellDef="let processo">
+          {{ processo.executado }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="assunto">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header >Assunto</th>
+        <td mat-cell *matCellDef="let processo">
+          {{ processo.assunto }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="eventos">
+        <th mat-header-cell class="header-last-column"  *matHeaderCellDef mat-sort-header >Acompanhar Eventos</th>
+        <td mat-cell class="last-column" *matCellDef="let processo">
+          <button  (click)="onDetail(processo)" class="header-button btn btn-success btn-custom"  aria-label="Acompanhar eventos">
+            <mat-icon class="icon-gavel">gavel</mat-icon>
+            Eventos
+          </button>
+          
+        </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell class="header-last-column" *matHeaderCellDef></th>
+        <td mat-cell class="last-column" *matCellDef="let processo">
+          <button (click)="onEdit(processo)" mat-icon-button color="primary" aria-label="Editar Processo">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button (click)="onDelete(processo)" mat-icon-button color="accent" aria-label="Excluir Processo">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator 
+        [length]="totalElements"
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        (page)="nextPage($event)"
+        >
+    </mat-paginator>
+
+  </div>
+  
+  <div *ngIf="carregando" class="spinner">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+  
+</div>

@@ -6,30 +6,30 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { IBalanco } from '../interfaces/balanco.interface';
+import { environment } from '../../../environments/environment';
+import { AssembleiasService } from '../assembleias.service';
+import { IAssembleias } from '../interfaces/assembleias.interface';
 
-import { BalancoService } from '../balanco.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-balancos',
-  templateUrl: './balancos.component.html',
-  styleUrls: ['./balancos.component.scss']
+  selector: 'app-assembleias',
+  templateUrl: './assembleias.component.html',
+  styleUrls: ['./assembleias.component.scss']
 })
-export class BalancosComponent implements OnInit, AfterViewInit  {
+export class AssembleiasComponent implements OnInit, AfterViewInit  {
 
-  displayedColumns: string[] = ['id', 'ano', 'mes', 'fileUrl', 'actions'];
+  displayedColumns: string[] = ['id', 'data', 'tipo', 'assunto', 'comentario', 'fileUrl', 'actions'];
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
-  s3Url = environment.s3Url + 'balanco_'
+  s3Url = environment.s3Url + 'assembleia_'
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   
   constructor(
-    private balancoService: BalancoService, 
+    private assembleiaService: AssembleiasService, 
     private router: Router,
     private route: ActivatedRoute,
     private _liveAnnouncer: LiveAnnouncer
@@ -42,7 +42,7 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   ngAfterViewInit() {
-    this.listarBalancos({ page: "0", size: "5" })
+    this.listarAssembleias({ page: "0", size: "5" })
     this.datasource.sort = this.sort;
   }
 
@@ -63,22 +63,22 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
     })
   }
 
-  public addBalanco() {
+  public addAssembleia() {
     this.router.navigate(['novo'], {relativeTo: this.route})
   }
 
-  public listarBalancos = (request:any) => {
+  public listarAssembleias = (request:any) => {
     this.carregando = true;
-    this.balancoService
+    this.assembleiaService
         .listAll( request)
-        .pipe(take(1))
+        .pipe(
+          take(1),)
         .subscribe(
-            (Balanco) => {
-                this.datasource = new MatTableDataSource(Balanco.content) ;
+            (Assembleia) => {
+                this.datasource = new MatTableDataSource(Assembleia.content) ;
                 this.datasource.sort = this.sort;
-                // this.datasource.paginator = this.paginator;
                 this.carregando = false;
-                this.totalElements = Balanco.totalElements
+                this.totalElements = Assembleia.totalElements
             },
             (error) => {
                 this.datasource = new MatTableDataSource();
@@ -95,7 +95,6 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   filterData($event : any){
-    // this.datasource.filter = $event.target.value;
     this.datasource.filter = $event.target.value.trim().toLocaleLowerCase();
   }
 
@@ -103,14 +102,14 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
         const request:any = {};
         request['page'] = event.pageIndex.toString();
         request['size'] = event.pageSize.toString();
-        this.listarBalancos(request);
+        this.listarAssembleias(request);
     }
 
 
-  onDelete(Balanco: IBalanco){
+  onDelete(Assembleia: IAssembleias){
 
     Swal.fire({
-      title: 'Deseja remover o Balanço?',
+      title: 'Deseja remover o Assembleia?',
       text: "ATENÇÃO: Esta operação é irreversível!",
       icon: 'warning',
       showCancelButton: true,
@@ -119,12 +118,12 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
       confirmButtonText: 'Sim, pode remover!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.balancoService.remove(Balanco).subscribe( res => {
-          this.listarBalancos({ page: "0", size: "5" })
+        this.assembleiaService.remove(Assembleia).subscribe( res => {
+          this.listarAssembleias({ page: "0", size: "5" })
         })
         Swal.fire(
           'Removido!',
-          'O Balanço foi removido com sucesso.',
+          'O Assembleia foi removido com sucesso.',
           'success'
         )
       } 
@@ -132,11 +131,9 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
 
   }
 
-  onEdit(balanco: IBalanco){
+  onEdit(assembleia: IAssembleias){
 
-    this.router.navigate(['editar', balanco.id], {relativeTo: this.route})
-    console.log("rota dos balanços no editar: ", this.route);
-    
+    this.router.navigate(['editar', assembleia.id], {relativeTo: this.route})
 
   }
 

@@ -121,7 +121,9 @@ export class InventarioFormComponent implements OnInit {
   }
 
   onEdit(){
+    console.log("Editando: ", this.form.value);
     this.inventarioService.updateInventario(this.currentId, this.form.value)
+    
       .subscribe(
         res => {
           Swal.fire({

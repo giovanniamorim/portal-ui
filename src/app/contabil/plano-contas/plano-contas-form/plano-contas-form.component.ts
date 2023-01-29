@@ -3,8 +3,8 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
-import { IBalanco, IMeses } from '../interfaces/balanco.interface';
-import { BalancoService } from '../balanco.service';
+import { IBalanco } from '../interfaces/plano-contas.interface';
+import { BalancoService } from '../plano-contas.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -22,22 +22,6 @@ export class BalancoFormComponent implements OnInit {
   editar: any
   currentId!: number
   submitted = false;
-  anos: string[] = ['2022', '2024']
-  meses: IMeses[] = [
-    { id: 1, nome: 'Janeiro' },
-    { id: 2, nome: 'Fevereiro' },
-    { id: 3, nome: 'Março' },
-    { id: 4, nome: 'Abril' },
-    { id: 5, nome: 'Maio' },
-    { id: 6, nome: 'Junho' },
-    { id: 7, nome: 'Julho' },
-    { id: 8, nome: 'Agosto' },
-    { id: 9, nome: 'Setembro' },
-    { id: 10, nome: 'Outubro' },
-    { id: 11, nome: 'Novembro' },
-    { id: 12, nome: 'Dezembro' }
-  ]
-
   
   isDisabled: boolean = true;
 
@@ -52,8 +36,7 @@ export class BalancoFormComponent implements OnInit {
     private route: ActivatedRoute,
     ) {
         this.form =  this.formBuilder.group({
-          ano: [null, [Validators.required]],
-          mes: [null, [Validators.required]],
+        descricao: [null, [Validators.required]],
         fileUrl: [`${this.s3Url}${this.currentId}.pdf`]
       })
 
@@ -83,10 +66,12 @@ export class BalancoFormComponent implements OnInit {
   updateForm(balanco: IBalanco){
     this.form.patchValue({
       id: this.currentId,
-      ano: balanco.ano,
-      mes: balanco.mes,
+      descricao: balanco.descricao,
       fileUrl: `${this.s3Url}${this.currentId}.pdf`
     })
+    console.log("chegou no updateForm", this.form);
+    
+
   }
 
   onSubmit(){
@@ -98,7 +83,7 @@ export class BalancoFormComponent implements OnInit {
         Swal.fire({
           position: 'top-end',
           icon: 'success',
-          title: 'Balanço adicionado com sucesso!',
+          title: 'Balanco adicionado com sucesso!',
           showConfirmButton: false,
           timer: 2000
         }) 
@@ -130,6 +115,7 @@ export class BalancoFormComponent implements OnInit {
             cancelButtonText: `Cancelar`,
             
           }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
               Swal.fire('Envie um arquivo com o nome', "balanco_" + res.id + ".pdf", 'info')
               this.router.navigate(['./uploads'])

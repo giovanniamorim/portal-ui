@@ -6,30 +6,31 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { IBalanco } from '../interfaces/balanco.interface';
+import { environment } from '../../../../environments/environment';
+import { EventoService } from '../evento.service';
+import { IEvento } from '../interfaces/evento.interface';
 
-import { BalancoService } from '../balanco.service';
-import { environment } from 'src/environments/environment';
+
 
 @Component({
-  selector: 'app-balancos',
-  templateUrl: './balancos.component.html',
-  styleUrls: ['./balancos.component.scss']
+  selector: 'app-eventos',
+  templateUrl: './eventos.component.html',
+  styleUrls: ['./eventos.component.scss']
 })
-export class BalancosComponent implements OnInit, AfterViewInit  {
+export class EventosComponent implements OnInit, AfterViewInit  {
 
-  displayedColumns: string[] = ['id', 'ano', 'mes', 'fileUrl', 'actions'];
+  displayedColumns: string[] = ['id', 'nome', 'data', 'descricao', 'fileUrl', 'actions'];
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
-  s3Url = environment.s3Url + 'balanco_'
+  s3Url = environment.s3Url + 'evento_'
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   
   constructor(
-    private balancoService: BalancoService, 
+    private eventoService: EventoService, 
     private router: Router,
     private route: ActivatedRoute,
     private _liveAnnouncer: LiveAnnouncer
@@ -42,7 +43,7 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   ngAfterViewInit() {
-    this.listarBalancos({ page: "0", size: "5" })
+    this.listarEventos({ page: "0", size: "5" })
     this.datasource.sort = this.sort;
   }
 
@@ -63,22 +64,23 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
     })
   }
 
-  public addBalanco() {
+  public addEvento() {
     this.router.navigate(['novo'], {relativeTo: this.route})
   }
 
-  public listarBalancos = (request:any) => {
+  public listarEventos = (request:any) => {
     this.carregando = true;
-    this.balancoService
+    this.eventoService
         .listAll( request)
         .pipe(take(1))
         .subscribe(
-            (Balanco) => {
-                this.datasource = new MatTableDataSource(Balanco.content) ;
+            (eventos) => {
+                console.log("Eventos: ", eventos);
+                this.datasource = new MatTableDataSource(eventos.content) ;
                 this.datasource.sort = this.sort;
-                // this.datasource.paginator = this.paginator;
                 this.carregando = false;
-                this.totalElements = Balanco.totalElements
+                this.totalElements = eventos.totalElements
+                
             },
             (error) => {
                 this.datasource = new MatTableDataSource();
@@ -95,22 +97,20 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   filterData($event : any){
-    // this.datasource.filter = $event.target.value;
-    this.datasource.filter = $event.target.value.trim().toLocaleLowerCase();
+    this.datasource.filter = $event.target.value;
   }
 
-    nextPage(event: PageEvent) {
+  nextPage(event: PageEvent) {
         const request:any = {};
         request['page'] = event.pageIndex.toString();
         request['size'] = event.pageSize.toString();
-        this.listarBalancos(request);
-    }
+        this.listarEventos(request);
+  }
 
 
-  onDelete(Balanco: IBalanco){
-
+  onDelete(Evento: IEvento){
     Swal.fire({
-      title: 'Deseja remover o Balanço?',
+      title: 'Deseja remover o Evento?',
       text: "ATENÇÃO: Esta operação é irreversível!",
       icon: 'warning',
       showCancelButton: true,
@@ -119,12 +119,12 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
       confirmButtonText: 'Sim, pode remover!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.balancoService.remove(Balanco).subscribe( res => {
-          this.listarBalancos({ page: "0", size: "5" })
+        this.eventoService.remove(Evento).subscribe( res => {
+          this.listarEventos({ page: "0", size: "5" })
         })
         Swal.fire(
           'Removido!',
-          'O Balanço foi removido com sucesso.',
+          'O Evento foi removido com sucesso.',
           'success'
         )
       } 
@@ -132,12 +132,8 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
 
   }
 
-  onEdit(balanco: IBalanco){
-
-    this.router.navigate(['editar', balanco.id], {relativeTo: this.route})
-    console.log("rota dos balanços no editar: ", this.route);
-    
-
+  onEdit(evento: IEvento){
+    this.router.navigate(['editar', evento.id], {relativeTo: this.route})
   }
 
 }

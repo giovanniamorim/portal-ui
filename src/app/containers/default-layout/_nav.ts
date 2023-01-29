@@ -17,6 +17,22 @@ export const navItems: INavData[] = [
   
   // DEFINITIVOS
   {
+    name: 'Lançamentos',
+    url: '',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Receitas',
+        url: '/lancamentos/receitas'
+      },
+      {
+        name: 'Despesas',
+        url: '/lancamentos/despesas'
+      },
+      
+    ]
+  },
+  {
     name: 'Demonstrativos',
     url: '',
     iconComponent: { name: 'cil-puzzle' },
@@ -53,8 +69,46 @@ export const navItems: INavData[] = [
     url: '/inventario',
     iconComponent: { name: 'cil-file' }
   },
-  
 
+  {
+    name: 'Documentos',
+    title: true
+  },
+  {
+    name: 'Regimento',
+    url:"https://portal-sindifisco.s3.sa-east-1.amazonaws.com/regimento.pdf",
+    iconComponent: { name: 'cil-file' }
+  },
+  {
+    name: 'Acordo Coletivo',
+    url:"https://portal-sindifisco.s3.sa-east-1.amazonaws.com/acordo_coletivo.pdf",
+    iconComponent: { name: 'cil-file' }
+  },
+  {
+    name: 'Assembleias',
+    url:"/assembleias",
+    iconComponent: { name: 'cil-file' }
+  },
+  {
+    title: true,
+    name: 'Jurídico'
+  },
+  // DEFINITIVOS
+  {
+    name: 'Processos',
+    url: '/juridico/processos',
+    iconComponent: { name: 'cil-puzzle' },
+  },
+  {
+    title: true,
+    name: 'Usuários'
+  },
+  // DEFINITIVOS
+  {
+    name: 'Usuários',
+    url: '/usuarios',
+    iconComponent: { name: 'cil-puzzle' },
+  },
   {
     name: 'Configurações',
     title: true
