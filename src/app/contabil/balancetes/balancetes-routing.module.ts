@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from 'src/app/seguranca/auth.guard';
 import { BalanceteFormComponent } from './balancete-form/balancete-form.component';
 import { BalancetesComponent } from './balancetes/balancetes.component'
 
@@ -18,23 +19,20 @@ const routes: Routes = [
       {
         path: '',
         component: BalancetesComponent,
-        data: {
-          title: 'Balancetes',
-        },
+        canActivate: [ AuthGuard ],
+        data: { title: 'Balancetes', roles: ['ROLE_READ']}
       },
       {
         path: 'novo',
         component: BalanceteFormComponent,
-        data: {
-          title: 'Novo Balancete',
-        },
+        canActivate: [ AuthGuard ],
+        data: { title: 'Novo Balancete', roles: ['ROLE_CREATE']}
       },
       {
         path: 'editar/:id',
         component: BalanceteFormComponent,
-        data: {
-          title: 'Editar Balancete',
-        },
+        canActivate: [ AuthGuard ],
+        data: { title: 'Editar Balancete', roles: ['ROLE_UPDATE']}
       },
     ],
   },

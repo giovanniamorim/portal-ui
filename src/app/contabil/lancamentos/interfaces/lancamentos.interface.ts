@@ -8,7 +8,7 @@ export interface ILancamentos {
     tipoLancamento: string,
     dataLancamento: Date,
     planoConta: IPlanoContas,
-    valor: string,
+    valor: number,
     modoPagamento: IModoPagamento,
     tipoComprovante: ITipoComprovante,
     obs: string,

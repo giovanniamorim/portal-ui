@@ -114,7 +114,8 @@
           </mat-form-field>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6">
-          <button  
+          <button
+            *ngIf="perfil !== 'SINDICALIZADO'"  
             class="header-button" 
             mat-raised-button
             color="primary"
@@ -158,12 +159,14 @@
               </span> 
             </th>
 
-            <th> <button (click)="onEditEvento(p)" mat-icon-button color="primary" aria-label="Editar Evento">
+            <th> 
+              <button *ngIf="perfil !== 'SINDICALIZADO'" (click)="onEditEvento(p)" mat-icon-button color="primary" aria-label="Editar Evento">
               <mat-icon>edit</mat-icon>
-            </button>
-            <button (click)="onDeleteEvento(p)" mat-icon-button color="accent" aria-label="Excluir Evento">
-              <mat-icon>delete</mat-icon>
-            </button> </th>
+              </button>
+              <button *ngIf="perfil !== 'SINDICALIZADO'" (click)="onDeleteEvento(p)" mat-icon-button color="accent" aria-label="Excluir Evento">
+                <mat-icon>delete</mat-icon>
+              </button> 
+          </th>
           
           </tr>
         </tbody>

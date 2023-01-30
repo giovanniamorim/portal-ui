@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Input } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -35,6 +35,7 @@ export class AuthGuard implements CanActivate {
   }
 
   podeAcessarRota(roles: string[]): boolean {
+    
     if (roles && !this.auth.temQualquerPermissao(roles)) {
       this.router.navigate(['/nao-autorizado']);
       return false;

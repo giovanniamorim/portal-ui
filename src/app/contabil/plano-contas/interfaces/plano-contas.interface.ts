@@ -6,3 +6,4 @@ export interface IPlanoContas {
     tipoLancamento: string,
     contaPai: string
 }
+

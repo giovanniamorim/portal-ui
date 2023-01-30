@@ -13,6 +13,8 @@ import { LancamentosService } from '../lancamentos.service';
 
 import { ITipoComprovante } from '../../plano-contas/interfaces/tipo-comprovante.interface';
 import { IProfundidade } from '../../plano-contas/interfaces/profundidade.interface';
+import { AuthGuard } from 'src/app/seguranca/auth.guard';
+import { AuthService } from 'src/app/seguranca/auth.service';
 
 
 @Component({
@@ -61,11 +63,10 @@ export class LancamentoFormComponent implements OnInit {
   supCaixa: string[] = ['Sim', 'Não'];
   tipoLancamento: string[] = ['Receita', 'Despesa'];
   tipoLancamentoPlano!: string;
-  
-  planosContas: IPlanoContas[] = [];
   tipoLancamentoPage!: string;
   pathUrl!: string;
   currentPath!: string;
+  perfil!: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -74,6 +75,7 @@ export class LancamentoFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public dialog: MatDialog,
+    private auth: AuthService
     ) {
 
       this.planoContasList();
@@ -221,7 +223,7 @@ export class LancamentoFormComponent implements OnInit {
 
   planoContasList(){
     this.planoContaService.listAll(1).subscribe( (contas) => {
-      this.planosContas = contas.content.filter(
+      this.planoContas = contas.content.filter(
         (p: IPlanoContas) => p.profundidade === 'Analítica'
         ).filter((p: IPlanoContas) => p.tipoLancamento === this.tipoLancamentoPlano);
     })
@@ -231,6 +233,12 @@ export class LancamentoFormComponent implements OnInit {
     this.currentPath = event.value
     console.log("this.currentPath: ", this.currentPath);
     this.pathUrl = this.pathUrl = (`/lancamentos/${this.currentPath}s`).toLowerCase();
+  }
+
+  findRoles(){
+    if(this.auth.temPermissao('ROLE_READ')){
+      this.perfil = 'SINDICALIZADO'
+    }
   }
 
 }

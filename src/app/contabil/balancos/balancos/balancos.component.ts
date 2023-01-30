@@ -10,6 +10,7 @@ import { IBalanco } from '../interfaces/balanco.interface';
 
 import { BalancoService } from '../balanco.service';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/seguranca/auth.service';
 
 @Component({
   selector: 'app-balancos',
@@ -26,19 +27,21 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  perfil!: string;
 
   
   constructor(
     private balancoService: BalancoService, 
     private router: Router,
     private route: ActivatedRoute,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private auth: AuthService
     ) { 
 
   }
 
   ngOnInit() {
-    
+    this.findRoles()
   }
 
   ngAfterViewInit() {
@@ -133,11 +136,14 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   onEdit(balanco: IBalanco){
-
     this.router.navigate(['editar', balanco.id], {relativeTo: this.route})
     console.log("rota dos balanços no editar: ", this.route);
-    
+  }
 
+  findRoles(){
+    if(this.auth.temPermissao('ROLE_READ')){
+      this.perfil = 'SINDICALIZADO'
+    }
   }
 
 }

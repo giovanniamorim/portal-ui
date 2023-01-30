@@ -30,19 +30,15 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule),
           canActivate: [AuthGuard],
-          data: { roles: ['ROLE_PESQUISAR_PESSOA'] }
+          data: { roles: ['ROLE_READ'] }
       },
       {
         path: 'lancamentos',
         loadChildren: () => import('./contabil/lancamentos/lancamentos.module').then( m => m.LancamentosModule),
-        canActivate: [AuthGuard],
-          data: { roles: ['ROLE_PESQUISAR_LANCAMENTO', 'ROLE_CADASTRAR_LANCAMENTO', 'ROLE_REMOVER_LANCAMENTO'] }
       },
       {
         path: 'balancetes',
         loadChildren: () => import('./contabil/balancetes/balancetes.module').then( m => m.BalancetesModule),
-        canActivate: [AuthGuard],
-          data: { roles: ['ROLE_PESQUISAR_BALANCETE', 'ROLE_CADASTRAR_BALANCETE', 'ROLE_REMOVER_BALANCETE'] }
       },
       {
         path: 'balancos',
@@ -55,38 +51,26 @@ const routes: Routes = [
       {
         path: 'execucoes',
         loadChildren: () => import('./contabil/execucoes/execucoes.module').then( m => m.ExecucoesModule),
-        canActivate: [AuthGuard],
-          data: { roles: ['ROLE_PESQUISAR_EXECUCAO', 'ROLE_CADASTRAR_EXECUCAO', 'ROLE_REMOVER_EXECUCAO'] }
       },
       {
         path: 'inventario',
         loadChildren: () => import('./contabil/inventario/inventario.module').then( m => m.InventarioModule),
-        canActivate: [AuthGuard],
-          data: { roles: ['ROLE_PESQUISAR_INVENTARIO', 'ROLE_CADASTRAR_INVENTARIO', 'ROLE_REMOVER_INVENTARIO'] }
       },
       {
         path: 'assembleias',
         loadChildren: () => import('./assembleias/assembleias.module').then( m => m.AssembleiasModule),
-        canActivate: [AuthGuard],
-          data: { roles: ['ROLE_PESQUISAR_ASSEMBLEIA', 'ROLE_CADASTRAR_ASSEMBLEIA', 'ROLE_REMOVER_ASSEMBLEIA'] }
       },
       {
         path: 'juridico/eventos',
         loadChildren: () => import('./juridico/evento/evento.module').then( m => m.EventoModule),
-        canActivate: [AuthGuard],
-          data: { roles: ['ROLE_PESQUISAR_JUR_EVENTO', 'ROLE_CADASTRAR_JUR_EVENTO', 'ROLE_REMOVER_JUR_EVENTO'] }
       },
       {
         path: 'juridico/processos',
         loadChildren: () => import('./juridico/processo/processo.module').then( m => m.ProcessoModule),
-        canActivate: [AuthGuard],
-          data: { roles: ['ROLE_PESQUISAR_JUR_EVENTO', 'ROLE_CADASTRAR_JUR_EVENTO', 'ROLE_REMOVER_JUR_EVENTO'] }
       },
       {
         path: 'usuarios',
         loadChildren: () => import('./users/users.module').then( m => m.UsersModule),
-        canActivate: [AuthGuard],
-          data: { roles: ['ROLE_PESQUISAR_JUR_EVENTO', 'ROLE_CADASTRAR_JUR_EVENTO', 'ROLE_REMOVER_JUR_EVENTO'] }
       },
       {
         path: 'theme',

@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { IBalancete } from '../balancete.interface';
 import { BalancetesService } from '../balancetes.service';
+import { AuthService } from 'src/app/seguranca/auth.service';
 
 @Component({
   selector: 'app-balancetes',
@@ -25,19 +26,21 @@ export class BalancetesComponent implements OnInit, AfterViewInit  {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  perfil!: string;
 
   
   constructor(
     private balanceteService: BalancetesService, 
     private router: Router,
     private route: ActivatedRoute,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private auth: AuthService
     ) { 
 
   }
 
   ngOnInit() {
-    
+    this.findRoles()
   }
 
   ngAfterViewInit() {
@@ -130,9 +133,13 @@ export class BalancetesComponent implements OnInit, AfterViewInit  {
   }
 
   onEdit(balancete: IBalancete){
-
     this.router.navigate(['editar', balancete.id], {relativeTo: this.route})
+  }
 
+  findRoles(){
+    if(this.auth.temPermissao('ROLE_READ')){
+      this.perfil = 'SINDICALIZADO'
+    }
   }
 
 }

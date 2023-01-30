@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { AuthService } from 'src/app/seguranca/auth.service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
@@ -42,31 +43,30 @@ export class ProcessoDetailComponent implements AfterViewInit, OnInit {
   datasource = new MatTableDataSource();
   eventosFiltrados: any[] = [];
   s3Url = environment.s3Url + 'evento_'
-
-  
- 
+  perfil!: string;
 
   constructor(
     private processoService: ProcessoService,
     private eventoService: EventoService,
     private router: Router,
     private route: ActivatedRoute,
+    private auth: AuthService
     ) {
-
     }
 
-
   ngOnInit(): void {
-       this.route.params.subscribe(
+
+    this.findRoles()
+    this.route.params.subscribe(
       (params: any) => {
         const id = params.id
         this.getProcesso(id) 
       }
     )
+    
   }
 
   ngAfterViewInit() {
-    // this.listarProcessos({ page: "0", size: "5" })
     this.datasource.sort = this.sort;
   }
 
@@ -211,6 +211,12 @@ onDeleteEvento(evento: IEvento){
     filterData($event : any){
       // this.datasource.filter = $event.target.value;
       this.datasource.filter = $event.target.value.trim().toLocaleLowerCase();
+    }
+
+    findRoles(){
+      if(this.auth.temPermissao('ROLE_READ')){
+        this.perfil = 'SINDICALIZADO'
+      }
     }
   
 }

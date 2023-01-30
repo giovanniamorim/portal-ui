@@ -1,6 +1,7 @@
 <div class="page-container mb-5">
   <div class="card-body">
     <button
+      *ngIf="perfil !== 'SINDICALIZADO'"
       class="header-button"
       mat-raised-button
       color="primary"
@@ -92,10 +93,10 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell class="header-last-column" *matHeaderCellDef></th>
         <td mat-cell class="last-column" *matCellDef="let processo">
-          <button (click)="onEdit(processo)" mat-icon-button color="primary" aria-label="Editar Processo">
+          <button *ngIf="perfil !== 'SINDICALIZADO'" (click)="onEdit(processo)" mat-icon-button color="primary" aria-label="Editar Processo">
             <mat-icon>edit</mat-icon>
           </button>
-          <button (click)="onDelete(processo)" mat-icon-button color="accent" aria-label="Excluir Processo">
+          <button *ngIf="perfil !== 'SINDICALIZADO'" (click)="onDelete(processo)" mat-icon-button color="accent" aria-label="Excluir Processo">
             <mat-icon>delete</mat-icon>
           </button>
         </td>

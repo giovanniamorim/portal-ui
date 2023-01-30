@@ -1,13 +1,14 @@
 <div class="page-container mb-5">
   <div class="card-body">
     <button
+      *ngIf="perfil !== 'SINDICALIZADO' "
       class="header-button"
       mat-raised-button
       color="primary"
       (click)="addAssembleia()"
     >
       <mat-icon>add_circle_outline</mat-icon>
-      Novo Assembleia
+      Nova Assembleia
     </button>
     <h5 class="header-title">Assembleias</h5>
     <h6 class="header-subtitle mb-1">Lista de registros de Assembleias</h6>
@@ -86,15 +87,17 @@
       </ng-container>
 
       <ng-container matColumnDef="actions">
-        <th mat-header-cell class="header-last-column" *matHeaderCellDef></th>
-        <td mat-cell class="last-column" *matCellDef="let assembleia">
-          <button (click)="onEdit(assembleia)" mat-icon-button color="primary" aria-label="Editar Assembleia">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button (click)="onDelete(assembleia)" mat-icon-button color="accent" aria-label="Excluir Assembleia">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
+        <div >
+          <th mat-header-cell class="header-last-column" *matHeaderCellDef></th>
+          <td  mat-cell class="last-column" *matCellDef="let assembleia" >
+            <button *ngIf="perfil !== 'SINDICALIZADO' " (click)="onEdit(assembleia)" mat-icon-button color="primary" aria-label="Editar Assembleia">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button *ngIf="perfil !== 'SINDICALIZADO' " (click)="onDelete(assembleia)" mat-icon-button color="accent" aria-label="Excluir Assembleia">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </div>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

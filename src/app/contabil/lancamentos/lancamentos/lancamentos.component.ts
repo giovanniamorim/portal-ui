@@ -11,6 +11,7 @@ import { LancamentosService } from '../lancamentos.service';
 import { environment } from '../../../../environments/environment'
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
+import { AuthService } from 'src/app/seguranca/auth.service';
 
 @Component({
   selector: 'app-lancamentos',
@@ -32,6 +33,7 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
   imgId: any;
   tipoLancamentoPage!: string;
   pathUrl: any;
+  perfil!: string;
 
   
   constructor(
@@ -41,6 +43,7 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
     private _liveAnnouncer: LiveAnnouncer,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef,
+    private auth: AuthService,
     ) { 
 
   }
@@ -53,6 +56,8 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
       this.pathUrl = '/lancamentos/despesas'
     }
     console.log("this.tipoLancamentoPage", this.tipoLancamentoPage);
+
+    this.findRoles()
      
   }
 
@@ -195,6 +200,13 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
     this.imgId = lancamento.id
     this.imgSrc = lancamento.fileUrl
   }
+
+  findRoles(){
+    if(this.auth.temPermissao('ROLE_READ')){
+      this.perfil = 'SINDICALIZADO'
+    }
+  }
+
 
 }
 

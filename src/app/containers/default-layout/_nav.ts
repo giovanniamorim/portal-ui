@@ -19,7 +19,7 @@ export const navItems: INavData[] = [
   {
     name: 'Lançamentos',
     url: '',
-    iconComponent: { name: 'cil-puzzle' },
+    icon: 'fa fa-money',
     children: [
       {
         name: 'Receitas',
@@ -35,7 +35,7 @@ export const navItems: INavData[] = [
   {
     name: 'Demonstrativos',
     url: '',
-    iconComponent: { name: 'cil-puzzle' },
+    icon: 'fa fa-line-chart',
     children: [
       {
         name: 'Balancetes',
@@ -51,7 +51,7 @@ export const navItems: INavData[] = [
   {
     name: 'Orçamentos',
     url: '',
-    iconComponent: { name: 'cil-puzzle' },
+    icon: "fa fa-paperclip",
     children: [
       {
         name: 'Execução',
@@ -67,7 +67,7 @@ export const navItems: INavData[] = [
   {
     name: 'Inventário',
     url: '/inventario',
-    iconComponent: { name: 'cil-file' }
+    icon: 'fa fa-fax'
   },
 
   {
@@ -77,17 +77,17 @@ export const navItems: INavData[] = [
   {
     name: 'Regimento',
     url:"https://portal-sindifisco.s3.sa-east-1.amazonaws.com/regimento.pdf",
-    iconComponent: { name: 'cil-file' }
+    icon: 'fa fa-file-text-o'
   },
   {
     name: 'Acordo Coletivo',
     url:"https://portal-sindifisco.s3.sa-east-1.amazonaws.com/acordo_coletivo.pdf",
-    iconComponent: { name: 'cil-file' }
+    icon: 'fa fa-handshake-o'
   },
   {
     name: 'Assembleias',
     url:"/assembleias",
-    iconComponent: { name: 'cil-file' }
+    icon: 'fa fa-bullhorn'
   },
   {
     title: true,
@@ -97,7 +97,7 @@ export const navItems: INavData[] = [
   {
     name: 'Processos',
     url: '/juridico/processos',
-    iconComponent: { name: 'cil-puzzle' },
+    icon: 'fa fa-balance-scale'
   },
   {
     title: true,
@@ -107,7 +107,7 @@ export const navItems: INavData[] = [
   {
     name: 'Usuários',
     url: '/usuarios',
-    iconComponent: { name: 'cil-puzzle' },
+    icon: 'fa fa-users',
   },
   {
     name: 'Configurações',
@@ -116,7 +116,7 @@ export const navItems: INavData[] = [
   {
     name: 'Upload de Arquivos',
     url: '/uploads',
-    iconComponent: { name: 'cil-file' }
+    icon: 'fa fa-upload'
   },
   // {
   //   name: 'Colors',

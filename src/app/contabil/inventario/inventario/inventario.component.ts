@@ -5,9 +5,10 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
 import { environment } from '../../../../environments/environment';
-import { IDepartamentos, IInventario } from '../interfaces/inventario.interface';
+import { IInventario } from '../interfaces/inventario.interface';
 import { InventarioService } from '../inventario.service';
 
 
@@ -26,22 +27,20 @@ export class InventarioComponent implements OnInit, AfterViewInit  {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
-
- 
-
+  perfil!: string;
   
   constructor(
     private inventarioService: InventarioService, 
     private router: Router,
     private route: ActivatedRoute,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private auth: AuthService
     ) { 
 
   }
 
   ngOnInit() {
-    
+    this.findRoles()
   }
 
   ngAfterViewInit() {
@@ -134,9 +133,13 @@ export class InventarioComponent implements OnInit, AfterViewInit  {
   }
 
   onEdit(inventario: IInventario){
-
     this.router.navigate(['editar', inventario.id], {relativeTo: this.route})
+  }
 
+  findRoles(){
+    if(this.auth.temPermissao('ROLE_READ')){
+      this.perfil = 'SINDICALIZADO'
+    }
   }
 
 }

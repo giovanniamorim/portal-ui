@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { environment } from '../../../../environments/environment';
 import { IExecucao } from '../interfaces/execucoes.interface';
 import { ExecucoesService } from '../execucoes.service';
+import { AuthService } from 'src/app/seguranca/auth.service';
 
 
 @Component({
@@ -26,19 +27,21 @@ export class ExecucoesComponent implements OnInit, AfterViewInit  {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  perfil!: string;
 
   
   constructor(
     private execucaoService: ExecucoesService, 
     private router: Router,
     private route: ActivatedRoute,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private auth: AuthService
     ) { 
 
   }
 
   ngOnInit() {
-    
+    this.findRoles()
   }
 
   ngAfterViewInit() {
@@ -131,9 +134,13 @@ export class ExecucoesComponent implements OnInit, AfterViewInit  {
   }
 
   onEdit(execucao: IExecucao){
-
     this.router.navigate(['editar', execucao.id], {relativeTo: this.route})
+  }
 
+  findRoles(){
+    if(this.auth.temPermissao('ROLE_READ')){
+      this.perfil = 'SINDICALIZADO'
+    }
   }
 
 }

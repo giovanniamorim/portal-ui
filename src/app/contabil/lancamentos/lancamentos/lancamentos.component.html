@@ -1,6 +1,6 @@
 <div class="page-container mb-5">
   <div class="card-body">
-    <button
+    <button *ngIf="perfil !== 'SINDICALIZADO' "
       class="header-button"
       mat-raised-button
       color="primary"
@@ -9,6 +9,7 @@
       <mat-icon>add_circle_outline</mat-icon>
       Novo Lançamento
     </button>
+    
     <h5 class="header-title">Lançamentos - {{ tipoLancamentoPage === 'receitas' ? 'Receitas' : 'Despesas' }}</h5>
     <h6 class="header-subtitle mb-1">Lista de registros de lançamentos do tipo {{ tipoLancamentoPage === 'receitas' ? 'receitas' : 'despesas' }}</h6>
   </div>
@@ -98,13 +99,13 @@
           </span>
         </td>
       </ng-container>
-      <ng-container matColumnDef="actions">
+      <ng-container matColumnDef="actions" >
         <th mat-header-cell class="header-last-column" *matHeaderCellDef></th>
-        <td mat-cell class="last-column" *matCellDef="let lancamento">
-          <button (click)="onEdit(lancamento)" mat-icon-button color="primary" aria-label="Editar Lancamento">
+        <td mat-cell class="last-column" *matCellDef="let lancamento" >
+          <button *ngIf="perfil !== 'SINDICALIZADO' " (click)="onEdit(lancamento)" mat-icon-button color="primary" aria-label="Editar Lancamento">
             <mat-icon>edit</mat-icon>
           </button>
-          <button (click)="onDelete(lancamento)" mat-icon-button color="accent" aria-label="Excluir Lancamento">
+          <button *ngIf="perfil !== 'SINDICALIZADO' " (click)="onDelete(lancamento)" mat-icon-button color="accent" aria-label="Excluir Lancamento">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
@@ -140,7 +141,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <a type="button" href="{{imgSrc}}" target="_blank" download class="btn btn-primary">Download</a>
       </div>
     </div>
   </div>

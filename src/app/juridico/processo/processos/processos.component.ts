@@ -6,6 +6,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take, map } from 'rxjs/operators';
+import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
 
 import { IProcesso } from '../interfaces/processo.interface';
@@ -34,20 +35,20 @@ export class ProcessosComponent implements OnInit, AfterViewInit  {
 
   carregando = false
   totalElements: any
+  perfil!: string;
 
-
-  
   constructor(
     private processoService: ProcessoService, 
     private router: Router,
     private route: ActivatedRoute,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    private auth: AuthService
     ) { 
 
   }
 
   ngOnInit() {
-    
+    this.findRoles()
   }
 
   ngAfterViewInit() {
@@ -146,10 +147,14 @@ export class ProcessosComponent implements OnInit, AfterViewInit  {
 
   onDetail(processo: IProcesso){
     console.log("Chegou no ondetail button", processo);
-    
     this.router.navigate(['detalhe', processo.id], {relativeTo: this.route})
   }
-  
+
+  findRoles(){
+    if(this.auth.temPermissao('ROLE_READ')){
+      this.perfil = 'SINDICALIZADO'
+    }
+  }
 
 }
 
