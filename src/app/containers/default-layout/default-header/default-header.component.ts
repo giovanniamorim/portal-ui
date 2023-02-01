@@ -16,6 +16,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
   public newMessages = new Array(4)
   public newTasks = new Array(5)
   public newNotifications = new Array(5)
+  perfil!: string;
 
   constructor(
     private classToggler: ClassToggleService,
@@ -31,5 +32,11 @@ export class DefaultHeaderComponent extends HeaderComponent {
         this.router.navigate(['/login']);
       })
       // .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  findRoles(){
+    if(this.auth.temPermissao('ROLE_READ')){
+      this.perfil = 'SINDICALIZADO'
+    }
   }
 }

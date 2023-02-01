@@ -12,36 +12,44 @@
         size="lg"
       ></svg>
     </button>
-    <c-header-nav class="d-none d-lg-flex me-auto">
-      <c-nav-item>
-        <a cNavLink href="https://portal-sindifisco.s3.sa-east-1.amazonaws.com/planejamento_1.pdf" download target="_blank" routerLinkActive="active">
-          Regimento
-        </a>
-      </c-nav-item>
-      <c-nav-item>
-        <a cNavLink href="https://portal-sindifisco.s3.sa-east-1.amazonaws.com/planejamento_1.pdf" download target="_blank" routerLinkActive="active">
-          Acordo Coletivo
-        </a>
-      </c-nav-item>
+    <c-header-nav *ngIf="perfil !== 'SINDICALIZADO'" class="d-none d-lg-flex me-auto">
+      <c-dropdown alignment="start" variant="nav-item">
+        <button
+          cButton
+          color=""
+          [caret]="false"
+          cDropdownToggle
+          class="py-0"
+        >
+        <svg cIcon name="cilBell" size="lg"></svg> Configurações e Acessos
+        </button>
+        <ul cDropdownMenu class="pt-0 pr-5 w-auto">
+          <li>
+            <h6 cDropdownHeader class="bg-light fw-semibold py-2">Acessos</h6>
+          </li>
+          <li>
+            <a routerLink="usuarios" cDropdownItem>
+              <svg cIcon class="me-2" name="cilUser"></svg>
+              Usuários
+            </a>
+          </li>
+
+          <li>
+            <h6 cDropdownHeader class="bg-light fw-semibold py-2">Configurações</h6>
+          </li>
+          <li></li>
+          <li>
+            <a routerLink="uploads" cDropdownItem>
+              <svg cIcon class="me-2" name="cilUser"></svg>
+              Upload de Arquivos
+            </a>
+          </li>
+          <li></li>
+        </ul>
+      </c-dropdown>
     </c-header-nav>
 
-    <c-header-nav class="d-none d-lg-flex">
-      <!-- <c-nav-item>
-        <a routerLink="./" cNavLink>
-          <svg cIcon name="cilBell" size="lg"></svg>
-        </a>
-      </c-nav-item>
-      <c-nav-item>
-        <a routerLink="./" cNavLink>
-          <svg cIcon name="cilList" size="lg"></svg>
-        </a>
-      </c-nav-item>
-      <c-nav-item>
-        <a routerLink="./" cNavLink>
-          <svg cIcon name="cilEnvelopeOpen" size="lg"></svg>
-        </a>
-      </c-nav-item> -->
-    </c-header-nav>
+    
     <c-header-nav class="ms-3">
       <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
     </c-header-nav>
@@ -75,46 +83,7 @@
     <ul cDropdownMenu class="pt-0 pr-5 w-auto">
       <li>
         <h6 cDropdownHeader class="bg-light fw-semibold py-2">Account</h6>
-      <!-- </li>
-      <li>
-        <a routerLink="./" cDropdownItem>
-          <svg cIcon class="me-2" name="cilBell"></svg>
-          Updates
-          <c-badge class="ms-2 float-end" color="info">
-            42
-          </c-badge>
-        </a>
-      </li>
-      <li>
-        <a routerLink="./" cDropdownItem>
-          <svg cIcon class="me-2" name="cilEnvelopeOpen"></svg>
-          Messages
-          <c-badge class="ms-2 float-end" color="success">
-            42
-          </c-badge>
-        </a>
-      </li>
-      <li>
-        <a routerLink="./" cDropdownItem>
-          <svg cIcon class="me-2" name="cilTask"></svg>
-          Tasks
-          <c-badge class="ms-2 float-end" color="danger">
-            42
-          </c-badge>
-        </a>
-      </li>
-      <li>
-        <a routerLink="./" cDropdownItem>
-          <svg cIcon class="me-2" name='cilCommentSquare'></svg>
-          Comments
-          <c-badge class="ms-auto" color="warning">
-            42
-          </c-badge>
-        </a>
-      </li>
-      <li>
-        <h6 cDropdownHeader class="bg-light fw-semibold py-2">Settings</h6>
-      </li> -->
+     
       <li></li>
       <li>
         <a routerLink="./" cDropdownItem>

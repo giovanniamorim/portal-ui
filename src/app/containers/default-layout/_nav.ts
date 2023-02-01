@@ -99,25 +99,8 @@ export const navItems: INavData[] = [
     url: '/juridico/processos',
     icon: 'fa fa-balance-scale'
   },
-  {
-    title: true,
-    name: 'Usuários'
-  },
   // DEFINITIVOS
-  {
-    name: 'Usuários',
-    url: '/usuarios',
-    icon: 'fa fa-users',
-  },
-  {
-    name: 'Configurações',
-    title: true
-  },
-  {
-    name: 'Upload de Arquivos',
-    url: '/uploads',
-    icon: 'fa fa-upload'
-  },
+  
   // {
   //   name: 'Colors',
   //   url: '/theme/colors',
