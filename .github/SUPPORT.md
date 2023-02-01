@@ -6,4 +6,4 @@ See the [contributing guidelines](CONTRIBUTING.md) for sharing bug reports.
 
 For general troubleshooting or help getting started:
 
-- Go to [Discussions](https://github.com/coreui/coreui-free-angular-admin-template/discussions).
+- Go to [Discussions](https://github.com/coreui/portal-ui/discussions).
