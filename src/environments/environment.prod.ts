@@ -1,9 +1,8 @@
 export const environment = {
-    // apiUrl: 'https://algamoney-api.herokuapp.com',
-  // tokenAllowedDomains: [ /algamoney-api.herokuapp.com/ ],
-  // tokenDisallowedRoutes: [/\/oauth\/token/],
-
-  apiUrl: 'http://localhost:8080',
-  tokenAllowedDomains: [/localhost:8080/],
+  production: true,
+  apiUrl: 'http://ouzzpp.conteige.cloud/portal-api',
+  tokenAllowedDomains: [/ouzzpp.conteige.cloud\/portal-api/],
   tokenDisallowedRoutes: [/\/oauth\/token/],
+
+  s3Url: "https://portal-sindifisco.s3.sa-east-1.amazonaws.com/"
 };

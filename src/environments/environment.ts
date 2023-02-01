@@ -10,8 +10,8 @@ export const environment = {
   
   s3Url: "https://portal-sindifisco.s3.sa-east-1.amazonaws.com/",
 
-  ACCESS_KEY_ID: 'AKIAV45I5IKDLU2LMYUZ',
-  SECRET_ACCESS_KEY: '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',
+  ACCESS_KEY_ID: 'nn',
+  SECRET_ACCESS_KEY: '+nn',
   REGION: 'sa-east-1',
   BUCKET: 'portal-sindifisco',
 };
