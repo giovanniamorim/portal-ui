@@ -77,11 +77,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./views/theme/theme.module').then((m) => m.ThemeModule)
       },
-      {
-        path: 'buttons',
-        loadChildren: () =>
-          import('./views/buttons/buttons.module').then((m) => m.ButtonsModule)
-      },
+      
       {
         path: 'forms',
         loadChildren: () =>
