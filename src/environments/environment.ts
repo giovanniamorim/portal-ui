@@ -13,7 +13,7 @@ export const environment = {
   ACCESS_KEY_ID: 'nn',
   SECRET_ACCESS_KEY: '+nn',
   REGION: 'sa-east-1',
-  BUCKET: 'portal-sindifisco',
+  BUCKET: 'portal',
 };
 
 /*
