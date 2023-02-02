@@ -4,5 +4,10 @@ export const environment = {
   tokenAllowedDomains: [/ouzzpp.conteige.cloud\/portal-api/],
   tokenDisallowedRoutes: [/\/oauth\/token/],
 
-  s3Url: "https://portal-sindifisco.s3.sa-east-1.amazonaws.com/"
+  s3Url: "https://portal-sindifisco.s3.sa-east-1.amazonaws.com/",
+
+  ACCESS_KEY_ID: 'nn',
+  SECRET_ACCESS_KEY: '+nn',
+  REGION: 'sa-east-1',
+  BUCKET: 'portal-sindifisco',
 };
