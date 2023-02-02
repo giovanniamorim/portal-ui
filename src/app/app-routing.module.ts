@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './containers';
 import { Page500Component } from './views/pages/page500/page500.component';
 
-import { RegisterComponent } from './views/pages/register/register.component';
 import { AuthGuard } from './seguranca/auth.guard';
 import { LoginFormComponent } from './seguranca/login-form/login-form.component';
 import { Page403Component } from './seguranca/page-403/page-403.component';
@@ -136,13 +135,6 @@ const routes: Routes = [
     component: LoginFormComponent,
     data: {
       title: 'Login Page'
-    }
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-    data: {
-      title: 'Register Page'
     }
   },
   
