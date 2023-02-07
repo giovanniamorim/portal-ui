@@ -52,6 +52,10 @@ const routes: Routes = [
         loadChildren: () => import('./contabil/execucoes/execucoes.module').then( m => m.ExecucoesModule),
       },
       {
+        path: 'contratos',
+        loadChildren: () => import('./contabil/contratos/contratos.module').then( m => m.ContratosModule),
+      },
+      {
         path: 'inventario',
         loadChildren: () => import('./contabil/inventario/inventario.module').then( m => m.InventarioModule),
       },

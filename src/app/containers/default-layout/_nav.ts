@@ -65,6 +65,11 @@ export const navItems: INavData[] = [
     ]
   },
   {
+    name: 'Contratos',
+    url: '/contratos',
+    icon: 'fa fa-fax'
+  },
+  {
     name: 'Inventário',
     url: '/inventario',
     icon: 'fa fa-fax'

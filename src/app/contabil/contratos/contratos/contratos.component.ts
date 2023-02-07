@@ -6,24 +6,23 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { IBalanco } from '../interfaces/balanco.interface';
-
-import { BalancoService } from '../balanco.service';
-import { environment } from 'src/environments/environment';
-import { AuthService } from 'src/app/seguranca/auth.service';
+import { environment } from '../../../../environments/environment';
+import { IContrato } from '../contratos.interface';
+import { ContratosService } from '../contratos.service';
+import { AuthService } from '../../../seguranca/auth.service';
 
 @Component({
-  selector: 'app-balancos',
-  templateUrl: './balancos.component.html',
-  styleUrls: ['./balancos.component.scss']
+  selector: 'app-contratos',
+  templateUrl: './contratos.component.html',
+  styleUrls: ['./contratos.component.scss']
 })
-export class BalancosComponent implements OnInit, AfterViewInit  {
+export class ContratosComponent implements OnInit, AfterViewInit  {
 
-  displayedColumns: string[] = ['id', 'ano', 'mes', 'fileUrl', 'actions'];
+  displayedColumns: string[] = ['id', 'prestador', 'descServico', 'dataInicial', 'dataFinal', 'obs', 'valor', 'fileUrl', 'actions'];
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
-  s3Url = environment.s3Url + 'balanco_'
+  s3Url = environment.s3Url + 'contrato_'
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -31,7 +30,7 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
 
   
   constructor(
-    private balancoService: BalancoService, 
+    private contratoService: ContratosService, 
     private router: Router,
     private route: ActivatedRoute,
     private _liveAnnouncer: LiveAnnouncer,
@@ -45,7 +44,7 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   ngAfterViewInit() {
-    this.listarBalancos({ page: "0", size: "5" })
+    this.listarContratos({ page: "0", size: "5" })
     this.datasource.sort = this.sort;
   }
 
@@ -66,24 +65,23 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
     })
   }
 
-  public addBalanco() {
+  public addContrato() {
     this.router.navigate(['novo'], {relativeTo: this.route})
   }
 
-  public listarBalancos = (request:any) => {
+  public listarContratos = (request:any) => {
     this.carregando = true;
-    this.balancoService
+    this.contratoService
         .listAll( request)
         .pipe(take(1))
         .subscribe(
-            (Balanco) => {
-                this.datasource = new MatTableDataSource(Balanco.content) ;
+            (contrato: any) => {
+                this.datasource = new MatTableDataSource(contrato.content) ;
                 this.datasource.sort = this.sort;
-                // this.datasource.paginator = this.paginator;
                 this.carregando = false;
-                this.totalElements = Balanco.totalElements
+                this.totalElements = contrato.totalElements
             },
-            (error) => {
+            (error: any) => {
                 this.datasource = new MatTableDataSource();
                 this.carregando = false;
                 console.log("Erro ao listar itens");
@@ -98,7 +96,6 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   filterData($event : any){
-    // this.datasource.filter = $event.target.value;
     this.datasource.filter = $event.target.value.trim().toLocaleLowerCase();
   }
 
@@ -106,14 +103,14 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
         const request:any = {};
         request['page'] = event.pageIndex.toString();
         request['size'] = event.pageSize.toString();
-        this.listarBalancos(request);
+        this.listarContratos(request);
     }
 
 
-  onDelete(Balanco: IBalanco){
+  onDelete(contrato: IContrato){
 
     Swal.fire({
-      title: 'Deseja remover o Balanço?',
+      title: 'Deseja remover o Contrato?',
       text: "ATENÇÃO: Esta operação é irreversível!",
       icon: 'warning',
       showCancelButton: true,
@@ -122,12 +119,12 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
       confirmButtonText: 'Sim, pode remover!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.balancoService.remove(Balanco).subscribe( res => {
-          this.listarBalancos({ page: "0", size: "5" })
+        this.contratoService.remove(contrato).subscribe( (res: any) => {
+          this.listarContratos({ page: "0", size: "5" })
         })
         Swal.fire(
           'Removido!',
-          'O Balanço foi removido com sucesso.',
+          'O contrato foi removido com sucesso.',
           'success'
         )
       } 
@@ -135,9 +132,8 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
 
   }
 
-  onEdit(balanco: IBalanco){
-    this.router.navigate(['editar', balanco.id], {relativeTo: this.route})
-    console.log("rota dos balanços no editar: ", this.route);
+  onEdit(contrato: IContrato){
+    this.router.navigate(['editar', contrato.id], {relativeTo: this.route})
   }
 
   findRoles(){

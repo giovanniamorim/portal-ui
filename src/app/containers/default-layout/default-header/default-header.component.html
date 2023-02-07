@@ -1,5 +1,6 @@
 <!--<c-header class="mb-4 d-print-none" position="sticky">-->
 <ng-container>
+
   <c-container [fluid]="true">
     <button
       toggle="visible"
@@ -31,6 +32,7 @@
             <a routerLink="usuarios" cDropdownItem>
               <svg cIcon class="me-2" name="cilUser"></svg>
               Usuários
+              {{ usuario.jwtPayload.nome | json }}
             </a>
           </li>
 
@@ -63,6 +65,9 @@
 <!--</c-header>-->
 
 <ng-template #userDropdown>
+  <span class="text_name">
+    {{usuario.jwtPayload.nome}}
+  </span>
   <c-dropdown alignment="end" variant="nav-item">
     <button
       cButton

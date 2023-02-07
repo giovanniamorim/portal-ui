@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/seguranca/auth.service';
   selector: 'app-default-header',
   templateUrl: './default-header.component.html',
 })
-export class DefaultHeaderComponent extends HeaderComponent {
+export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
 
   @Input() sidebarId: string = "sidebar";
 
@@ -17,13 +17,18 @@ export class DefaultHeaderComponent extends HeaderComponent {
   public newTasks = new Array(5)
   public newNotifications = new Array(5)
   perfil!: string;
+  usuario!:any
 
   constructor(
     private classToggler: ClassToggleService,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
     ) {
     super();
+    
+  }
+  ngOnInit(): void {
+    this.findPerfil()
   }
 
   logout() {
@@ -34,9 +39,18 @@ export class DefaultHeaderComponent extends HeaderComponent {
       // .catch(erro => this.errorHandler.handle(erro));
   }
 
+  findPerfil(){
+    this.usuario = this.auth
+    console.log("Buscar perfil: ", this.auth);
+    
+  }
+
   findRoles(){
-    if(this.auth.temPermissao('ROLE_READ')){
+    if(!this.auth.temPermissao('ROLE_CREATE')){
       this.perfil = 'SINDICALIZADO'
     }
+
+    
+    
   }
 }

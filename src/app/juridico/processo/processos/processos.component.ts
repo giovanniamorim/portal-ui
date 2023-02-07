@@ -151,7 +151,7 @@ export class ProcessosComponent implements OnInit, AfterViewInit  {
   }
 
   findRoles(){
-    if(this.auth.temPermissao('ROLE_READ')){
+    if(!this.auth.temPermissao('ROLE_CREATE')){
       this.perfil = 'SINDICALIZADO'
     }
   }
