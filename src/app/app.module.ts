@@ -48,7 +48,8 @@ import {
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { HttpClientModule } from '@angular/common/http';
-import { CoreSharedModule } from './_core/core-shared.module'
+import { CoreSharedModule } from './_core/core-shared.module';
+import { FileUploadComponent } from './file-upload/file-upload.component'
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -61,7 +62,7 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS],
+  declarations: [AppComponent, ...APP_CONTAINERS, FileUploadComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
