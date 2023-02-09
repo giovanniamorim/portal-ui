@@ -90,7 +90,7 @@
       <ng-container matColumnDef="fileUrl">
         <th mat-header-cell *matHeaderCellDef >Arquivo</th>
         <td mat-cell *matCellDef="let lancamento">
-          <span *ngIf="lancamento.fileUrl && lancamento.fileUrl !== this.s3Url + 'undefined.jpg'">
+          <span *ngIf="lancamento.fileUrl && lancamento.fileUrl !== this.pathUrl + 'undefined.jpg'">
             <img src="{{ lancamento.fileUrl }}" style="max-width:30px;cursor:pointer"
             (click)="onClick(lancamento)"
               class="modal-hover-opacity"

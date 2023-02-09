@@ -8,9 +8,7 @@ import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { ILancamentos } from '../interfaces/lancamentos.interface';
 import { LancamentosService } from '../lancamentos.service';
-import { environment } from '../../../../environments/environment'
 import { MatDialog } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/seguranca/auth.service';
 
 @Component({
@@ -24,7 +22,6 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
-  s3Url = environment.s3Url + 'lancamento_'
   imgSrc!: string;
 
 

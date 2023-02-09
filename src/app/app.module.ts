@@ -1,30 +1,9 @@
+import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
-
-import {
-  PERFECT_SCROLLBAR_CONFIG,
-  PerfectScrollbarConfigInterface,
-  PerfectScrollbarModule,
-} from 'ngx-perfect-scrollbar';
-
-// Import routing module
-import { AppRoutingModule } from './app-routing.module';
-
-// Import app component
-import { AppComponent } from './app.component';
-
-import { SegurancaModule } from './seguranca/seguranca.module'
-
-// Import containers
-import {
-  DefaultFooterComponent,
-  DefaultHeaderComponent,
-  DefaultLayoutComponent,
-} from './containers';
-
 import {
   AvatarModule,
   BadgeModule,
@@ -45,12 +24,25 @@ import {
   TabsModule,
   UtilitiesModule,
 } from '@coreui/angular';
-
 import { IconModule, IconSetService } from '@coreui/icons-angular';
-import { HttpClientModule } from '@angular/common/http';
-import { CoreSharedModule } from './_core/core-shared.module';
-import { FileUploadComponent } from './file-upload/file-upload.component'
+import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
+import { CoreSharedModule } from './_core/core-shared.module';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
+import { SegurancaModule } from './seguranca/seguranca.module';
+import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatListModule } from '@angular/material/list';
+
+// Import routing module
+// Import app component
+// Import containers
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
@@ -62,12 +54,12 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, FileUploadComponent],
+  declarations: [AppComponent, ...APP_CONTAINERS],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     AppRoutingModule,
+    HttpClientModule,
     AvatarModule,
     BreadcrumbModule,
     FooterModule,
@@ -91,7 +83,13 @@ const APP_CONTAINERS = [
     CardModule,
     SegurancaModule,
     SharedModule,
-    CoreSharedModule
+    CoreSharedModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatProgressBarModule,
   ],
   providers: [
     {

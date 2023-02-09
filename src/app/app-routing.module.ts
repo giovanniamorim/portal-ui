@@ -112,9 +112,9 @@ const routes: Routes = [
           import('./views/pages/pages.module').then((m) => m.PagesModule)
       },
       {
-        path: 'uploads',
+        path: 'files',
         loadChildren: () =>
-          import('./upload/upload.module').then((m) => m.UploadModule)
+          import('./file-upload/file-upload.module').then((m) => m.FileUploadModule)
       },
       
       
