@@ -2,19 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
 
 import { environment } from '../../../../environments/environment';
 import { IModoPagamento } from '../../plano-contas/interfaces/modo-pagamento.interface';
 import { IPlanoContas } from '../../plano-contas/interfaces/plano-contas.interface';
+import { IProfundidade } from '../../plano-contas/interfaces/profundidade.interface';
+import { ITipoComprovante } from '../../plano-contas/interfaces/tipo-comprovante.interface';
 import { PlanoContasService } from '../../plano-contas/plano-contas.service';
 import { ILancamentos } from '../interfaces/lancamentos.interface';
 import { LancamentosService } from '../lancamentos.service';
-
-import { ITipoComprovante } from '../../plano-contas/interfaces/tipo-comprovante.interface';
-import { IProfundidade } from '../../plano-contas/interfaces/profundidade.interface';
-import { AuthGuard } from 'src/app/seguranca/auth.guard';
-import { AuthService } from 'src/app/seguranca/auth.service';
 
 
 @Component({
@@ -25,6 +23,7 @@ import { AuthService } from 'src/app/seguranca/auth.service';
 export class LancamentoFormComponent implements OnInit {
 
   form: FormGroup;
+  lancamentoFileName!: string;
 
   showInputFile = false
   showInputFileUrl = false
@@ -32,7 +31,9 @@ export class LancamentoFormComponent implements OnInit {
   editar: any
   currentId!: number
   submitted = false;
-  s3Url = environment.s3Url + 'lancamento_'
+  currentMiddleUrl = environment.apiUrl
+  middleFileUrl = '/api/file/download/'  
+  baseUrl = environment.apiUrl
   isDisabled: boolean = true;
   planoContas: IPlanoContas[] = [];
 
@@ -64,9 +65,11 @@ export class LancamentoFormComponent implements OnInit {
   tipoLancamento: string[] = ['Receita', 'Despesa'];
   tipoLancamentoPlano!: string;
   tipoLancamentoPage!: string;
-  pathUrl!: string;
   currentPath!: string;
   perfil!: string;
+  inicialFileName!: string;
+  showFile!: string;
+  mgsImage!: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -79,6 +82,8 @@ export class LancamentoFormComponent implements OnInit {
     ) {
 
       this.planoContasList();
+      this.tipoLancamentoPage = this.router.url.substring(13,21);
+      this.tipoLancamentoPage === 'despesas' ? this.inicialFileName = 'despesa_' : this.inicialFileName = 'receita_'
       
         this.form =  this.formBuilder.group({
           tipoLancamento: ['', [Validators.required]],
@@ -91,8 +96,10 @@ export class LancamentoFormComponent implements OnInit {
           supCaixa: ['', [Validators.required]],
           valor: ['', [Validators.required]],
           obs: [''],
-          fileUrl: [`${this.s3Url}${this.currentId}.jpg`]
+          fileUrl: [`${this.baseUrl}${this.middleFileUrl}${this.currentId}.jpg`]
         })
+
+      
 
       if(
         this.router.url.includes(`/lancamentos/receitas/editar/`) ||
@@ -100,6 +107,7 @@ export class LancamentoFormComponent implements OnInit {
         ){
         this.isEditLancamento = true
         this.currentId =  parseInt(this.router.url.substring(29))
+        this.lancamentoFileName = `${this.inicialFileName}${this.currentId}.jpg`
       } else if(
         this.router.url.includes('/lancamentos/novo')
         ) {
@@ -120,26 +128,25 @@ export class LancamentoFormComponent implements OnInit {
 
     )
 
-    this.tipoLancamentoPage = this.router.url.substring(13,21);
-
-    console.log("this.tipoLancamentoPage aqui: ", this.tipoLancamentoPage);
-
     if(this.router.url.substring(13,21) === 'novo'){
-      this.pathUrl = (`/lancamentos/${this.currentPath}`).toLowerCase();
+      this.currentMiddleUrl = (`/lancamentos/${this.currentPath}`).toLowerCase();
     }
     
-    
     if( this.router.url.substring(13,21) === 'receitas') {
-      this.pathUrl = '/lancamentos/receitas'
+      this.currentMiddleUrl = '/lancamentos/receitas'
       this.tipoLancamentoPlano = 'Receita'
     } else {
-      this.pathUrl = '/lancamentos/despesas'
+      this.currentMiddleUrl = '/lancamentos/despesas'
       this.tipoLancamentoPlano = 'Despesa'
     }
   }
 
 
   updateForm(lancamento: ILancamentos){
+    if(this.currentId !== undefined){
+      this.mgsImage = 'Este Lançamento já possui uma imagem. Para altera-la selecione outra no botão "Selecionar Imagem" abaixo.'
+    }
+    this.showFile = `${this.baseUrl}${this.middleFileUrl}${this.currentId}.jpg`
     let idAtualizando = {id: lancamento.planoConta.id}
     
     this.form.patchValue({
@@ -152,8 +159,9 @@ export class LancamentoFormComponent implements OnInit {
       supCaixa: lancamento.supCaixa,
       valor: lancamento.valor,
       obs: lancamento.obs,
-      fileUrl: `${this.s3Url}${this.currentId}.jpg`
+      fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.inicialFileName}${this.currentId}.jpg`
     })
+    
 
   }
 
@@ -169,9 +177,9 @@ export class LancamentoFormComponent implements OnInit {
           showConfirmButton: false,
           timer: 2000
         }) 
-        console.log("path atual", this.pathUrl);
+        console.log("path atual", this.currentMiddleUrl);
         
-        this.router.navigate([this.pathUrl])
+        this.router.navigate([this.currentMiddleUrl])
       },
       err => {
         Swal.fire({
@@ -192,24 +200,13 @@ export class LancamentoFormComponent implements OnInit {
       .subscribe(
         res => {
           Swal.fire({
-            title: 'Lancamento atualizado. \n Deseja adicionar um arquivo agora?',
+            position: 'top-end',
             icon: 'success',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Adicionar Arquivo',
-            denyButtonText: `Agora não`,
-            cancelButtonText: `Cancelar`,
-            
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Swal.fire('Envie um arquivo com o nome', "lancamento_" + res.id + ".jpg", 'info')
-              this.router.navigate([this.pathUrl])
-            } else if (result.isDenied) {
-              Swal.fire('Lancamento salvo com sucesso!', '', 'success')
-              this.router.navigate([this.pathUrl])
-              
-            }
-          })
+            title: 'Lançamento adicionado com sucesso!',
+            showConfirmButton: false,
+            timer: 2000
+          }) 
+          this.router.navigate([this.currentMiddleUrl])
         },
         err => {
           Swal.fire({
@@ -217,7 +214,7 @@ export class LancamentoFormComponent implements OnInit {
             title: err.error.status,
             text: err.error.message
           })
-        }
+        },
       )
   }
 
@@ -232,7 +229,7 @@ export class LancamentoFormComponent implements OnInit {
   onSelectChange(event:any): void {
     this.currentPath = event.value
     console.log("this.currentPath: ", this.currentPath);
-    this.pathUrl = this.pathUrl = (`/lancamentos/${this.currentPath}s`).toLowerCase();
+    this.currentMiddleUrl = this.currentMiddleUrl = (`/lancamentos/${this.currentPath}s`).toLowerCase();
   }
 
   findRoles(){

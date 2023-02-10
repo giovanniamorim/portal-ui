@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -25,6 +25,7 @@ import { LancamentosComponent } from './lancamentos/lancamentos.component';
 import { LancamentoFormComponent } from './lancamento-form/lancamento-form.component';
 import { LancamentosRoutingModule } from './lancamentos-routing.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { FileUploadModule } from "../../file-upload/file-upload.module";
 
 
 
@@ -56,7 +57,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
         MatDatepickerModule,
         SharedModule,
         UploadModule,
-        NgxCurrencyModule
-    ]
+        NgxCurrencyModule,
+        FileUploadModule
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class LancamentosModule { }

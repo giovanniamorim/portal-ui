@@ -44,6 +44,9 @@ const materialModules = [
     HttpClientModule,
     // NoopAnimationsModule,
     ...materialModules
+  ],
+  exports: [
+    FileUploadComponent
   ]
 })
 export class FileUploadModule { }

@@ -1,5 +1,5 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FileUploadService } from './file-upload.service';
 
@@ -9,6 +9,8 @@ import { FileUploadService } from './file-upload.service';
   styleUrls: ['./file-upload.component.scss']
 })
 export class FileUploadComponent implements OnInit {
+
+  @Input() fileName = ''
 
   selectedFiles?: FileList;
   selectedFileNames: string[] = [];
@@ -43,7 +45,8 @@ export class FileUploadComponent implements OnInit {
         };
   
         reader.readAsDataURL(this.selectedFiles[i]);
-  
+
+        
         this.selectedFileNames.push(this.selectedFiles[i].name);
       }
     }
@@ -60,9 +63,14 @@ export class FileUploadComponent implements OnInit {
   }
 
   upload(idx: number, file: File): void {
-    this.progressInfos[idx] = { value: 0, fileName: file.name };
+
+    if(file.name !== this.fileName){
+      console.log("O nome é diferente de ", this.fileName);
+    } else {
+      this.progressInfos[idx] = { value: 0, fileName: file.name };
+    }
   
-    if (file) {
+    if (file.name === this.fileName) {
       this.uploadService.upload(file).subscribe(
         (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
@@ -78,7 +86,18 @@ export class FileUploadComponent implements OnInit {
           const msg = 'Could not upload the file: ' + file.name;
           this.message.push(msg);
         });
+    } else {
+        const msg = 'ERRO: O nome do arquivo deve ser: ' + this.fileName;
+        this.message.push(msg);
     }
+  }
+
+  deleteImagens(){
+    this.message = [];
+    this.progressInfos = [];
+    this.selectedFileNames = [];
+  
+    this.previews = [];
   }
   
   

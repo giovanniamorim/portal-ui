@@ -4,7 +4,7 @@
       class="header-button"
       mat-raised-button
       color="primary"
-      routerLink={{pathUrl}}
+      routerLink={{currentMiddleUrl}}
     >
       <mat-icon>arrow_circle_left</mat-icon>
       Voltar
@@ -23,12 +23,14 @@
       <h3 class="card-title" *ngIf="!isEditLancamento">Novo Lançamento</h3>
     </div>
     <mat-card-content class="toolbar-card-content">
+      
       <form [formGroup]="form">
+        
         <div class="row">
           <div class="col col-sm-12 col-md-4 col-lg-4">
             <mat-form-field appearance="fill">
               <mat-label>Tipo de Lançamento</mat-label>
-              <mat-select
+              <mat-select [disabled]="isEditLancamento" 
                 placeholder="Selecione uma conta"
                 formControlName="tipoLancamento"
                 (selectionChange)="onSelectChange($event)"
@@ -145,8 +147,12 @@
             <input matInput placeholder="obs" formControlName="obs" />
           </mat-form-field>
         </div>
-        <div class="row">
+        
+        
+        <div class="row" *ngIf="currentId">
+          
           <mat-form-field appearance="fill">
+            
             <mat-label>Arquivo</mat-label>
             <input
               readonly
@@ -155,12 +161,15 @@
               formControlName="fileUrl"
             />
             <mat-hint>
-              O Nome e o Caminho do arquivo são gerados automaticamente e só
-              estarão disponiveis para download após o upload.
+              {{ mgsImage }}
             </mat-hint>
           </mat-form-field>
         </div>
       </form>
+    </mat-card-content>
+
+    <mat-card-content>
+      <app-file-upload [fileName]="lancamentoFileName"></app-file-upload>
     </mat-card-content>
 
     <mat-card-actions class="mt-3 mb-3" align="end">
@@ -189,4 +198,5 @@
       </button>
     </mat-card-actions>
   </mat-card>
+  
 </div>
