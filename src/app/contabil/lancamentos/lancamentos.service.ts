@@ -16,10 +16,13 @@ export class LancamentosService {
   constructor(private  httpClient: HttpClient) { }
 
  
-  listAll(request:any): Observable<any> {
-		const params = request;
-		return this.httpClient.get<ILancamentos[]>(`${this.BaseUrl}`, {params});
+  listAll(): Observable<any> {
+		return this.httpClient.get<ILancamentos[]>(`${this.BaseUrl}`);
 	}
+
+  getAll(): Observable<any> {
+    return this.httpClient.get<ILancamentos[]>(`${this.BaseUrl}`);
+  }
 
   listReceitas(request:any): Observable<any> {
 		const params = request;

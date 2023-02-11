@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { last } from 'rxjs';
 import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
 
@@ -24,6 +25,7 @@ export class LancamentoFormComponent implements OnInit {
 
   form: FormGroup;
   lancamentoFileName!: string;
+
 
   showInputFile = false
   showInputFileUrl = false
@@ -70,6 +72,9 @@ export class LancamentoFormComponent implements OnInit {
   inicialFileName!: string;
   showFile!: string;
   mgsImage!: string;
+  lastItemId!: number;
+  lancamentosList: any;
+  lastItemIdx: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -80,24 +85,30 @@ export class LancamentoFormComponent implements OnInit {
     public dialog: MatDialog,
     private auth: AuthService
     ) {
+      
+      this.findLastItemId()
+      
 
       this.planoContasList();
       this.tipoLancamentoPage = this.router.url.substring(13,21);
       this.tipoLancamentoPage === 'despesas' ? this.inicialFileName = 'despesa_' : this.inicialFileName = 'receita_'
       
-        this.form =  this.formBuilder.group({
-          tipoLancamento: ['', [Validators.required]],
-          dataLancamento: ['', [Validators.required]],
-          planoConta: this.formBuilder.group({
-            id: ['', [Validators.required]]
-          }),
-          modoPagamento: ['', [Validators.required]],
-          tipoComprovante: ['', [Validators.required]],
-          supCaixa: ['', [Validators.required]],
-          valor: ['', [Validators.required]],
-          obs: [''],
-          fileUrl: [`${this.baseUrl}${this.middleFileUrl}${this.currentId}.jpg`]
-        })
+      
+      
+      this.form =  this.formBuilder.group({
+        tipoLancamento: ['', [Validators.required]],
+        dataLancamento: ['', [Validators.required]],
+        planoConta: this.formBuilder.group({
+          id: ['', [Validators.required]]
+        }),
+        modoPagamento: ['', [Validators.required]],
+        tipoComprovante: ['', [Validators.required]],
+        supCaixa: ['', [Validators.required]],
+        valor: ['', [Validators.required]],
+        obs: [''],
+        fileUrl: [`${this.baseUrl}${this.middleFileUrl}${this.currentId}.jpg`]
+      })
+      
 
       
 
@@ -112,11 +123,18 @@ export class LancamentoFormComponent implements OnInit {
         this.router.url.includes('/lancamentos/novo')
         ) {
         this.isEditLancamento = false
+        
       }
+      
     }
 
 
   ngOnInit(): void {
+    this.findLastItemId();
+      console.log("this.lastItemId no construtor", this.lastItemId);
+
+    this.lancamentoFileName = `${this.inicialFileName}${this.lastItemId}.jpg`
+      console.log("this.lancamentoFileName no construtor", this.lancamentoFileName );
        this.route.params.subscribe(
       (params: any) => {
         const id = params.id
@@ -149,6 +167,7 @@ export class LancamentoFormComponent implements OnInit {
     this.showFile = `${this.baseUrl}${this.middleFileUrl}${this.currentId}.jpg`
     let idAtualizando = {id: lancamento.planoConta.id}
     
+    
     this.form.patchValue({
       id: this.currentId,
       tipoLancamento: lancamento.tipoLancamento,
@@ -167,6 +186,9 @@ export class LancamentoFormComponent implements OnInit {
 
   onSubmit(){
     this.submitted = true;
+    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.inicialFileName}${this.lastItemId}.jpg`);
+    console.log("Meu form:", this.form.value );
+        
     this.lancamentosService.create(this.form.value)
     .subscribe( 
       res => {
@@ -230,6 +252,13 @@ export class LancamentoFormComponent implements OnInit {
     this.currentPath = event.value
     console.log("this.currentPath: ", this.currentPath);
     this.currentMiddleUrl = this.currentMiddleUrl = (`/lancamentos/${this.currentPath}s`).toLowerCase();
+
+    console.log(this.currentPath);
+        console.log(this.lastItemId);
+        
+      this.lancamentoFileName = (`${this.currentPath}_${this.lastItemId}.jpg`).toLocaleLowerCase()
+      console.log(this.lancamentoFileName );
+        
   }
 
   findRoles(){
@@ -237,5 +266,30 @@ export class LancamentoFormComponent implements OnInit {
       this.perfil = 'SINDICALIZADO'
     }
   }
+
+  
+  findLastItemId(): void {
+    this.lancamentosService.getAll()
+      .subscribe({
+        next: (data) => {
+          this.lancamentosList = data.content ;
+          console.log('this.lancamentosList ', this.lancamentosList );
+          
+
+          this.lastItemId = data.content[0].id + 1;
+        },
+        error: (e) => console.error(e)
+      });
+  }
+
+  // findLastItemId(){
+  //   this.lancamentosService.listAll().pipe(
+  //   ).subscribe(lanc =>
+  //     this.lancamentosList = lanc)
+      
+  //     // this.lastItemId = lanc.content.pop().id)
+  //     console.log("Lista: ", this.lanca);
+      
+  //   }
 
 }
