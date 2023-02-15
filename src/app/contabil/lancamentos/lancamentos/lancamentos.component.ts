@@ -1,15 +1,16 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, AfterViewInit, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
+
 import { ILancamentos } from '../interfaces/lancamentos.interface';
 import { LancamentosService } from '../lancamentos.service';
-import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from 'src/app/seguranca/auth.service';
 
 @Component({
   selector: 'app-lancamentos',
@@ -38,10 +39,10 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
     private router: Router,
     private route: ActivatedRoute,
     private _liveAnnouncer: LiveAnnouncer,
-    private dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private auth: AuthService,
-    ) { 
+    private  httpClient: HttpClient
+    ) {
 
   }
 
@@ -52,10 +53,9 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
     } else {
       this.pathUrl = '/lancamentos/despesas'
     }
-    console.log("this.tipoLancamentoPage", this.tipoLancamentoPage);
-
     this.findRoles()
-     
+
+    
   }
 
   ngAfterViewInit() {
@@ -102,6 +102,7 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
             console.log("Minhas receitas: ", lancamento);
             
               this.datasource = new MatTableDataSource(lancamento.content) ;
+              
               this.datasource.sort = this.sort;
               this.carregando = false;
               this.totalElements = lancamento.totalElements
@@ -203,7 +204,6 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
       this.perfil = 'SINDICALIZADO'
     }
   }
-
 
 }
 

@@ -101,15 +101,15 @@ export const navItems: INavData[] = [
     url: '/juridico/processos',
     icon: 'fa fa-balance-scale'
   },
-  {
-    title: true,
-    name: 'Configurações'
-  },
-  {
-    name: 'Arquivos',
-    url: '/files',
-    icon: 'fa fa-balance-scale'
-  },
+  // {
+  //   title: true,
+  //   name: 'Configurações'
+  // },
+  // {
+  //   name: 'Arquivos',
+  //   url: '/files',
+  //   icon: 'fa fa-balance-scale'
+  // },
   
 
 

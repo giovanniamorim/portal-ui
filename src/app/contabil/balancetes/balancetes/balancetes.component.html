@@ -59,6 +59,12 @@
           {{ balancete.mes }}
         </td>
       </ng-container>
+      <ng-container matColumnDef="descricao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header >Descrição</th>
+        <td mat-cell *matCellDef="let balancete">
+          {{ balancete.descricao }}
+        </td>
+      </ng-container>
 
       <ng-container matColumnDef="fileUrl">
         <th mat-header-cell *matHeaderCellDef >Arquivo</th>

@@ -59,6 +59,10 @@ export class BalancetesService {
 		return this.httpClient.get<IBalancete[]>(`${this.BaseUrl}`, {params});
 	}
 
+  getAll(): Observable<any> {
+    return this.httpClient.get<IBalancete[]>(`${this.BaseUrl}/todos`);
+  }
+
   public getBalancetesFilterValues(){
     return this.httpClient.get(`${this.BaseUrl}`,{headers: this.headers})
   }

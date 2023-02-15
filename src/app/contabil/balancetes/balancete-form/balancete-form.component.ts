@@ -25,11 +25,8 @@ export class BalanceteFormComponent implements OnInit {
   editar: any
   currentId!: number
   submitted = false;
-  s3Url = environment.s3Url + 'balancete_'
   isDisabled: boolean = true;
-
   mesesControl = new FormControl<string | IMeses>('');
-
   filteredIMesess!: Observable<IMeses[]>;
   
   meses: IMeses[] = [
@@ -46,9 +43,14 @@ export class BalanceteFormComponent implements OnInit {
     { id: 11, nome: 'Novembro' },
     { id: 12, nome: 'Dezembro' }
   ]
+
+  // Config File
+  balanceteFileName: string = 'balancete_';
+  middleFileUrl = '/api/file/download/'  
+  baseUrl = environment.apiUrl
+  balanceteList: any;
+  lastItemId: any;
  
-
-
   constructor(
     private formBuilder: FormBuilder,
     private balancetesService: BalancetesService,
@@ -59,24 +61,28 @@ export class BalanceteFormComponent implements OnInit {
         this.form =  this.formBuilder.group({
         ano: [null, [Validators.required]],
         mes: [null, [Validators.required]],
-        fileUrl: [`${this.s3Url}${this.currentId}.pdf`]
+        descricao: [null, [Validators.required]],
+        fileUrl: ['']
       })
-
-      if(this.router.url.includes(`/balancetes/editar/`)){
-        console.log("Chegou aqui if", this.router.url.substring(19));
-        
-        this.isEditBalancete = true
-        this.currentId =  parseInt(this.router.url.substring(19))
-      } else if(this.router.url.includes('/balancetes/novo')) {
-        console.log("Chegou aqui else");
-        this.isEditBalancete = false
-      }
     }
 
 
   ngOnInit(): void {
 
-       this.route.params.subscribe(
+    if(this.router.url.includes(`/balancetes/editar/`)){
+      this.isEditBalancete = true
+      this.currentId =  parseInt(this.router.url.substring(19))
+      this.balanceteFileName = `balancete_${this.currentId}.pdf`
+      console.log("balancete no editar: ", this.balanceteFileName );
+      
+    } else if(this.router.url.includes('/balancetes/novo')) {
+      this.findLastItemId()
+      this.isEditBalancete = false
+      
+      console.log("balancete no novo: ", this.balanceteFileName );
+    }
+
+    this.route.params.subscribe(
       (params: any) => {
         const id = params.id
         const balancete$ = this.balancetesService.loadById(id);
@@ -85,24 +91,25 @@ export class BalanceteFormComponent implements OnInit {
         })
       }
     )
-
         
   }
 
   updateForm(balancete: IBalancete){
+
     this.form.patchValue({
       id: this.currentId,
       ano: balancete.ano,
       mes: balancete.mes,
-      fileUrl: `${this.s3Url}${this.currentId}.pdf`
+      descricao: balancete.descricao,
+      fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.balanceteFileName}`
     })
-    console.log("chegou no updateForm", this.form);
-    
 
   }
 
   onSubmit(){
+    
     this.submitted = true;
+    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.balanceteFileName}`);
     console.log(this.form.value);
     this.balancetesService.create(this.form.value)
     .subscribe( 
@@ -133,24 +140,13 @@ export class BalanceteFormComponent implements OnInit {
       .subscribe(
         res => {
           Swal.fire({
-            title: 'Balancete atualizado. \n Deseja adicionar um arquivo agora?',
+            position: 'top-end',
             icon: 'success',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Adicionar Arquivo',
-            denyButtonText: `Agora não`,
-            cancelButtonText: `Cancelar`,
-            
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              Swal.fire('Envie um arquivo com o nome', "balancete_" + res.id + ".pdf", 'info')
-              this.router.navigate(['./uploads'])
-            } else if (result.isDenied) {
-              Swal.fire('Balancete salvo com sucesso!', '', 'success')
-              this.router.navigate(['./balancetes'])
-            }
-          })
+            title: 'Balancete atualizado com sucesso!',
+            showConfirmButton: false,
+            timer: 2000
+          }) 
+          this.router.navigate(['./balancetes'])
         },
         err => {
           Swal.fire({
@@ -162,7 +158,18 @@ export class BalanceteFormComponent implements OnInit {
       )
   }
 
+  findLastItemId(): void {
+    this.balancetesService.getAll()
+      .subscribe({
+        next: (data) => {
+          this.balanceteList = data.content ;
+          console.log('this.balanceteList ', this.balanceteList );
+          this.lastItemId = data.content[0].id + 1;
+          this.balanceteFileName = `balancete_${this.lastItemId}.pdf`
+        },
+        error: (e) => console.error(e)
+      });
 
-
+  }
 
 }

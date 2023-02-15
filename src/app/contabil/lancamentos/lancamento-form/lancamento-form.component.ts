@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { last } from 'rxjs';
 import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../../environments/environment';
 import { IModoPagamento } from '../../plano-contas/interfaces/modo-pagamento.interface';
@@ -21,12 +21,10 @@ import { LancamentosService } from '../lancamentos.service';
   templateUrl: './lancamento-form.component.html',
   styleUrls: ['./lancamento-form.component.scss']
 })
-export class LancamentoFormComponent implements OnInit {
+export class LancamentoFormComponent implements OnInit  {
 
   form: FormGroup;
   lancamentoFileName!: string;
-
-
   showInputFile = false
   showInputFileUrl = false
   isEditLancamento!: boolean
@@ -75,6 +73,7 @@ export class LancamentoFormComponent implements OnInit {
   lastItemId!: number;
   lancamentosList: any;
   lastItemIdx: any;
+  isURLValid!: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -83,17 +82,14 @@ export class LancamentoFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private auth: AuthService
+    private auth: AuthService,
+    private  httpClient: HttpClient
     ) {
       
       this.findLastItemId()
-      
 
       this.planoContasList();
       this.tipoLancamentoPage = this.router.url.substring(13,21);
-      this.tipoLancamentoPage === 'despesas' ? this.inicialFileName = 'despesa_' : this.inicialFileName = 'receita_'
-      
-      
       
       this.form =  this.formBuilder.group({
         tipoLancamento: ['', [Validators.required]],
@@ -106,11 +102,8 @@ export class LancamentoFormComponent implements OnInit {
         supCaixa: ['', [Validators.required]],
         valor: ['', [Validators.required]],
         obs: [''],
-        fileUrl: [`${this.baseUrl}${this.middleFileUrl}${this.currentId}.jpg`]
+        fileUrl: ['']
       })
-      
-
-      
 
       if(
         this.router.url.includes(`/lancamentos/receitas/editar/`) ||
@@ -131,11 +124,10 @@ export class LancamentoFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.findLastItemId();
-      console.log("this.lastItemId no construtor", this.lastItemId);
 
     this.lancamentoFileName = `${this.inicialFileName}${this.lastItemId}.jpg`
-      console.log("this.lancamentoFileName no construtor", this.lancamentoFileName );
-       this.route.params.subscribe(
+    
+    this.route.params.subscribe(
       (params: any) => {
         const id = params.id
         const lancamento$ = this.lancamentosService.loadById(id);
@@ -157,14 +149,16 @@ export class LancamentoFormComponent implements OnInit {
       this.currentMiddleUrl = '/lancamentos/despesas'
       this.tipoLancamentoPlano = 'Despesa'
     }
+
+    
   }
 
 
+
   updateForm(lancamento: ILancamentos){
-    if(this.currentId !== undefined){
-      this.mgsImage = 'Este Lançamento já possui uma imagem. Para altera-la selecione outra no botão "Selecionar Imagem" abaixo.'
-    }
-    this.showFile = `${this.baseUrl}${this.middleFileUrl}${this.currentId}.jpg`
+
+
+    this.showFile = `${this.baseUrl}${this.middleFileUrl}${this.inicialFileName}${this.currentId}.jpg`
     let idAtualizando = {id: lancamento.planoConta.id}
     
     
@@ -185,9 +179,12 @@ export class LancamentoFormComponent implements OnInit {
   }
 
   onSubmit(){
+
     this.submitted = true;
-    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.inicialFileName}${this.lastItemId}.jpg`);
-    console.log("Meu form:", this.form.value );
+    
+
+    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.lancamentoFileName}`);
+
         
     this.lancamentosService.create(this.form.value)
     .subscribe( 
@@ -202,6 +199,7 @@ export class LancamentoFormComponent implements OnInit {
         console.log("path atual", this.currentMiddleUrl);
         
         this.router.navigate([this.currentMiddleUrl])
+
       },
       err => {
         Swal.fire({
@@ -216,7 +214,6 @@ export class LancamentoFormComponent implements OnInit {
   }
 
   onEdit(){
-    console.log("this.currentId", this.currentId);
     
     this.lancamentosService.updateLancamento(this.currentId, this.form.value)
       .subscribe(
@@ -224,7 +221,7 @@ export class LancamentoFormComponent implements OnInit {
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: 'Lançamento adicionado com sucesso!',
+            title: 'Lançamento atualizado com sucesso!',
             showConfirmButton: false,
             timer: 2000
           }) 
@@ -258,6 +255,8 @@ export class LancamentoFormComponent implements OnInit {
         
       this.lancamentoFileName = (`${this.currentPath}_${this.lastItemId}.jpg`).toLocaleLowerCase()
       console.log(this.lancamentoFileName );
+
+      this.inicialFileName
         
   }
 
@@ -274,22 +273,13 @@ export class LancamentoFormComponent implements OnInit {
         next: (data) => {
           this.lancamentosList = data.content ;
           console.log('this.lancamentosList ', this.lancamentosList );
-          
-
           this.lastItemId = data.content[0].id + 1;
+
+          this.tipoLancamentoPage === 'despesas' ? this.inicialFileName = 'despesa_' : this.inicialFileName = 'receita_'
         },
         error: (e) => console.error(e)
       });
   }
 
-  // findLastItemId(){
-  //   this.lancamentosService.listAll().pipe(
-  //   ).subscribe(lanc =>
-  //     this.lancamentosList = lanc)
-      
-  //     // this.lastItemId = lanc.content.pop().id)
-  //     console.log("Lista: ", this.lanca);
-      
-  //   }
 
 }

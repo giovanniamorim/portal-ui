@@ -17,6 +17,7 @@
     </div>
   </div>
 </div>
+
 <div *ngFor="let progressInfo of progressInfos">
   <span>{{ progressInfo.fileName }}</span>
   <mat-toolbar class="progress-bar">
@@ -29,42 +30,44 @@
 </div>
 
 <div class="row mt-3">
-  <div class="col col-sm-12 col-md-5 col-lg-6">
+  <div class="row btns">
     <mat-form-field appearance="fill">
       <div>
         <input
           matInput
-          [value]="selectedFileNames.length ? selectedFileNames : 'Selecionar Imagem'"
+          [value]="selectedFileNames.length ? selectedFileNames : 'Selecionar Arquivo'"
         />
         <input
           type="file"
           id="fileInput"
           name="fileInput"
-          accept="image/*"
+          accept="image/*, application/pdf"
           multiple
           (change)="selectFiles($event)"
         />
       </div>
     </mat-form-field>
   </div>
-  <div class="col col-sm-12 col-md-1 col-lg-3">
-    <button
-      mat-flat-button
-      color="primary"
-      [disabled]="!selectedFiles"
-      (click)="uploadFiles()"
-    >
-      Upload
-    </button>
-  </div>
-  <div class="col col-sm-12 col-md-1 col-lg-3">
+    <div class="row btns">
+      <button
+        mat-flat-button
+        color="third"
+        [disabled]="!selectedFiles"
+        (click)="uploadFiles()"
+        >
+        Anexar Arquivo
+      </button>
+    </div>
+  <div class="row mt-2 btns">
     <button mat-flat-button color="primary" (click)="deleteImagens()">
       Limpar
     </button>
   </div>
+  
+  <div class="mt-4" *ngIf="isImageType">
+    <img *ngFor="let preview of previews" [src]="preview" class="preview" />
+  </div>
+  
 </div>
   
 
-<div>
-  <img *ngFor="let preview of previews" [src]="preview" class="preview" />
-</div>

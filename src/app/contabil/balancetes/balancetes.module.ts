@@ -21,6 +21,7 @@ import { BalanceteFormComponent } from './balancete-form/balancete-form.componen
 import { MatSelectModule } from '@angular/material/select';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { BalanceteSearchComponent } from './balancete-search/balancete-search.component'; 
+import { FileUploadModule } from 'src/app/file-upload/file-upload.module';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { BalanceteSearchComponent } from './balancete-search/balancete-search.co
     MatSortModule,
     MatSelectModule,
     MatAutocompleteModule,
-    SharedModule
+    SharedModule,
+    FileUploadModule
   ]
 })
 export class BalancetesModule { }

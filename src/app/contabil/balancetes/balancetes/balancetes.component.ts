@@ -18,7 +18,7 @@ import { AuthService } from 'src/app/seguranca/auth.service';
 })
 export class BalancetesComponent implements OnInit, AfterViewInit  {
 
-  displayedColumns: string[] = ['id', 'ano', 'mes', 'fileUrl', 'actions'];
+  displayedColumns: string[] = ['id', 'ano', 'mes', 'descricao', 'fileUrl', 'actions'];
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any

@@ -31,5 +31,11 @@ export class FileUploadService {
   getFiles(): Observable<any> {
     return this.httpClient.get(`${this.baseUrl}/files`);
   }
+
+  getFile(fileName: string): Observable<any> {
+    console.log("checgou no getfile do service");
+    
+    return this.httpClient.get(`${this.baseUrl}/download/${fileName}`)
+  }
     
 }
