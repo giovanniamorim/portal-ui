@@ -24,7 +24,6 @@ export class EventoFormComponent implements OnInit {
   currentId!: number
   submitted = false; 
   isDisabled: boolean = true;
-  s3Url = environment.s3Url + 'evento_'
   recebeData: any;
 
   processos: IProcesso[] = []
@@ -48,7 +47,7 @@ export class EventoFormComponent implements OnInit {
         processo: this.formBuilder.group({
           id:  [null],
         }) ,
-        fileUrl: [`${this.s3Url}${this.currentId}.pdf`]
+        fileUrl: ['']
       })
 
 
@@ -91,7 +90,7 @@ export class EventoFormComponent implements OnInit {
       nome: evento.nome,
       descricao: evento.descricao,
       processo: evento.processo.id,
-      fileUrl: `${this.s3Url}${this.currentId}.pdf`
+      fileUrl: `todo`
     })
   }
 

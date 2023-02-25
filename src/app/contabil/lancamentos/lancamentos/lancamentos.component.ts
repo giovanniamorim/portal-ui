@@ -30,7 +30,7 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
   @ViewChild(MatSort) sort!: MatSort;
   imgId: any;
   tipoLancamentoPage!: string;
-  pathUrl: any;
+  pathUrl!: string;
   perfil!: string;
 
   

@@ -64,7 +64,7 @@ export class BalanceteFormComponent implements OnInit {
         descricao: [null, [Validators.required]],
         fileUrl: ['']
       })
-    }
+  }
 
 
   ngOnInit(): void {
@@ -73,13 +73,9 @@ export class BalanceteFormComponent implements OnInit {
       this.isEditBalancete = true
       this.currentId =  parseInt(this.router.url.substring(19))
       this.balanceteFileName = `balancete_${this.currentId}.pdf`
-      console.log("balancete no editar: ", this.balanceteFileName );
-      
     } else if(this.router.url.includes('/balancetes/novo')) {
       this.findLastItemId()
       this.isEditBalancete = false
-      
-      console.log("balancete no novo: ", this.balanceteFileName );
     }
 
     this.route.params.subscribe(
@@ -110,7 +106,6 @@ export class BalanceteFormComponent implements OnInit {
     
     this.submitted = true;
     this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.balanceteFileName}`);
-    console.log(this.form.value);
     this.balancetesService.create(this.form.value)
     .subscribe( 
       res => {
@@ -163,13 +158,11 @@ export class BalanceteFormComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.balanceteList = data.content ;
-          console.log('this.balanceteList ', this.balanceteList );
           this.lastItemId = data.content[0].id + 1;
           this.balanceteFileName = `balancete_${this.lastItemId}.pdf`
         },
         error: (e) => console.error(e)
       });
-
   }
 
 }

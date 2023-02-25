@@ -17,7 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedModule } from '@coreui/angular';
 
-import { UploadModule } from '../upload/upload.module';
+import { FileUploadModule } from '../file-upload/file-upload.module';
 import { UserFormComponent } from './user-form/user-form.component';
 import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './users/users.component';
@@ -47,7 +47,7 @@ import { UsersComponent } from './users/users.component';
         MatSortModule,
         MatSelectModule,
         SharedModule,
-        UploadModule
+        FileUploadModule
     ]
 })
 export class UsersModule { }

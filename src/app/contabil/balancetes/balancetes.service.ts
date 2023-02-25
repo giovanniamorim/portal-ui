@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, first, Observable, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
+
 import { IBalancete } from './balancete.interface';
 
 export class BalanceteFiltro {
@@ -68,7 +69,6 @@ export class BalancetesService {
   }
 
   public getBalancetes( pageIndex: any, pageSize: any, filter?: any){
-    console.log("No serviço: ", pageIndex, pageSize, filter);
     
     let params= new HttpParams();
     if(filter && !filter.searchText){
@@ -104,12 +104,8 @@ export class BalancetesService {
 	}
 
   create(balancete: IBalancete){
-    console.log("Chegou no service: ", balancete);
-    
     return this.httpClient.post<IBalancete>(this.BaseUrl, balancete);
   }
-
-
 
   remove(balancete: IBalancete){
     return this.httpClient.delete(`${this.BaseUrl}/${balancete.id}`);
@@ -128,8 +124,6 @@ export class BalancetesService {
   }
 
   updateBalancete(id: number, balancete: IBalancete): Observable<IBalancete> {
-    console.log("id no service", id);
-    console.log("balancete no service",  balancete);
     return this.httpClient.put<IBalancete>(`${this.BaseUrl}/${id}`, balancete)
     .pipe(
       catchError(this.errorHandler)

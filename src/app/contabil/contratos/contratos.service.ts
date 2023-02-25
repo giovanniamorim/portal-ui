@@ -103,6 +103,10 @@ export class ContratosService {
     return this.httpClient.post<IContrato>(this.BaseUrl, contrato);
   }
 
+  getAll(): Observable<any> {
+    return this.httpClient.get<IContrato[]>(`${this.BaseUrl}/todos`);
+  }
+
 
 
   remove(contrato: IContrato){

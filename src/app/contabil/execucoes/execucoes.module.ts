@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -16,8 +16,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedModule } from '@coreui/angular';
+import { FileUploadModule } from 'src/app/file-upload/file-upload.module';
 
-import { UploadModule } from '../../upload/upload.module';
 import { ExecucaoFormComponent } from './execucao-form/execucao-form.component';
 import { ExecucoesRoutingModule } from './execucoes-routing.module';
 import { ExecucoesComponent } from './execucoes/execucoes.component';
@@ -48,7 +48,7 @@ import { ExecucoesComponent } from './execucoes/execucoes.component';
         MatSelectModule,
         MatSortModule,
         SharedModule,
-        UploadModule
+        FileUploadModule
     ]
 })
 export class ExecucoesModule { }

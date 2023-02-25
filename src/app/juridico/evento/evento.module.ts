@@ -16,9 +16,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-
 import { SharedModule } from '@coreui/angular';
-import { UploadModule } from "../../upload/upload.module";
+import { FileUploadModule } from 'src/app/file-upload/file-upload.module';
+
 import { EventoFormComponent } from './evento-form/evento-form.component';
 import { EventoRoutingModule } from './evento-routing.module';
 import { EventosComponent } from './eventos/eventos.component';
@@ -47,9 +47,9 @@ import { EventosComponent } from './eventos/eventos.component';
         MatDialogModule,
         MatSortModule,
         SharedModule,
-        UploadModule,
         MatDatepickerModule,
         MatSelectModule,
+        FileUploadModule
     ]
 })
 export class EventoModule { }

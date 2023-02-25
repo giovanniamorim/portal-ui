@@ -22,7 +22,6 @@ export class ContratosComponent implements OnInit, AfterViewInit  {
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
-  s3Url = environment.s3Url + 'contrato_'
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

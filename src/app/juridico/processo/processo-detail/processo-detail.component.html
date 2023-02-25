@@ -152,7 +152,7 @@
             <th> {{p.data}} </th>
             <th> {{p.descricao}} </th>
             <th> 
-              <span *ngIf="p.fileUrl !== this.s3Url + 'undefined.pdf' && p.fileUrl">
+              <span *ngIf="p.fileUrl">
                 <a href="{{ p.fileUrl }}">
                   <span class="material-icons">picture_as_pdf</span>
                 </a>

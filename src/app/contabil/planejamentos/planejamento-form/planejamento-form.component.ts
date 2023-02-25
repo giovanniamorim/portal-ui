@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
-import { environment } from '../../../../environments/environment';
+
 import { IPlanejamento } from '../interfaces/planejamentos.interface';
 import { PlanejamentosService } from '../planejamentos.service';
-
-
 
 @Component({
   selector: 'app-planejamento-form',
@@ -23,10 +22,14 @@ export class PlanejamentoFormComponent implements OnInit {
   editar: any
   currentId!: number
   submitted = false;
-  anos: string[] = ['2022', '2024']
   isDisabled: boolean = true;
-  s3Url = environment.s3Url + 'planejamento_'
- 
+
+  // Config File
+  planejamentoFileName: string = 'planejamento_';
+  middleFileUrl = '/api/file/download/'  
+  baseUrl = environment.apiUrl
+  planejamentoList: any;
+  lastItemId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,20 +40,24 @@ export class PlanejamentoFormComponent implements OnInit {
         this.form =  this.formBuilder.group({
           ano: [null, [Validators.required]],
           descricao: [null, [Validators.required]],
-        fileUrl: [`${this.s3Url}${this.currentId}.pdf`]
+          fileUrl: ['']
       })
 
-      if(this.router.url.includes(`/planejamentos/editar/`)){
-        this.isEditPlanejamento = true
-        this.currentId =  parseInt(this.router.url.substring(22))
-      } else if(this.router.url.includes('/planejamentos/novo')) {
-        this.isEditPlanejamento = false
-      }
     }
 
 
   ngOnInit(): void {
-       this.route.params.subscribe(
+    
+    if(this.router.url.includes(`/planejamentos/editar/`)){
+      this.isEditPlanejamento = true
+      this.currentId =  parseInt(this.router.url.substring(22))
+      this.planejamentoFileName = `planejamento_${this.currentId}.pdf`
+    } else if(this.router.url.includes('/planejamentos/novo')) {
+      this.findLastItemId()
+      this.isEditPlanejamento = false
+    }
+
+    this.route.params.subscribe(
       (params: any) => {
         const id = params.id
         const planejamento$ = this.planejamentoService.loadById(id);
@@ -68,10 +75,8 @@ export class PlanejamentoFormComponent implements OnInit {
       id: this.currentId,
       ano: planejamento.ano,
       descricao: planejamento.descricao,
-      fileUrl: `${this.s3Url}${this.currentId}.pdf`
+      fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.planejamentoFileName}`
     })
-    console.log("chegou no updateForm", this.form);
-    
 
   }
 
@@ -107,24 +112,13 @@ export class PlanejamentoFormComponent implements OnInit {
       .subscribe(
         res => {
           Swal.fire({
-            title: 'Planejamento atualizado. \n Deseja adicionar um arquivo agora?',
+            position: 'top-end',
             icon: 'success',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Adicionar Arquivo',
-            denyButtonText: `Agora não`,
-            cancelButtonText: `Cancelar`,
-            
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              Swal.fire('Envie um arquivo com o nome', "planejamento_" + res.id + ".pdf", 'info')
-              this.router.navigate(['./uploads'])
-            } else if (result.isDenied) {
-              Swal.fire('Planejamento salvo com sucesso!', '', 'success')
-              this.router.navigate(['./planejamentos'])
-            }
+            title: 'Balancete adicionado com sucesso!',
+            showConfirmButton: false,
+            timer: 2000
           })
+          this.router.navigate(['./planejamentos'])
         },
         err => {
           Swal.fire({
@@ -136,7 +130,18 @@ export class PlanejamentoFormComponent implements OnInit {
       )
   }
 
+  findLastItemId(): void {
+    this.planejamentoService.getAll()
+      .subscribe({
+        next: (data) => {
+          this.planejamentoList = data.content ;
+          this.lastItemId = data.content[0].id + 1;
+          this.planejamentoFileName = `planejamento_${this.lastItemId}.pdf`
+        },
+        error: (e) => console.error(e)
+      });
 
+  }
 
 
 }

@@ -4,7 +4,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,8 +20,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedModule } from '@coreui/angular';
+import { FileUploadModule } from 'src/app/file-upload/file-upload.module';
 
-import { UploadModule } from '../../upload/upload.module';
 import { ProcessoDetailComponent } from './processo-detail/processo-detail.component';
 import { ProcessoFormComponent } from './processo-form/processo-form.component';
 import { ProcessoRoutingModule } from './processo-routing.module';
@@ -53,10 +53,10 @@ registerLocaleData(ptBr);
         MatDialogModule,
         MatSortModule,
         SharedModule,
-        UploadModule,
         MatDatepickerModule,
         MatSelectModule,
-        MatListModule
+        MatListModule,
+        FileUploadModule
     ],
     providers: [
         { provide: MAT_DATE_LOCALE, useValue: 'pt-BR',},

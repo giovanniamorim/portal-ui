@@ -20,6 +20,10 @@ export class InventarioService {
 		return this.httpClient.get<IInventario[]>(`${this.BaseUrl}/`, {params});
 	}
 
+  getAll(): Observable<any> {
+    return this.httpClient.get<IInventario[]>(`${this.BaseUrl}/todos`);
+  }
+
   create(inventario: IInventario){
     console.log("Salvando?", inventario);
     return this.httpClient.post<IInventario>(this.BaseUrl, inventario);

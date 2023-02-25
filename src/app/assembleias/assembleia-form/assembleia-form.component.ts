@@ -23,9 +23,17 @@ export class AssembleiaFormComponent implements OnInit {
   editar: any
   currentId!: number
   submitted = false;
-  anos: string[] = ['2022', '2024']
   isDisabled: boolean = true;
-  s3Url = environment.s3Url + 'assembleia_';
+  
+  // Config file
+  middleFileUrl = '/api/file/download/'  
+  baseUrl = environment.apiUrl
+  ataFileName!: string;
+  assembleiaList: any;
+  lastItemId: any;
+
+  anos: string[] = ['2022', '2024']
+
   tipos: ITipoAssembleia[] = [
     { id: 1, nome: 'Ordinária'}, 
     { id: 2, nome: 'Extraordinária'}, 
@@ -44,20 +52,23 @@ export class AssembleiaFormComponent implements OnInit {
           tipo: [''],
           assunto: [null, [Validators.required]],
           comentario: [null, [Validators.required]],
-        fileUrl: [`${this.s3Url}${this.currentId}.pdf`]
+          fileUrl: ['']
       })
-
-      if(this.router.url.includes(`/assembleias/editar/`)){
-        this.isEditAssembleia = true
-        this.currentId =  parseInt(this.router.url.substring(20))
-      } else if(this.router.url.includes('/assembleias/novo')) {
-        this.isEditAssembleia = false
-      }
     }
 
 
   ngOnInit(): void {
-       this.route.params.subscribe(
+
+    if(this.router.url.includes(`/assembleias/editar/`)){
+      this.isEditAssembleia = true
+      this.currentId =  parseInt(this.router.url.substring(20))
+      this.ataFileName = `ata_${this.currentId}.pdf`
+    } else if(this.router.url.includes('/assembleias/novo')) {
+      this.findLastItemId()
+      this.isEditAssembleia = false
+    }
+
+    this.route.params.subscribe(
       (params: any) => {
         const id = params.id
         const assembleia$ = this.assembleiaService.loadById(id);
@@ -66,8 +77,6 @@ export class AssembleiaFormComponent implements OnInit {
         })
       }
     )
-
-        
   }
 
   updateForm(assembleia: IAssembleias){
@@ -77,13 +86,13 @@ export class AssembleiaFormComponent implements OnInit {
       tipo: assembleia.tipo,
       assunto: assembleia.assunto,
       comentario: assembleia.comentario,
-      fileUrl: `${this.s3Url}${this.currentId}.pdf`
+      fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.ataFileName}`
     })
   }
 
   onSubmit(){
     this.submitted = true;
-    console.log(this.form.value);
+    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.ataFileName}`);
     this.assembleiaService.create(this.form.value)
     .subscribe( 
       res => {
@@ -113,24 +122,13 @@ export class AssembleiaFormComponent implements OnInit {
       .subscribe(
         res => {
           Swal.fire({
-            title: 'Assembleia atualizada. \n Deseja adicionar um arquivo agora?',
+            position: 'top-end',
             icon: 'success',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Adicionar Arquivo',
-            denyButtonText: `Agora não`,
-            cancelButtonText: `Cancelar`,
-            
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              Swal.fire('Envie um arquivo com o nome', "assembleia_" + res.id + ".pdf", 'info')
-              this.router.navigate(['./uploads'])
-            } else if (result.isDenied) {
-              Swal.fire('Assembleia salva com sucesso!', '', 'success')
-              this.router.navigate(['./assembleias'])
-            }
+            title: 'Assembleia atualizada com sucesso!',
+            showConfirmButton: false,
+            timer: 2000
           })
+          this.router.navigate(['./assembleias'])
         },
         err => {
           Swal.fire({
@@ -142,7 +140,17 @@ export class AssembleiaFormComponent implements OnInit {
       )
   }
 
-
-
+  findLastItemId(): void {
+    this.assembleiaService.getAll()
+      .subscribe({
+        next: (data) => {
+          this.assembleiaList = data.content ;
+          console.log('this.assembleiaList ', this.assembleiaList );
+          this.lastItemId = data.content[0].id + 1;
+          this.ataFileName = `ata_${this.lastItemId}.pdf`
+        },
+        error: (e) => console.error(e)
+      });
+  }
 
 }

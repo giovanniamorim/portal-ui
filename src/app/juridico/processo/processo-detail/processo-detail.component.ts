@@ -5,7 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { AuthService } from 'src/app/seguranca/auth.service';
-import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 import { EventoService } from '../../evento/evento.service';
@@ -42,7 +41,6 @@ export class ProcessoDetailComponent implements AfterViewInit, OnInit {
   totalElements: any
   datasource = new MatTableDataSource();
   eventosFiltrados: any[] = [];
-  s3Url = environment.s3Url + 'evento_'
   perfil!: string;
 
   constructor(

@@ -1,8 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContratosComponent } from './contratos/contratos.component';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -11,20 +13,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@coreui/angular';
-import { MatSelectModule } from '@angular/material/select';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { ContratosRoutingModule } from './contratos-routing.module';
-import { ContratoFormComponent } from './contrato-form/contrato-form.component';
-import { ContratoSearchComponent } from './contratos-search/contrato-search.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatOptionModule } from '@angular/material/core';
-import { UploadModule } from 'src/app/upload/upload.module';
 import { NgxCurrencyModule } from 'ngx-currency';
+import { FileUploadModule } from 'src/app/file-upload/file-upload.module';
+
+import { ContratoFormComponent } from './contrato-form/contrato-form.component';
+import { ContratosRoutingModule } from './contratos-routing.module';
+import { ContratoSearchComponent } from './contratos-search/contrato-search.component';
+import { ContratosComponent } from './contratos/contratos.component';
 
 
 @NgModule({
@@ -55,8 +55,8 @@ import { NgxCurrencyModule } from 'ngx-currency';
     MatSelectModule,
     MatDatepickerModule,
     SharedModule,
-    UploadModule,
-    NgxCurrencyModule
+    NgxCurrencyModule,
+    FileUploadModule
   ]
 })
 export class ContratosModule { }

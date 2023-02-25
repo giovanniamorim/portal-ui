@@ -20,6 +20,10 @@ export class ExecucoesService {
 		return this.httpClient.get<IExecucao[]>(`${this.BaseUrl}/`, {params});
 	}
 
+  getAll(): Observable<any> {
+    return this.httpClient.get<IExecucao[]>(`${this.BaseUrl}/todas`);
+  }
+
   create(execucao: IExecucao){
     console.log("Salvando?", execucao);
     return this.httpClient.post<IExecucao>(this.BaseUrl, execucao);

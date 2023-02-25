@@ -1,16 +1,15 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
-import { IBalanco } from '../interfaces/balanco.interface';
 
 import { BalancoService } from '../balanco.service';
-import { environment } from 'src/environments/environment';
-import { AuthService } from 'src/app/seguranca/auth.service';
+import { IBalanco } from '../interfaces/balanco.interface';
 
 @Component({
   selector: 'app-balancos',
@@ -19,16 +18,14 @@ import { AuthService } from 'src/app/seguranca/auth.service';
 })
 export class BalancosComponent implements OnInit, AfterViewInit  {
 
-  displayedColumns: string[] = ['id', 'ano', 'mes', 'fileUrl', 'actions'];
+  displayedColumns: string[] = ['id', 'ano', 'mes', 'descricao', 'fileUrl', 'actions'];
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
-  s3Url = environment.s3Url + 'balanco_'
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   perfil!: string;
-
   
   constructor(
     private balancoService: BalancoService, 
@@ -79,7 +76,6 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
             (Balanco) => {
                 this.datasource = new MatTableDataSource(Balanco.content) ;
                 this.datasource.sort = this.sort;
-                // this.datasource.paginator = this.paginator;
                 this.carregando = false;
                 this.totalElements = Balanco.totalElements
             },
@@ -98,16 +94,15 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
   }
 
   filterData($event : any){
-    // this.datasource.filter = $event.target.value;
     this.datasource.filter = $event.target.value.trim().toLocaleLowerCase();
   }
 
-    nextPage(event: PageEvent) {
-        const request:any = {};
-        request['page'] = event.pageIndex.toString();
-        request['size'] = event.pageSize.toString();
-        this.listarBalancos(request);
-    }
+  nextPage(event: PageEvent) {
+    const request:any = {};
+    request['page'] = event.pageIndex.toString();
+    request['size'] = event.pageSize.toString();
+    this.listarBalancos(request);
+  }
 
 
   onDelete(Balanco: IBalanco){
@@ -137,7 +132,6 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
 
   onEdit(balanco: IBalanco){
     this.router.navigate(['editar', balanco.id], {relativeTo: this.route})
-    console.log("rota dos balanços no editar: ", this.route);
   }
 
   findRoles(){

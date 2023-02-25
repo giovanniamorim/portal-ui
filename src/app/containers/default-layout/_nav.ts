@@ -62,11 +62,7 @@ export const navItems: INavData[] = [
       
     ]
   },
-  {
-    name: 'Contratos',
-    url: '/contratos',
-    icon: 'fa fa-fax'
-  },
+
   {
     name: 'Inventário',
     url: '/inventario',
@@ -78,13 +74,18 @@ export const navItems: INavData[] = [
     title: true
   },
   {
+    name: 'Contratos',
+    url: '/documentos/contratos',
+    icon: 'fa fa-book'
+  },
+  {
     name: 'Regimento',
-    url:"https://portal-sindifisco.s3.sa-east-1.amazonaws.com/regimento.pdf",
-    icon: 'fa fa-file-text-o'
+    url:"/documentos/regimentos",
+    icon: 'fa fa-clipboard'
   },
   {
     name: 'Acordo Coletivo',
-    url:"https://portal-sindifisco.s3.sa-east-1.amazonaws.com/acordo_coletivo.pdf",
+    url:"/documentos/acordos",
     icon: 'fa fa-handshake-o'
   },
   {
@@ -101,17 +102,6 @@ export const navItems: INavData[] = [
     url: '/juridico/processos',
     icon: 'fa fa-balance-scale'
   },
-  // {
-  //   title: true,
-  //   name: 'Configurações'
-  // },
-  // {
-  //   name: 'Arquivos',
-  //   url: '/files',
-  //   icon: 'fa fa-balance-scale'
-  // },
-  
-
 
 
 ];

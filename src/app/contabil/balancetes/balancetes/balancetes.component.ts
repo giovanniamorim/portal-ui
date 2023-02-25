@@ -1,15 +1,15 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
-import { environment } from 'src/environments/environment';
+
 import { IBalancete } from '../balancete.interface';
 import { BalancetesService } from '../balancetes.service';
-import { AuthService } from 'src/app/seguranca/auth.service';
 
 @Component({
   selector: 'app-balancetes',
@@ -22,7 +22,6 @@ export class BalancetesComponent implements OnInit, AfterViewInit  {
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
-  s3Url = environment.s3Url + 'balanco_'
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -99,7 +98,7 @@ export class BalancetesComponent implements OnInit, AfterViewInit  {
     this.datasource.filter = $event.target.value.trim().toLocaleLowerCase();
   }
 
-    nextPage(event: PageEvent) {
+  nextPage(event: PageEvent) {
         const request:any = {};
         request['page'] = event.pageIndex.toString();
         request['size'] = event.pageSize.toString();

@@ -20,6 +20,10 @@ export class AssembleiasService {
 		return this.httpClient.get<IAssembleias[]>(`${this.BaseUrl}/`, {params});
 	}
 
+  getAll(): Observable<any> {
+    return this.httpClient.get<IAssembleias[]>(`${this.BaseUrl}/todas`);
+  }
+
   create(assembleia: IAssembleias){
     console.log("Salvando?", assembleia);
     return this.httpClient.post<IAssembleias>(this.BaseUrl, assembleia);

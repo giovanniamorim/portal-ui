@@ -3,6 +3,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { environment } from '../../../../environments/environment';
+import { IMeses } from '../../balancetes/balancete.interface';
 import { ExecucoesService } from '../execucoes.service';
 import { IExecucao} from '../interfaces/execucoes.interface';
 
@@ -22,10 +23,31 @@ export class ExecucaoFormComponent implements OnInit {
   editar: any
   currentId!: number
   submitted = false;
-  anos: string[] = ['2022', '2024']
   isDisabled: boolean = true;
-  s3Url = environment.s3Url + 'execucao_'
- 
+  
+  // Config file
+  middleFileUrl = '/api/file/download/'  
+  baseUrl = environment.apiUrl
+  execucaoFileName!: string;
+  execucaoList: any;
+  lastItemId: any;
+  
+  anos: string[] = ['2022', '2024']
+
+  meses: IMeses[] = [
+    { id: 1, nome: 'Janeiro' },
+    { id: 2, nome: 'Fevereiro' },
+    { id: 3, nome: 'Março' },
+    { id: 4, nome: 'Abril' },
+    { id: 5, nome: 'Maio' },
+    { id: 6, nome: 'Junho' },
+    { id: 7, nome: 'Julho' },
+    { id: 8, nome: 'Agosto' },
+    { id: 9, nome: 'Setembro' },
+    { id: 10, nome: 'Outubro' },
+    { id: 11, nome: 'Novembro' },
+    { id: 12, nome: 'Dezembro' }
+  ]
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,21 +57,25 @@ export class ExecucaoFormComponent implements OnInit {
     ) {
         this.form =  this.formBuilder.group({
           ano: [null, [Validators.required]],
+          mes: [null, [Validators.required]],
           descricao: [null, [Validators.required]],
-        fileUrl: [`${this.s3Url}${this.currentId}.pdf`]
+          fileUrl: ['']
       })
-
-      if(this.router.url.includes(`/execucoes/editar/`)){
-        this.isEditExecucao= true
-        this.currentId =  parseInt(this.router.url.substring(22))
-      } else if(this.router.url.includes('/execucoes/novo')) {
-        this.isEditExecucao= false
-      }
     }
 
 
   ngOnInit(): void {
-       this.route.params.subscribe(
+
+    if(this.router.url.includes(`/execucoes/editar/`)){
+      this.isEditExecucao= true
+      this.currentId =  parseInt(this.router.url.substring(18))
+      this.execucaoFileName = `execucao_${this.currentId}.pdf`
+    } else if(this.router.url.includes('/execucoes/novo')) {
+      this.findLastItemId()
+      this.isEditExecucao= false
+    }
+    
+    this.route.params.subscribe(
       (params: any) => {
         const id = params.id
         const execucao$ = this.execucaoService.loadById(id);
@@ -66,15 +92,16 @@ export class ExecucaoFormComponent implements OnInit {
     this.form.patchValue({
       id: this.currentId,
       ano: execucao.ano,
+      mes: execucao.mes,
       descricao: execucao.descricao,
-      fileUrl: `${this.s3Url}${this.currentId}.pdf`
+      fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.execucaoFileName}`
     })   
 
   }
 
   onSubmit(){
     this.submitted = true;
-    console.log(this.form.value);
+    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.execucaoFileName}`);
     this.execucaoService.create(this.form.value)
     .subscribe( 
       res => {
@@ -104,24 +131,13 @@ export class ExecucaoFormComponent implements OnInit {
       .subscribe(
         res => {
           Swal.fire({
-            title: 'Execução atualizada. \n Deseja adicionar um arquivo agora?',
+            position: 'top-end',
             icon: 'success',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Adicionar Arquivo',
-            denyButtonText: `Agora não`,
-            cancelButtonText: `Cancelar`,
-            
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              Swal.fire('Envie um arquivo com o nome', "execucao_" + res.id + ".pdf", 'info')
-              this.router.navigate(['./uploads'])
-            } else if (result.isDenied) {
-              Swal.fire('Execucção salva com sucesso!', '', 'success')
-              this.router.navigate(['./execucoes'])
-            }
+            title: 'Execução atualizada com sucesso!',
+            showConfirmButton: false,
+            timer: 2000
           })
+          this.router.navigate(['./execucoes'])
         },
         err => {
           Swal.fire({
@@ -133,7 +149,16 @@ export class ExecucaoFormComponent implements OnInit {
       )
   }
 
-
-
+  findLastItemId(): void {
+    this.execucaoService.getAll()
+      .subscribe({
+        next: (data) => {
+          this.execucaoList = data.content ;
+          this.lastItemId = data.content[0].id + 1;
+          this.execucaoFileName = `execucao_${this.lastItemId}.pdf`
+        },
+        error: (e) => console.error(e)
+      });
+  }
 
 }

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -17,8 +17,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedModule } from '@coreui/angular';
+import { FileUploadModule } from 'src/app/file-upload/file-upload.module';
 
-import { UploadModule } from '../../upload/upload.module';
 import { InventarioFormComponent } from './inventario-form/inventario-form.component';
 import { InventarioRoutingModule } from './inventario-routing.module';
 import { InventarioComponent } from './inventario/inventario.component';
@@ -50,7 +50,7 @@ import { InventarioComponent } from './inventario/inventario.component';
         MatSortModule,
         MatDatepickerModule,
         SharedModule,
-        UploadModule
+        FileUploadModule
     ]
 })
 export class InventarioModule { }

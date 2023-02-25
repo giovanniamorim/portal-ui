@@ -1,10 +1,9 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../../environments/environment';
 import { IModoPagamento } from '../../plano-contas/interfaces/modo-pagamento.interface';
@@ -31,6 +30,7 @@ export class LancamentoFormComponent implements OnInit  {
   editar: any
   currentId!: number
   submitted = false;
+
   currentMiddleUrl = environment.apiUrl
   middleFileUrl = '/api/file/download/'  
   baseUrl = environment.apiUrl
@@ -82,12 +82,9 @@ export class LancamentoFormComponent implements OnInit  {
     private router: Router,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private auth: AuthService,
-    private  httpClient: HttpClient
+    private auth: AuthService
     ) {
-      
       this.findLastItemId()
-
       this.planoContasList();
       this.tipoLancamentoPage = this.router.url.substring(13,21);
       
@@ -95,7 +92,7 @@ export class LancamentoFormComponent implements OnInit  {
         tipoLancamento: ['', [Validators.required]],
         dataLancamento: ['', [Validators.required]],
         planoConta: this.formBuilder.group({
-          id: ['', [Validators.required]]
+        id: ['', [Validators.required]]
         }),
         modoPagamento: ['', [Validators.required]],
         tipoComprovante: ['', [Validators.required]],
@@ -272,7 +269,6 @@ export class LancamentoFormComponent implements OnInit  {
       .subscribe({
         next: (data) => {
           this.lancamentosList = data.content ;
-          console.log('this.lancamentosList ', this.lancamentosList );
           this.lastItemId = data.content[0].id + 1;
 
           this.tipoLancamentoPage === 'despesas' ? this.inicialFileName = 'despesa_' : this.inicialFileName = 'receita_'

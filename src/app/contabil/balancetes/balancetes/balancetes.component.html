@@ -69,7 +69,7 @@
       <ng-container matColumnDef="fileUrl">
         <th mat-header-cell *matHeaderCellDef >Arquivo</th>
         <td mat-cell *matCellDef="let balancete">
-          <span *ngIf="balancete.fileUrl && balancete.fileUrl !== this.s3Url + 'undefined.pdf'">
+          <span *ngIf="balancete.fileUrl">
             <a href="{{ balancete.fileUrl }}">
               <span class="material-icons">picture_as_pdf</span>
             </a>

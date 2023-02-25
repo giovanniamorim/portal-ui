@@ -81,13 +81,17 @@
           <ng-container matColumnDef="fileUrl">
             <th mat-header-cell *matHeaderCellDef >Arquivo</th>
             <td mat-cell *matCellDef="let inventario">
-              <span *ngIf="inventario.fileUrl && inventario.fileUrl !== this.s3Url + 'undefined.pdf'">
-                <a href="{{ inventario.fileUrl }}">
-                  <span class="material-icons">image</span>
-                </a>
+              <span *ngIf="inventario.fileUrl">
+                <img src="{{ inventario.fileUrl }}" style="max-width:30px;cursor:pointer"
+                (click)="onClick(inventario)"
+                  class="modal-hover-opacity"
+                  data-toggle="modal" data-target="#imageModal"
+                  >
               </span>
             </td>
           </ng-container>
+
+
       <ng-container matColumnDef="actions">
         <th mat-header-cell class="header-last-column" *matHeaderCellDef></th>
         <td mat-cell class="last-column" *matCellDef="let inventario">
@@ -117,4 +121,22 @@
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
   
+</div>
+
+<!-- Modal -->
+<!--Bootstrap modal -->
+<div class="modal fade" tabindex="-1" id="imageModal" role="dialog" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Item do Inventário de ID: {{imgId}} </h5>
+      </div>
+      <div class="modal-body">
+        <img src="{{imgSrc}}" class="image-modal" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
 </div>

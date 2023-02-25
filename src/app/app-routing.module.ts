@@ -51,10 +51,7 @@ const routes: Routes = [
         path: 'execucoes',
         loadChildren: () => import('./contabil/execucoes/execucoes.module').then( m => m.ExecucoesModule),
       },
-      {
-        path: 'contratos',
-        loadChildren: () => import('./contabil/contratos/contratos.module').then( m => m.ContratosModule),
-      },
+
       {
         path: 'inventario',
         loadChildren: () => import('./contabil/inventario/inventario.module').then( m => m.InventarioModule),
@@ -70,6 +67,18 @@ const routes: Routes = [
       {
         path: 'juridico/processos',
         loadChildren: () => import('./juridico/processo/processo.module').then( m => m.ProcessoModule),
+      },
+      {
+        path: 'documentos/contratos',
+        loadChildren: () => import('./contabil/contratos/contratos.module').then( m => m.ContratosModule),
+      },
+      {
+        path: 'documentos/regimentos',
+        loadChildren: () => import('./documentos/regimentos/regimentos.module').then( m => m.RegimentosModule),
+      },
+      {
+        path: 'documentos/acordos',
+        loadChildren: () => import('./documentos/acordo/acordo.module').then( m => m.AcordoModule),
       },
       {
         path: 'usuarios',

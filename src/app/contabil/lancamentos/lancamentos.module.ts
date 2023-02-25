@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -19,13 +20,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedModule } from '@coreui/angular';
 import { NgxCurrencyModule } from 'ngx-currency';
 
-import { UploadModule } from '../../upload/upload.module';
+import { FileUploadModule } from '../../file-upload/file-upload.module';
 import { ModalImageComponent } from '../lancamentos/modal/modal-image.component';
-import { LancamentosComponent } from './lancamentos/lancamentos.component';
 import { LancamentoFormComponent } from './lancamento-form/lancamento-form.component';
 import { LancamentosRoutingModule } from './lancamentos-routing.module';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { FileUploadModule } from "../../file-upload/file-upload.module";
+import { LancamentosComponent } from './lancamentos/lancamentos.component';
 
 
 
@@ -56,7 +55,6 @@ import { FileUploadModule } from "../../file-upload/file-upload.module";
         MatSelectModule,
         MatDatepickerModule,
         SharedModule,
-        UploadModule,
         NgxCurrencyModule,
         FileUploadModule
     ],

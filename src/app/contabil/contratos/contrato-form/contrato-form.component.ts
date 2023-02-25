@@ -24,8 +24,14 @@ export class ContratoFormComponent implements OnInit {
   editar: any
   currentId!: number
   submitted = false;
-  s3Url = environment.s3Url + 'contrato_'
   isDisabled: boolean = true;
+
+  // Config File
+  contratoFileName: string = 'contrato_';
+  middleFileUrl = '/api/file/download/'  
+  baseUrl = environment.apiUrl
+  contratoList: any;
+  lastItemId: any;
 
 
   constructor(
@@ -42,22 +48,24 @@ export class ContratoFormComponent implements OnInit {
         dataFinal: ['', [Validators.required]],
         obs: [''],
         valor: ['', [Validators.required]],
-        fileUrl: [`${this.s3Url}${this.currentId}.pdf`]
+        fileUrl: ['']
       })
 
-      if(this.router.url.includes(`/contratos/editar/`)){
-        
-        this.isEditContrato = true
-        this.currentId =  parseInt(this.router.url.substring(18))
-      } else if(this.router.url.includes('/contratos/novo')) {
-        this.isEditContrato = false
-      }
     }
 
 
   ngOnInit(): void {
 
-       this.route.params.subscribe(
+    if(this.router.url.includes(`/contratos/editar/`)){
+      this.isEditContrato = true
+      this.currentId =  parseInt(this.router.url.substring(18))
+      this.contratoFileName = `contrato_${this.currentId}.pdf`
+    } else if(this.router.url.includes('/contratos/novo')) {
+      this.findLastItemId()
+      this.isEditContrato = false
+    }
+
+    this.route.params.subscribe(
       (params: any) => {
         const id = params.id
         const contrato$ = this.contratosService.loadById(id);
@@ -66,8 +74,6 @@ export class ContratoFormComponent implements OnInit {
         })
       }
     )
-
-        
   }
 
   updateForm(contrato: IContrato){
@@ -79,14 +85,14 @@ export class ContratoFormComponent implements OnInit {
       dataFinal: contrato.dataFinal,
       obs: contrato.obs,
       valor: contrato.valor,
-      fileUrl: `${this.s3Url}${this.currentId}.pdf`
+      fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.contratoFileName}`
     })
 
   }
 
   onSubmit(){
     this.submitted = true;
-    console.log(this.form.value);
+    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.contratoFileName}`);
     this.contratosService.create(this.form.value)
     .subscribe( 
       res => {
@@ -116,24 +122,13 @@ export class ContratoFormComponent implements OnInit {
       .subscribe(
         res => {
           Swal.fire({
-            title: 'Contrato atualizado. \n Deseja adicionar um arquivo agora?',
+            position: 'top-end',
             icon: 'success',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Adicionar Arquivo',
-            denyButtonText: `Agora não`,
-            cancelButtonText: `Cancelar`,
-            
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              Swal.fire('Envie um arquivo com o nome', "contrato_" + res.id + ".pdf", 'info')
-              this.router.navigate(['./uploads'])
-            } else if (result.isDenied) {
-              Swal.fire('Contrato salvo com sucesso!', '', 'success')
-              this.router.navigate(['./contratos'])
-            }
+            title: 'Contrato adicionado com sucesso!',
+            showConfirmButton: false,
+            timer: 2000
           })
+          this.router.navigate(['./contratos'])
         },
         err => {
           Swal.fire({
@@ -145,6 +140,17 @@ export class ContratoFormComponent implements OnInit {
       )
   }
 
+  findLastItemId(): void {
+    this.contratosService.getAll()
+      .subscribe({
+        next: (data) => {
+          this.contratoList = data.content ;
+          this.lastItemId = data.content[0].id + 1;
+          this.contratoFileName = `contrato_${this.lastItemId}.pdf`
+        },
+        error: (e) => console.error(e)
+      });
+  }
 
 
 }

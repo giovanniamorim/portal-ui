@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
-import { environment } from '../../../../environments/environment';
+
+import { IDepartamentos, IEstadoConservacao, IInventario } from '../interfaces/inventario.interface';
 import { InventarioService } from '../inventario.service';
-import { IDepartamentos, IEstadoConservacao, IInventario} from '../interfaces/inventario.interface';
 
 
 @Component({
@@ -22,9 +23,14 @@ export class InventarioFormComponent implements OnInit {
   editar: any
   currentId!: number
   submitted = false;
-  anos: string[] = ['2022', '2024']
   isDisabled: boolean = true;
-  s3Url = environment.s3Url + 'inventario_'
+  
+  // Config File
+  inventarioFileName: string = 'inventario_';
+  middleFileUrl = '/api/file/download/'  
+  baseUrl = environment.apiUrl
+  invantarioList: any;
+  lastItemId!: number;
 
   departamentos: IDepartamentos[] = [
     { id: 1, nome: 'Cozinha' },
@@ -48,6 +54,9 @@ export class InventarioFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     ) {
+
+      this.findLastItemId()
+
         this.form =  this.formBuilder.group({
           dataAquisicao: [new FormControl(new Date()), [Validators.required]],
           departamento: [''],
@@ -55,20 +64,25 @@ export class InventarioFormComponent implements OnInit {
           quant: ['', [Validators.required]],
           descricao: ['', [Validators.required]],
           estadoConservacao: [''],
-          fileUrl: [`${this.s3Url}${this.currentId}.jpg`]
+          fileUrl: ['']
       })
 
-      if(this.router.url.includes(`/inventario/editar/`)){
-        this.isEditInventario= true
-        this.currentId =  parseInt(this.router.url.substring(19))
-      } else if(this.router.url.includes('/inventario/novo')) {
-        this.isEditInventario= false
-      }
+
     }
 
 
   ngOnInit(): void {
-       this.route.params.subscribe(
+
+    if(this.router.url.includes(`/inventario/editar/`)){
+      this.isEditInventario= true
+      this.currentId =  parseInt(this.router.url.substring(19))
+      this.inventarioFileName = `inventario_${this.currentId}.jpg`
+    } else if(this.router.url.includes('/inventario/novo')) {
+      this.findLastItemId()
+      this.isEditInventario= false
+    }
+
+    this.route.params.subscribe(
       (params: any) => {
         const id = params.id
         const inventario$ = this.inventarioService.loadById(id);
@@ -88,14 +102,14 @@ export class InventarioFormComponent implements OnInit {
       quant: inventario.quant,
       descricao: inventario.descricao,
       estadoConservacao: inventario.estadoConservacao,
-      fileUrl: `${this.s3Url}${this.currentId}.jpg`
+      fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.inventarioFileName}`
     })   
 
   }
 
   onSubmit(){
     this.submitted = true;
-    console.log(this.form.value);
+    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.inventarioFileName}`);
     this.inventarioService.create(this.form.value)
     .subscribe( 
       res => {
@@ -127,24 +141,14 @@ export class InventarioFormComponent implements OnInit {
       .subscribe(
         res => {
           Swal.fire({
-            title: 'Inventário atualizado. \n Deseja adicionar um arquivo agora?',
+            position: 'top-end',
             icon: 'success',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Adicionar Arquivo',
-            denyButtonText: `Agora não`,
-            cancelButtonText: `Cancelar`,
+            title: 'Balancete atualizado com sucesso!',
+            showConfirmButton: false,
+            timer: 2000
             
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              Swal.fire('Envie um arquivo com o nome', "inventario_" + res.id + ".jpg", 'info')
-              this.router.navigate(['./uploads'])
-            } else if (result.isDenied) {
-              Swal.fire('Inventário salvo com sucesso!', '', 'success')
-              this.router.navigate(['./inventario'])
-            }
           })
+          this.router.navigate(['./inventario'])
         },
         err => {
           Swal.fire({
@@ -154,6 +158,18 @@ export class InventarioFormComponent implements OnInit {
           })
         }
       )
+  }
+
+  findLastItemId(): void {
+    this.inventarioService.getAll()
+      .subscribe({
+        next: (data) => {
+          this.invantarioList = data.content ;
+          this.lastItemId = data.content[0].id + 1;
+          this.inventarioFileName = `inventario_${this.lastItemId}.jpg`
+        },
+        error: (e) => console.error(e)
+      });
   }
 
 

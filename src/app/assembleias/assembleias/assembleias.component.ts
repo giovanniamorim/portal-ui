@@ -23,7 +23,7 @@ export class AssembleiasComponent implements OnInit, AfterViewInit  {
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
-  s3Url = environment.s3Url + 'assembleia_'
+  pathUrl!: string;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

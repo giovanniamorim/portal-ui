@@ -22,6 +22,14 @@ export class BalancoFormComponent implements OnInit {
   editar: any
   currentId!: number
   submitted = false;
+
+  // Config file
+  middleFileUrl = '/api/file/download/'  
+  baseUrl = environment.apiUrl
+  balancoFileName: string = 'balanco_';
+  balancoList: any;
+  lastItemId: any;
+
   anos: string[] = ['2022', '2024']
   meses: IMeses[] = [
     { id: 1, nome: 'Janeiro' },
@@ -38,13 +46,6 @@ export class BalancoFormComponent implements OnInit {
     { id: 12, nome: 'Dezembro' }
   ]
 
-  
-  isDisabled: boolean = true;
-
-  s3Url = environment.s3Url + 'balanco_'
- 
-
-
   constructor(
     private formBuilder: FormBuilder,
     private balancoService: BalancoService,
@@ -54,20 +55,24 @@ export class BalancoFormComponent implements OnInit {
         this.form =  this.formBuilder.group({
           ano: [null, [Validators.required]],
           mes: [null, [Validators.required]],
-        fileUrl: [`${this.s3Url}${this.currentId}.pdf`]
+          descricao: [null, [Validators.required]],
+          fileUrl: ['']
       })
-
-      if(this.router.url.includes(`/balancos/editar/`)){
-        this.isEditBalanco = true
-        this.currentId =  parseInt(this.router.url.substring(17))
-      } else if(this.router.url.includes('/balancos/novo')) {
-        this.isEditBalanco = false
-      }
     }
 
 
   ngOnInit(): void {
-       this.route.params.subscribe(
+
+    if(this.router.url.includes(`/balancos/editar/`)){
+      this.isEditBalanco = true
+      this.currentId =  parseInt(this.router.url.substring(17))
+      this.balancoFileName = `balanco_${this.currentId}.pdf`
+    } else if(this.router.url.includes('/balancos/novo')) {
+      this.findLastItemId()
+      this.isEditBalanco = false
+    }
+
+    this.route.params.subscribe(
       (params: any) => {
         const id = params.id
         const balanco$ = this.balancoService.loadById(id);
@@ -76,8 +81,6 @@ export class BalancoFormComponent implements OnInit {
         })
       }
     )
-
-        
   }
 
   updateForm(balanco: IBalanco){
@@ -85,13 +88,14 @@ export class BalancoFormComponent implements OnInit {
       id: this.currentId,
       ano: balanco.ano,
       mes: balanco.mes,
-      fileUrl: `${this.s3Url}${this.currentId}.pdf`
+      descricao: balanco.descricao,
+      fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.balancoFileName}`
     })
   }
 
   onSubmit(){
     this.submitted = true;
-    console.log(this.form.value);
+    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.balancoFileName}`);
     this.balancoService.create(this.form.value)
     .subscribe( 
       res => {
@@ -121,23 +125,13 @@ export class BalancoFormComponent implements OnInit {
       .subscribe(
         res => {
           Swal.fire({
-            title: 'Balanço atualizado. \n Deseja adicionar um arquivo agora?',
+            position: 'top-end',
             icon: 'success',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Adicionar Arquivo',
-            denyButtonText: `Agora não`,
-            cancelButtonText: `Cancelar`,
-            
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Swal.fire('Envie um arquivo com o nome', "balanco_" + res.id + ".pdf", 'info')
-              this.router.navigate(['./uploads'])
-            } else if (result.isDenied) {
-              Swal.fire('Balanço salvo com sucesso!', '', 'success')
-              this.router.navigate(['./balancos'])
-            }
+            title: 'Balanço atualizado com sucesso!',
+            showConfirmButton: false,
+            timer: 2000
           })
+          this.router.navigate(['./balancos'])
         },
         err => {
           Swal.fire({
@@ -149,7 +143,17 @@ export class BalancoFormComponent implements OnInit {
       )
   }
 
+  findLastItemId(): void {
+    this.balancoService.getAll()
+      .subscribe({
+        next: (data) => {
+          this.balancoList = data.content ;
+          this.lastItemId = data.content[0].id + 1;
+          this.balancoFileName = `balanco_${this.lastItemId}.pdf`
+        },
+        error: (e) => console.error(e)
+      });
 
-
+  }
 
 }

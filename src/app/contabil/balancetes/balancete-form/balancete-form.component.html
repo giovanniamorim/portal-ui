@@ -37,31 +37,16 @@
                   <mat-label>Mês</mat-label>
                   <mat-select placeholder="Selecione um mês" formControlName="mes" >
                     <mat-option *ngFor="let mes of meses" [value]="mes.nome">{{ mes.nome }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            
+                  </mat-select>
+                </mat-form-field>            
               </div>
-              <div class="col col-sm-12 col-md-9 col-lg-9">
+              <div class="col col-sm-12 col-md-12 col-lg-12">
                 <mat-form-field appearance="fill">
                   <mat-label>Descrição</mat-label>
                   <textarea  matInput placeholder="descrição" formControlName="descricao"></textarea>
                 </mat-form-field>
               </div>
             </div>
-          
-            <!-- <div  class="row">
-              <mat-form-field appearance="fill">
-                <mat-label>Arquivo</mat-label>
-                <input
-                  readonly
-                  matInput
-                  placeholder="Arquivo"
-                  formControlName="fileUrl"
-                />
-                <mat-hint>O Nome e o Caminho do arquivo são gerados automaticamente e só estarão disponiveis para download após o upload.</mat-hint>
-              </mat-form-field>
-            </div> -->
-            
           </form>
         </mat-card-content>
         

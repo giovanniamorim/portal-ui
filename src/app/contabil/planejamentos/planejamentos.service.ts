@@ -20,6 +20,10 @@ export class PlanejamentosService {
 		return this.httpClient.get<IPlanejamento[]>(`${this.BaseUrl}/`, {params});
 	}
 
+  getAll(): Observable<any> {
+    return this.httpClient.get<IPlanejamento[]>(`${this.BaseUrl}/todos`);
+  }
+
   create(planejamento: IPlanejamento){
     console.log("Salvando?", planejamento);
     return this.httpClient.post<IPlanejamento>(this.BaseUrl, planejamento);

@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -16,11 +17,11 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedModule } from '@coreui/angular';
+
+import { FileUploadModule } from '../file-upload/file-upload.module';
+import { AssembleiaFormComponent } from './assembleia-form/assembleia-form.component';
+import { AssembleiasRoutingModule } from './assembleias-routing.module';
 import { AssembleiasComponent } from './assembleias/assembleias.component';
-import { AssembleiaFormComponent} from './assembleia-form/assembleia-form.component';
-import { AssembleiasRoutingModule } from './assembleias-routing.module'
-import { UploadModule } from '../upload/upload.module';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
     declarations: [
@@ -48,7 +49,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
         MatSortModule,
         MatDatepickerModule,
         SharedModule,
-        UploadModule
+        FileUploadModule
     ]
 })
 export class AssembleiasModule { }

@@ -20,8 +20,11 @@ export class BalancoService {
 		return this.httpClient.get<IBalanco[]>(`${this.BaseUrl}/`, {params});
 	}
 
+  getAll(): Observable<any> {
+    return this.httpClient.get<IBalanco[]>(`${this.BaseUrl}/todos`);
+  }
+
   create(balanco: IBalanco){
-    console.log("Salvando?", balanco);
     return this.httpClient.post<IBalanco>(this.BaseUrl, balanco);
   }
 
@@ -44,8 +47,6 @@ export class BalancoService {
   }
 
   updateBalanco(id: number, balanco: IBalanco): Observable<IBalanco> {
-    
-    console.log("Balanco no service:", balanco);
     return this.httpClient.put<IBalanco>(`${this.BaseUrl}/${id}`, balanco)
     .pipe(
       catchError(this.errorHandler)

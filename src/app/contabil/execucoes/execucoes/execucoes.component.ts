@@ -1,15 +1,15 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
-import Swal from 'sweetalert2';
-import { environment } from '../../../../environments/environment';
-import { IExecucao } from '../interfaces/execucoes.interface';
-import { ExecucoesService } from '../execucoes.service';
 import { AuthService } from 'src/app/seguranca/auth.service';
+import Swal from 'sweetalert2';
+
+import { ExecucoesService } from '../execucoes.service';
+import { IExecucao } from '../interfaces/execucoes.interface';
 
 
 @Component({
@@ -19,11 +19,10 @@ import { AuthService } from 'src/app/seguranca/auth.service';
 })
 export class ExecucoesComponent implements OnInit, AfterViewInit  {
 
-  displayedColumns: string[] = ['id', 'ano', 'descricao', 'fileUrl', 'actions'];
+  displayedColumns: string[] = ['id', 'ano', 'mes', 'descricao', 'fileUrl', 'actions'];
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
-  s3Url = environment.s3Url + 'execucao_'
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

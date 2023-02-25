@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -16,8 +16,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedModule } from '@coreui/angular';
+import { FileUploadModule } from 'src/app/file-upload/file-upload.module';
 
-import { UploadModule } from '../../upload/upload.module';
 import { BalancoFormComponent } from './balanco-form/balanco-form.component';
 import { BalancosRoutingModule } from './balancos-routing.module';
 import { BalancosComponent } from './balancos/balancos.component';
@@ -48,7 +48,7 @@ import { BalancosComponent } from './balancos/balancos.component';
         MatSelectModule,
         MatSortModule,
         SharedModule,
-        UploadModule
+        FileUploadModule
     ]
 })
 export class BalancosModule { }

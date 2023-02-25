@@ -16,7 +16,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedModule } from '@coreui/angular';
 
-import { UploadModule } from '../../upload/upload.module';
+import { FileUploadModule } from '../../file-upload/file-upload.module';
 import { BalancoFormComponent } from './plano-contas-form/plano-contas-form.component';
 import { BalancosRoutingModule } from './plano-contas-routing.module';
 import { BalancosComponent } from './plano-contas/plano-contas.component';
@@ -45,7 +45,7 @@ import { BalancosComponent } from './plano-contas/plano-contas.component';
         MatDialogModule,
         MatSortModule,
         SharedModule,
-        UploadModule
+        FileUploadModule
     ]
 })
 export class BalancosModule { }

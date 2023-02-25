@@ -53,6 +53,12 @@
           {{ execucao.ano }}
         </td>
       </ng-container>
+            <ng-container matColumnDef="mes">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header >Mês</th>
+        <td mat-cell *matCellDef="let balancete">
+          {{ balancete.mes }}
+        </td>
+      </ng-container>
       <ng-container matColumnDef="descricao">
         <th mat-header-cell *matHeaderCellDef mat-sort-header >Descrição</th>
         <td mat-cell *matCellDef="let execucao">
@@ -63,7 +69,7 @@
       <ng-container matColumnDef="fileUrl">
         <th mat-header-cell *matHeaderCellDef >Arquivo</th>
         <td mat-cell *matCellDef="let execucao">
-          <span *ngIf="execucao.fileUrl && execucao.fileUrl !== this.s3Url + 'undefined.pdf'">
+          <span *ngIf="execucao.fileUrl">
             <a href="{{ execucao.fileUrl }}">
               <span class="material-icons">picture_as_pdf</span>
             </a>
