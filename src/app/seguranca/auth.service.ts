@@ -12,6 +12,15 @@ export class AuthService {
   oauthTokenUrl = environment.apiUrl + '/oauth/token'
   jwtPayload: any;
 
+  public token  = localStorage.getItem('token');
+
+  public headers:HttpHeaders= new HttpHeaders({
+    'Content-Type':'application/json',
+    'Accept':"application/json",
+    'Authorization': `Bearer  ${this.token}`
+  });
+
+
   constructor(
     private http: HttpClient,
     private jwtHelper: JwtHelperService
@@ -104,7 +113,7 @@ export class AuthService {
   }
 
   logout() {
-    return this.http.delete(this.tokensRevokeUrl, { withCredentials: true })
+    return this.http.delete(this.tokensRevokeUrl, {headers:this.headers, withCredentials: true })
       .toPromise()
       .then(() => {
         this.limparAccessToken();
