@@ -16,6 +16,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import { Page403Component } from './page-403/page-403.component'
 import { Page404Component } from './page-404/page-404.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 export function tokenGetter(): string {
   return localStorage.getItem('token')!;
@@ -29,7 +31,8 @@ export function tokenGetter(): string {
   imports: [
     CommonModule,
     FormsModule,
-    
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,

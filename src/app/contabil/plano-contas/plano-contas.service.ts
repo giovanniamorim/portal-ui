@@ -2,8 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import Swal from 'sweetalert2';
-import { IPlanoContas } from './interfaces/plano-contas.interface';
+
 import { environment } from '../../../environments/environment';
+import { IPlanoContas } from './interfaces/plano-contas.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,41 +13,44 @@ export class PlanoContasService {
 
   private readonly BaseUrl = environment.apiUrl + '/api/planocontas'
 
+  public token = localStorage.getItem('token')
+
+  public headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: `Bearer  ${this.token}`,
+  })
+
   constructor(private  httpClient: HttpClient) { }
 
  
   listAll(request:any): Observable<any> {
 		const params = request;
-		return this.httpClient.get<IPlanoContas[]>(`${this.BaseUrl}/`, {params});
+		return this.httpClient.get<IPlanoContas[]>(`${this.BaseUrl}/`, { headers:this.headers, params});
 	}
 
   create(planoContas: IPlanoContas){
-    console.log("Salvando?", planoContas);
-    return this.httpClient.post<IPlanoContas>(this.BaseUrl, planoContas);
+    return this.httpClient.post<IPlanoContas>(this.BaseUrl, planoContas, {headers:this.headers});
   }
 
-
-
-  // remove(planoContas: IPlanoContas){
-  //   return this.httpClient.delete(`${this.BaseUrl}/${planoContas.id}`);
-  // }
+  remove(planoContas: IPlanoContas){
+    return this.httpClient.delete(`${this.BaseUrl}/${planoContas.id}`, {headers:this.headers});
+  }
   
   loadById(id: number) {
-    return this.httpClient.get<IPlanoContas>(`${this.BaseUrl}/${id}`);
+    return this.httpClient.get<IPlanoContas>(`${this.BaseUrl}/${id}`, {headers:this.headers});
 
   }
 
-  // update(planoContas: IPlanoContas){
-  //   return this.httpClient.put<IPlanoContas>(`${this.BaseUrl}/${planoContas.id}`, planoContas)
-  //     .pipe(
-  //       catchError(this.errorHandler)
-  //     )
-  // }
+  update(planoContas: IPlanoContas){
+    return this.httpClient.put<IPlanoContas>(`${this.BaseUrl}/${planoContas.id}`, planoContas, {headers:this.headers})
+      .pipe(
+        catchError(this.errorHandler)
+      )
+  }
 
   updatePlanoContas(id: number, planoContas: IPlanoContas): Observable<IPlanoContas> {
-    
-    console.log("PlanoContas no service:", planoContas);
-    return this.httpClient.put<IPlanoContas>(`${this.BaseUrl}/${id}`, planoContas)
+    return this.httpClient.put<IPlanoContas>(`${this.BaseUrl}/${id}`, planoContas, {headers:this.headers})
     .pipe(
       catchError(this.errorHandler)
     )
@@ -74,12 +78,6 @@ export class PlanoContasService {
     }
     return throwError(errorMessage);
  }
-
- httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
-}
 
     
 }

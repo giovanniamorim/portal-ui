@@ -3,7 +3,7 @@
     <c-widget-stat-a
       class="mb-4"
       color="primary"
-      title="Users"
+      title="DMPL"
     >
       <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
         26K
@@ -36,32 +36,19 @@
   </c-col>
   <c-col sm="6" xl="3">
     <c-widget-stat-a
-      [title]="'Income'"
+      [title]="'DMPL'"
       class="mb-4"
-      color="info"
+      color="success"
     >
       <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
-        <span>$6.200</span>
-        <span class="fs-6 fw-normal">
+        <span>R$ 4.235.920,56</span>
+        <!-- <span class="fs-6 fw-normal">
           (40.9% <svg cIcon name="cilArrowTop"></svg>)
-        </span>
+        </span> -->
       </ng-template>
-      <ng-template cTemplateId="widgetActionTemplate">
-        <c-dropdown alignment="end" variant="btn-group">
-          <button [caret]="false" cButton cDropdownToggle class="p-0" color="transparent">
-            <svg cIcon class="text-high-emphasis-inverse" name="cilOptions"></svg>
-          </button>
-          <ul cDropdownMenu>
-            <li><a routerLink="./" cDropdownItem>Action</a></li>
-            <li><a routerLink="./" cDropdownItem>Another action</a></li>
-            <li><a routerLink="./" cDropdownItem>Something else here</a></li>
-            <li><a [disabled]="true" routerLink="./" cDropdownItem>Disabled</a></li>
-          </ul>
-        </c-dropdown>
-      </ng-template>
-      <ng-template cTemplateId="widgetChartTemplate">
+      <!-- <ng-template cTemplateId="widgetChartTemplate">
         <c-chart [data]="data[1]" [options]="options[1]" class="mt-3 mx-3" height="70" type="line"></c-chart>
-      </ng-template>
+      </ng-template> -->
     </c-widget-stat-a>
   </c-col>
   <c-col sm="6" xl="3">

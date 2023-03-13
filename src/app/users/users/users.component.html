@@ -64,9 +64,10 @@
         <th mat-header-cell *matHeaderCellDef >Perfil</th>
         <td mat-cell *matCellDef="let user">
           <span *ngFor="let role of user?.permissoes">
-            <button class="btn btn-danger btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_SUPER_ADMIN'"> Analista de Sistemas </button>
-            <button class="btn btn-warning btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_ADMIN'"> Administrador </button>
-            <button class="btn btn-success btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_SINDICALIZADO'"> Sindicalizado </button>
+            <button class="btn btn-info btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_CREATE'"> Escrita </button>
+            <button class="btn btn-success btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_READ'"> Leitura </button>
+            <button class="btn btn-warning btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_UPDATE'"> Atualização </button>
+            <button class="btn btn-danger btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_DELETE'"> Deleção </button>
           </span>
           
         </td>

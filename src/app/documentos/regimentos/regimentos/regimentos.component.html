@@ -65,7 +65,7 @@
         <th mat-header-cell *matHeaderCellDef >Arquivo</th>
         <td mat-cell *matCellDef="let regimento">
           <span *ngIf="regimento.fileUrl">
-            <a href="{{ regimento.fileUrl }}">
+            <a href="{{ regimento.fileUrl }}" download target="_blank">
               <span class="material-icons">picture_as_pdf</span>
             </a>
           </span>

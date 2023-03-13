@@ -14,6 +14,12 @@
             Bem-vindo. Aqui você acompanha como suas contribuições são
             investidas.
           </p>
+          <div *ngIf="!isValid" class="alert alert-danger" role="alert">
+            {{ message }}
+          </div>
+          <div *ngIf="carregando" class="spinner">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
           <form autocomplete="off" #loginForm="ngForm">
             <div class="form-group first">
               <label for="username">Usuário</label>

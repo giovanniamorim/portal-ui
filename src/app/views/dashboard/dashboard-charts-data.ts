@@ -35,43 +35,50 @@ export class DashboardChartsData {
     // mainChart
     // mainChart
     this.mainChart['elements'] = period === 'Month' ? 12 : 27;
-    this.mainChart['Data1'] = [];
-    this.mainChart['Data2'] = [];
-    this.mainChart['Data3'] = [];
+    this.mainChart['Data1'] = [
+      285557, 121557, 352362
+    ];
+    this.mainChart['Data2'] = [
+      22262, 265660, 12536, 35896, 22698, 68466, 2262, 365660, 62536, 35896, 12698, 18466,
+
+    ];
+    this.mainChart['Data3'] = [
+      32262, 65660, 12536, 15896, 56698, 20466, 32262, 95660, 39536, 55896, 2698, 1466,
+    ];
 
     // generate random values for mainChart
     for (let i = 0; i <= this.mainChart['elements']; i++) {
-      this.mainChart['Data1'].push(this.random(50, 240));
-      this.mainChart['Data2'].push(this.random(20, 160));
-      this.mainChart['Data3'].push(65);
+      // this.mainChart['Data1'].push(this.random(50, 240));
+      // this.mainChart['Data2'].push(this.random(20, 160));
+      // this.mainChart['Data3'].push(65);
     }
 
     let labels: string[] = [];
     if (period === 'Month') {
       labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
+        'Janeiro',
+        'Fevereiro',
+        'Março',
+        'Abril',
+        'Maio',
+        'Junho',
+        'Julho',
+        'Agosto',
+        'Setembro',
+        'Outubro',
+        'Novembro',
+        'Dezembro'
       ];
     } else {
       /* tslint:disable:max-line-length */
       const week = [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday'
+        'Segunda-Feira',
+        'Terça-Feira',
+        'Quarta-Feira',
+        'Quinta-Feira',
+        'Sexta-Feira',
+        'Sábado',
+        'Domingo'
       ];
       labels = week.concat(week, week, week);
     }
@@ -83,38 +90,39 @@ export class DashboardChartsData {
         borderColor: brandInfo,
         pointHoverBackgroundColor: brandInfo,
         borderWidth: 2,
-        fill: true
+        // fill: true
       },
       {
         // brandSuccess
         backgroundColor: 'transparent',
         borderColor: brandSuccess || '#4dbd74',
-        pointHoverBackgroundColor: '#fff'
+        pointHoverBackgroundColor: '#fff',
+        borderWidth: 2,
       },
       {
         // brandDanger
         backgroundColor: 'transparent',
         borderColor: brandDanger || '#f86c6b',
         pointHoverBackgroundColor: brandDanger,
-        borderWidth: 1,
-        borderDash: [8, 5]
+        borderWidth: 2,
+        // borderDash: [8, 5]
       }
     ];
 
     const datasets = [
       {
         data: this.mainChart['Data1'],
-        label: 'Current',
+        label: 'Ano 2023',
         ...colors[0]
       },
       {
         data: this.mainChart['Data2'],
-        label: 'Previous',
+        label: 'Ano 2022',
         ...colors[1]
       },
       {
         data: this.mainChart['Data3'],
-        label: 'BEP',
+        label: 'Ano 2021',
         ...colors[2]
       }
     ];
@@ -145,7 +153,7 @@ export class DashboardChartsData {
         },
         y: {
           beginAtZero: true,
-          max: 250,
+          max: 500000,
           ticks: {
             maxTicksLimit: 5,
             stepSize: Math.ceil(250 / 5)

@@ -26,7 +26,6 @@ export class UsersComponent implements OnInit, AfterViewInit  {
   carregando = false
   totalElements: any
   userRoles: any
-  roleSuperAdmin: string =  'ROLE_PESQUISAR_ASSEMBLEIA'.substring(0, 14)
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -84,7 +83,6 @@ export class UsersComponent implements OnInit, AfterViewInit  {
           )
         .subscribe(
             (users) => {
-              console.log("users: ", users);
                 this.datasource = new MatTableDataSource(users.content) ;
                 this.datasource.sort = this.sort;
                 this.test = users.content
@@ -92,14 +90,12 @@ export class UsersComponent implements OnInit, AfterViewInit  {
                 users.content.forEach((user:any) => {
                   user.permissoes.forEach((role: any) => {
                     this.userRoles = role.descricao;
-                    console.log("role name: ", this.userRoles);
                     
                   });
                   user.roleName = this.userRoles;
                 });
                 
                 this.totalElements = users.totalElements
-                console.log("Usuários:", users);
             },
             (error) => {
                 this.datasource = new MatTableDataSource();
@@ -119,12 +115,12 @@ export class UsersComponent implements OnInit, AfterViewInit  {
     this.datasource.filter = $event.target.value;
   }
 
-    nextPage(event: PageEvent) {
-        const request:any = {};
-        request['page'] = event.pageIndex.toString();
-        request['size'] = event.pageSize.toString();
-        this.listarUsers(request);
-    }
+  nextPage(event: PageEvent) {
+    const request:any = {};
+    request['page'] = event.pageIndex.toString();
+    request['size'] = event.pageSize.toString();
+    this.listarUsers(request);
+  }
 
 
   onDelete(user: IUser){

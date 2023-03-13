@@ -73,11 +73,11 @@ export class BalancosComponent implements OnInit, AfterViewInit  {
         .listAll( request)
         .pipe(take(1))
         .subscribe(
-            (Balanco) => {
-                this.datasource = new MatTableDataSource(Balanco.content) ;
+            (balanco) => {
+                this.datasource = new MatTableDataSource(balanco.content) ;
                 this.datasource.sort = this.sort;
                 this.carregando = false;
-                this.totalElements = Balanco.totalElements
+                this.totalElements = balanco.totalElements
             },
             (error) => {
                 this.datasource = new MatTableDataSource();

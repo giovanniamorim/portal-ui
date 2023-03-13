@@ -12,10 +12,15 @@ import { AuthService } from './../auth.service';
 export class LoginFormComponent implements OnInit {
 
   hide = true;
+  isValid = true
+  carregando = false
+  jwtPayload: any;
+  message: string = ''
+
+  public token  = localStorage.getItem('token');
 
   constructor(
     private auth: AuthService,
-    // private errorHandler: ErrorHandlerService,
     private router: Router
   ) { }
 
@@ -23,12 +28,33 @@ export class LoginFormComponent implements OnInit {
   }
 
   login(usuario: string, senha: string) {
+    this.isValid = true
+    this.carregando = true;
     this.auth.login(usuario, senha)
       .then(() => {
+        this.carregando = false
+        this.temPermissao()
         this.router.navigate(['/dashboard']);
       })
       .catch(erro => {
-        // this.errorHandler.handle(erro);
+        this.isValid = false
+        this.carregando = false
+        this.message = "Usuário ou senha inválido"
+        console.log("Erro ao logar: ", erro);
+        
       });
   }
+
+
+  
+  temPermissao() {
+    if(this.jwtPayload && this.jwtPayload.authorities ){
+      this.isValid = true
+    } else {
+      this.isValid = false
+      this.message = 'Este usuário não tem permissão para acessar a aplicação. Entre em contato com o Sindicato.'
+    }
+  }
+
+
 }

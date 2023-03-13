@@ -32,7 +32,8 @@ export class LancamentoFormComponent implements OnInit  {
   submitted = false;
 
   currentMiddleUrl = environment.apiUrl
-  middleFileUrl = '/api/file/download/'  
+  middleFileUrl = '/upload-dir/'
+  baseUpload = environment.uploadUrl 
   baseUrl = environment.apiUrl
   isDisabled: boolean = true;
   planoContas: IPlanoContas[] = [];
@@ -154,10 +155,8 @@ export class LancamentoFormComponent implements OnInit  {
 
   updateForm(lancamento: ILancamentos){
 
-
-    this.showFile = `${this.baseUrl}${this.middleFileUrl}${this.inicialFileName}${this.currentId}.jpg`
+    this.showFile = `${this.baseUpload}${this.middleFileUrl}${this.inicialFileName}${this.currentId}.jpg`
     let idAtualizando = {id: lancamento.planoConta.id}
-    
     
     this.form.patchValue({
       id: this.currentId,
@@ -169,7 +168,7 @@ export class LancamentoFormComponent implements OnInit  {
       supCaixa: lancamento.supCaixa,
       valor: lancamento.valor,
       obs: lancamento.obs,
-      fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.inicialFileName}${this.currentId}.jpg`
+      fileUrl: `${this.baseUpload}${this.middleFileUrl}${this.inicialFileName}${this.currentId}.jpg`
     })
     
 
@@ -180,7 +179,7 @@ export class LancamentoFormComponent implements OnInit  {
     this.submitted = true;
     
 
-    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.lancamentoFileName}`);
+    this.form.get('fileUrl')?.setValue(`${this.baseUpload}${this.middleFileUrl}${this.lancamentoFileName}`);
 
         
     this.lancamentosService.create(this.form.value)

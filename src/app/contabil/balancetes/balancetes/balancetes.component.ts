@@ -99,11 +99,11 @@ export class BalancetesComponent implements OnInit, AfterViewInit  {
   }
 
   nextPage(event: PageEvent) {
-        const request:any = {};
-        request['page'] = event.pageIndex.toString();
-        request['size'] = event.pageSize.toString();
-        this.listarBalancetes(request);
-    }
+    const request:any = {};
+    request['page'] = event.pageIndex.toString();
+    request['size'] = event.pageSize.toString();
+    this.listarBalancetes(request);
+   }
 
 
   onDelete(balancete: IBalancete){

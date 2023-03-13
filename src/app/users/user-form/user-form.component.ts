@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
-import { IPermissoes, IUser } from '../interfaces/user.interface'
+import { IPermissoes, ISituacao, IUser } from '../interfaces/user.interface';
 import { UserService } from '../user.service';
 
 @Component({
@@ -20,11 +20,22 @@ export class UserFormComponent implements OnInit {
   submitted = false;
   isDisabled: boolean = true;
 
-  permissoes: IPermissoes[] = [
-    { id: 1, nome: 'Analista de Sistemas'}, 
-    { id: 2, nome: 'Administrador'}, 
-    { id: 3, nome: 'Sindicalizado'}
+  listaPermissoes: IPermissoes[] = [
+    { codigo: 1, descricao:'ROLE_CREATE'}, 
+    { codigo: 2, descricao:'ROLE_READ'}, 
+    { codigo: 3, descricao:'ROLE_UPDATE'},
+    { codigo: 4, descricao:'ROLE_DELETE'}
   ]
+
+  situacoes: ISituacao[] = [
+    { id: 1, nome: 'Ativo' },
+    { id: 2, nome: 'Inativo' },
+    { id: 3, nome: 'Aposentado(a)' },
+    { id: 4, nome: 'Pensionista' }
+  ]
+  userList: any;
+  lastItemId: any;
+  addPermitions: IPermissoes[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,17 +44,23 @@ export class UserFormComponent implements OnInit {
     private route: ActivatedRoute,
     ) {
         this.form =  this.formBuilder.group({
-        codigo: [null, [Validators.required]],
-        nome: [null, [Validators.required, Validators.email]],
-        email: [''],
-        senha: [''],
-        permissoes: [null]
+          nome: ['', [Validators.required]],
+          email: ['', [Validators.required, Validators.email]],
+          celular: [''],
+          cpf: [''],
+          rg: [''],
+          rgOrgaoExp: [''],
+          matricula: [''],
+          situacao: [''],
+          senha: [''],
+          permissoes: ['', Validators.required]
       })
 
       if(this.router.url.includes(`/usuarios/editar/`)){
         this.isEditUser = true
         this.currentId =  parseInt(this.router.url.substring(17))
       } else if(this.router.url.includes('/usuarios/novo')) {
+        this.findLastItemId()
         this.isEditUser = false
       }
     }
@@ -66,14 +83,21 @@ export class UserFormComponent implements OnInit {
       codigo: this.currentId,
       nome: user.nome,
       email: user.email,
+      celular: user.celular,
+      cpf: user.cpf,
+      rg: user.rg,
+      rgOrgaoExp: user.rgOrgaoExp,
+      matricula: user.matricula,
+      situacao: user.situacao,
       senha: user.senha,
-      permissoes: user.permissoes
+      permissoes: this.addPermitions
     })
   }
 
   onSubmit(){
     this.submitted = true;
     console.log(this.form.value);
+    this.form.get('permissoes')?.setValue(this.addPermitions)
     this.userService.create(this.form.value)
     .subscribe( 
       res => {
@@ -99,7 +123,10 @@ export class UserFormComponent implements OnInit {
   }
 
   onEdit(){
+    this.form.get('permissoes')?.setValue(this.addPermitions)
+    console.log("valor do form no edit:", this.form.value );
     this.userService.updateUser(this.currentId, this.form.value)
+    
       .subscribe(
         res => {
           Swal.fire({
@@ -127,7 +154,27 @@ export class UserFormComponent implements OnInit {
       )
   }
 
+  findLastItemId(): void {
+    this.userService.listAll({ page: "0", size: "5" })
+      .subscribe({
+        next: (data) => {
+          this.userList = data.content ;
+          this.lastItemId = data.content[0].id + 1;
+        },
+        error: (e) => console.error(e)
+      });
+  }
 
+  onChange(permissao: any) {
+
+    if(this.addPermitions.includes(permissao)){
+      this.addPermitions.splice(this.addPermitions.indexOf(permissao), 1)
+    } else {
+      this.addPermitions.push(permissao)
+    }
+    console.log("Permissoes adicionadas: ", this.addPermitions);
+    
+  }
 
 
 }
