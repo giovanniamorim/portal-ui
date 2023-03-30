@@ -1,6 +1,7 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
+import { FilesService } from '../files/files.service';
 import { FileUploadService } from './file-upload.service';
 
 @Component({
@@ -28,7 +29,9 @@ export class FileUploadComponent implements OnInit, OnChanges {
   isImageType!: boolean;
 
 
-  constructor(private uploadService: FileUploadService) { }
+  constructor(
+    private filesService: FilesService
+    ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log("changes o upload-file componentes", changes);
@@ -39,7 +42,7 @@ export class FileUploadComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.imageInfos = this.uploadService.getFiles();
+    this.imageInfos = this.filesService.getFiles();
 
     // No caso de edição de lançamentos
     if(this.editingId > 0){
@@ -100,20 +103,28 @@ export class FileUploadComponent implements OnInit, OnChanges {
     }
   
     if (file.name === this.fileName) {
-      this.uploadService.upload(file).subscribe(
+      this.filesService.uploadFile(file).subscribe(
         (event: any) => {
-          if (event.type === HttpEventType.UploadProgress) {
-            this.progressInfos[idx].value = Math.round(100 * event.loaded / event.total);
-          } else if (event instanceof HttpResponse) {
-            const msg = 'Arquivo enviado com sucesso!';
-            this.message.push(msg);
+          if(event.message) {
             this.typeMessage = 'success'
-            this.imageInfos = this.uploadService.getFiles();
+            this.message.push(event.message)
+            this.imageInfos = this.filesService.getFiles();
           }
+          
+          // const msg = event.message;
+          
+          // if (event.type === HttpEventType.UploadProgress) {
+          //   this.progressInfos[idx].value = Math.round(100 * event.loaded / event.total);
+          // } else if (event instanceof HttpResponse) {
+          //   this.message.push(msg);
+          //   this.typeMessage = 'success'
+          //   this.imageInfos = this.filesService.getFiles();
+          // }
         },
         (err: any) => {
           this.progressInfos[idx].value = 0;
-          const msg = 'Não foi possivel enviar o arquivo: ' + file.name;
+          console.log("Event erro: ", err);
+          const msg = err.error.message;
           this.typeMessage = 'danger'
           this.message.push(msg);
         });

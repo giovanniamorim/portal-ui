@@ -33,6 +33,7 @@
               <svg cIcon class="me-2" name="cilUser"></svg>
               Usuários
               {{ usuario.jwtPayload.nome | json }}
+
             </a>
           </li>
 
@@ -91,7 +92,12 @@
      
       <li></li>
       <li>
-        <a routerLink="./" cDropdownItem>
+
+        <button (click)="viewPerfil()" mat-icon-button color="primary" aria-label="Editar Usuário">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+        <a routerLink="usuarios/editar/{this.userLogged.codigo}" cDropdownItem>
           <svg cIcon class="me-2" name="cilUser"></svg>
           Perfil
         </a>

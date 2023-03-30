@@ -103,5 +103,15 @@ export const navItems: INavData[] = [
     icon: 'fa fa-balance-scale'
   },
 
+  {
+    name: 'Upload Arquivos',
+    url: '/arquivos',
+    iconComponent: { name: 'cil-speedometer' },
+    badge: {
+      color: 'info',
+      text: 'NEW'
+    }
+  },
+
 
 ];

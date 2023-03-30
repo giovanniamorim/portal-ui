@@ -125,6 +125,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./file-upload/file-upload.module').then((m) => m.FileUploadModule)
       },
+      {
+        path: 'arquivos',
+        loadChildren: () =>
+          import('./files/files.module').then((m) => m.FilesModule)
+      },
       
       
     ]

@@ -46,7 +46,8 @@ export class BalanceteFormComponent implements OnInit {
 
   // Config File
   balanceteFileName: string = 'balancete_';
-  middleFileUrl = '/upload-dir/'
+  currentMiddleUrl = environment.apiUrl
+  middleFileUrl = '/portal-api/api/file/find?name='
   baseUpload = environment.uploadUrl
   baseUrl = environment.apiUrl
   balanceteList: any;

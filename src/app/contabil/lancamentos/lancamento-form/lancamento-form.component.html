@@ -25,7 +25,7 @@
           <h3 class="card-title" *ngIf="!isEditLancamento">Novo Lançamento</h3>
         </div>
         <mat-card-content class="toolbar-card-content">
-          
+         
           <form [formGroup]="form">
             
             <div class="row">
@@ -64,24 +64,22 @@
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
               </div>
-              <ng-container formGroupName="planoConta">
                 <div class="col col-sm-12 col-md-4 col-lg-4">
                   <mat-form-field appearance="fill">
                     <mat-label>Plano de Conta</mat-label>
                     <mat-select
-                      placeholder="Selecione uma conta"
-                      formControlName="id"
+                      placeholder="Selecione uma opção"
+                      formControlName="planoConta"
                     >
                       <mat-option
                         *ngFor="let option of planoContas"
-                        [value]="option.id"
+                        [value]="option.descricao"
                       >
-                        {{ option.nome }}
+                        {{ option.descricao }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
-              </ng-container>
             </div>
             <div class="row">
               <div class="col col-sm-12 col-md-3 col-lg-3">
@@ -202,5 +200,6 @@
         </mat-card-content>
       </mat-card>
     </div>
+
   </div>
 </div>

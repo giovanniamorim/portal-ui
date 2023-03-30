@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ClassToggleService, HeaderComponent } from '@coreui/angular';
 import { AuthService } from 'src/app/seguranca/auth.service';
+import { IUser } from 'src/app/users/interfaces/user.interface';
+import { UserService } from 'src/app/users/user.service';
 
 @Component({
   selector: 'app-default-header',
@@ -18,17 +20,21 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   public newNotifications = new Array(5)
   perfil!: string;
   usuario!:any
+  userLogged!: IUser;
 
   constructor(
     private classToggler: ClassToggleService,
     private auth: AuthService,
+    private userService: UserService,
     private router: Router,
+    private route: ActivatedRoute,
     ) {
     super();
     
   }
   ngOnInit(): void {
     this.findPerfil()
+    this.findUser()
   }
 
   logout() {
@@ -49,8 +55,19 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     if(!this.auth.temPermissao('ROLE_CREATE')){
       this.perfil = 'SINDICALIZADO'
     }
+  }
 
-    
+  findUser(){
+    console.log("user_name: ", this.auth.jwtPayload.user_name);
+
+    this.userService.findByEmail(this.auth.jwtPayload.user_name)
+        .subscribe((user: IUser) => this.userLogged = user);
+    console.log("User Logged: ", this.userLogged);
     
   }
+
+  viewPerfil(){
+    this.router.navigate(['editar', this.userLogged.codigo], {relativeTo: this.route})
+  }
+
 }

@@ -8,8 +8,7 @@
     >
       <mat-icon>add_circle_outline</mat-icon>
       Novo Lançamento
-    </button>
-    
+    </button>   
     <h5 class="header-title">Lançamentos - {{ tipoLancamentoPage === 'receitas' ? 'Receitas' : 'Despesas' }}</h5>
     <h6 class="header-subtitle mb-1">Lista de registros de lançamentos do tipo {{ tipoLancamentoPage === 'receitas' ? 'receitas' : 'despesas' }}</h6>
   </div>
@@ -55,7 +54,7 @@
       <ng-container matColumnDef="planoConta">
         <th mat-header-cell *matHeaderCellDef mat-sort-header >Conta</th>
         <td mat-cell *matCellDef="let lancamento">
-          {{ lancamento.planoConta.nome }}
+          {{ lancamento.planoConta }}
         </td>
       </ng-container>
 
@@ -91,13 +90,13 @@
         <th mat-header-cell *matHeaderCellDef >Arquivo</th>
         <td mat-cell *matCellDef="let lancamento">
           <span *ngIf="lancamento.fileUrl">
-            <a href="{{ lancamento.fileUrl }}">
+            
               <img src="{{ lancamento.fileUrl }}" style="max-width:30px;cursor:pointer"
                 (click)="onClick(lancamento)"
                 class="modal-hover-opacity"
                 data-toggle="modal" data-target="#imageModal"
               >
-            </a>
+           
           </span>
         </td>
       </ng-container>
@@ -143,8 +142,12 @@
         <img src="{{imgSrc}}" class="image-modal" />
       </div>
       <div class="modal-footer">
+        <a href="{{ imgSrc }}" download>
+          <button type="button" class="btn btn-primary">Download</button>
+        </a>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
       </div>
+      
     </div>
   </div>
 </div>

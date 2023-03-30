@@ -22,7 +22,7 @@ export class BalancetesService {
   constructor(private httpClient: HttpClient) {}
 
   listAll(request: any): Observable<any> {
-    const params = { request }
+    const params =  request 
     return this.httpClient.get<IBalancete[]>(`${this.BaseUrl}`, {
       headers: this.headers,
       params,

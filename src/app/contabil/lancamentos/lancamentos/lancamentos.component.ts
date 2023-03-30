@@ -6,6 +6,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { FilesService } from 'src/app/files/files.service';
 import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
 
@@ -32,10 +33,12 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
   tipoLancamentoPage!: string;
   pathUrl!: string;
   perfil!: string;
-
+  imageUrl: any;
+  listImages: any;
   
   constructor(
     private lancamentoService: LancamentosService, 
+    private filesService: FilesService,
     private router: Router,
     private route: ActivatedRoute,
     private _liveAnnouncer: LiveAnnouncer,
@@ -53,7 +56,8 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
     } else {
       this.pathUrl = '/lancamentos/despesas'
     }
-    this.findRoles()
+    this.findRoles();
+    this.getImageList()
 
     
   }
@@ -91,6 +95,8 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
   }
 
   public listarLancamentos = (request:any) => {
+
+    this.getImageList();
       this.carregando = true;
     
     if(this.tipoLancamentoPage === 'receitas'){
@@ -197,12 +203,20 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
     console.log("Image: ", lancamento);
     this.imgId = lancamento.id
     this.imgSrc = lancamento.fileUrl
+    console.log("this.imageUrl: ", this.imageUrl);
+    
   }
 
   findRoles(){
     if(!this.auth.temPermissao('ROLE_CREATE')){
       this.perfil = 'SINDICALIZADO'
     }
+  }
+
+  getImageList() {
+    this.filesService.getFiles().subscribe((i: any) => this.listImages = i) ;
+    console.log("Lista de imagens no lanlamentos: ", this.listImages);
+    
   }
 
 }

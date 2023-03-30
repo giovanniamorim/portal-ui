@@ -33,18 +33,21 @@ export class InventarioFormComponent implements OnInit {
   lastItemId!: number;
 
   departamentos: IDepartamentos[] = [
-    { id: 1, nome: 'Cozinha' },
+    { id: 1, nome: 'Corredor' },
     { id: 2, nome: 'Secretaria' },
-    { id: 3, nome: 'Banheiros' },
-    { id: 4, nome: 'Diretoria' }
+    { id: 3, nome: 'Presidência' },
+    { id: 4, nome: 'Administrativo/Financeiro' },
+    { id: 5, nome: 'Comunicação' },
+    { id: 6, nome: 'Vice-Presidencia/Dir. Aposentados' },
+    { id: 7, nome: 'Jurídico' },
+    { id: 8, nome: 'Informática' },
+    { id: 9, nome: 'Cozinha' }
   ]
 
   estadosConservacao: IEstadoConservacao[] = [
       { id: 1, nome: 'Novo'}, 
       { id: 2, nome: 'Bom'}, 
-      { id: 3, nome: 'Regular'},
-      { id: 4, nome: 'Péssimo'},
-      { id: 5, nome: 'Sucata'}
+      { id: 3, nome: 'Recuperável'}
   ]
  
 

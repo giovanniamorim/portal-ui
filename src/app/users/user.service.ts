@@ -56,6 +56,11 @@ export class UserService {
     })
   }
 
+  findByEmail(email: string) {
+    return this.httpClient.get<IUser>(`${this.BaseUrl}/perfil?email=${email}`)
+  }
+  
+
   update(usuario: IUser) {
     return this.httpClient
       .put<IUser>(`${this.BaseUrl}/${usuario.codigo}`, usuario, {
