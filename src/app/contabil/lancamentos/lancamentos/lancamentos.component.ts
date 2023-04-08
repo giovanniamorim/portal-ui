@@ -25,6 +25,7 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
   carregando = false
   totalElements: any
   imgSrc!: string;
+  showFirstLastButtons = true
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

@@ -93,6 +93,7 @@
     </table>
     <mat-paginator 
         [length]="totalElements"
+        [showFirstLastButtons]="showFirstLastButtons"
         [pageSize]="5"
         [pageSizeOptions]="[5, 10, 25, 100]"
         (page)="nextPage($event)"

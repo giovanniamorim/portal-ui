@@ -47,8 +47,7 @@ export class BalanceteFormComponent implements OnInit {
   // Config File
   balanceteFileName: string = 'balancete_';
   currentMiddleUrl = environment.apiUrl
-  middleFileUrl = '/portal-api/api/file/find?name='
-  baseUpload = environment.uploadUrl
+  middleFileUrl = '/api/file/find?name='
   baseUrl = environment.apiUrl
   balanceteList: any;
   lastItemId: any;
@@ -99,7 +98,7 @@ export class BalanceteFormComponent implements OnInit {
       ano: balancete.ano,
       mes: balancete.mes,
       descricao: balancete.descricao,
-      fileUrl: `${this.baseUpload}${this.middleFileUrl}${this.balanceteFileName}`
+      fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.balanceteFileName}`
     })
 
   }
@@ -107,7 +106,7 @@ export class BalanceteFormComponent implements OnInit {
   onSubmit(){
     
     this.submitted = true;
-    this.form.get('fileUrl')?.setValue(`${this.baseUpload}${this.middleFileUrl}${this.balanceteFileName}`);
+    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.balanceteFileName}`);
     this.balancetesService.create(this.form.value)
     .subscribe( 
       res => {

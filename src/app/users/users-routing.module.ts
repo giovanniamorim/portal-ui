@@ -6,21 +6,34 @@ import { UserFormComponent } from './user-form/user-form.component';
 import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [
-  { 
-    path: "", component: UsersComponent,
-    canActivate: [ AuthGuard],
-    data: { roles: ['ROLE_CREATE']}
-   },
-  { 
-    path: "novo", component: UserFormComponent,
-    canActivate: [ AuthGuard],
-    data: { roles: ['ROLE_CREATE']}
-   },
-  { 
-    path: "editar/:id", component: UserFormComponent,
-    canActivate: [ AuthGuard],
-    data: { roles: ['ROLE_UPDATE']}
-   },
+  {
+    path: '',
+    data: {
+      title: 'Acesso',
+    },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'usuarios',
+      },
+      { 
+        path: "", component: UsersComponent,
+        canActivate: [ AuthGuard],
+        data: { title: 'Usuários', roles: ['ROLE_CREATE']}
+      },
+      { 
+        path: "novo", component: UserFormComponent,
+        canActivate: [ AuthGuard],
+        data: { title: 'Novo Usuário', roles: ['ROLE_CREATE']}
+      },
+      { 
+        path: "editar/:id", component: UserFormComponent,
+        canActivate: [ AuthGuard],
+        data: { title: 'Editar Usuário', roles: ['ROLE_UPDATE']}
+      },
+      ],
+    }
 
 ];
 

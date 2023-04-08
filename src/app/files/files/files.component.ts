@@ -42,6 +42,7 @@ export class FilesComponent implements OnInit, AfterViewInit {
   perfil!: string;
   imgId: any;
   imageUrl: any;
+  showFirstLastButtons = true
 
 
   constructor(

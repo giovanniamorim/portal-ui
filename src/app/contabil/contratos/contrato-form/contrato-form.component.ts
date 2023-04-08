@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
-
-import { ContratosService } from '../contratos.service';
-import { environment } from '../../../../environments/environment';
+import { environment } from 'src/environments/environment';
 import { IContrato } from '../contratos.interface';
+import { ContratosService } from '../contratos.service';
 
 @Component({
   selector: 'app-contrato-form',
@@ -27,12 +26,11 @@ export class ContratoFormComponent implements OnInit {
   isDisabled: boolean = true;
 
   // Config File
-  contratoFileName: string = 'contrato_';
-  middleFileUrl = '/api/file/download/'  
+middleFileUrl = '/api/file/find?name='  
   baseUrl = environment.apiUrl
+  contratoFileName: string = 'contrato_';
   contratoList: any;
   lastItemId: any;
-
 
   constructor(
     private formBuilder: FormBuilder,
@@ -56,11 +54,11 @@ export class ContratoFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if(this.router.url.includes(`/contratos/editar/`)){
+    if(this.router.url.includes(`/documentos/contratos/editar/`)){
       this.isEditContrato = true
-      this.currentId =  parseInt(this.router.url.substring(18))
+      this.currentId =  parseInt(this.router.url.substring(29))
       this.contratoFileName = `contrato_${this.currentId}.pdf`
-    } else if(this.router.url.includes('/contratos/novo')) {
+    } else if(this.router.url.includes('/documentos/contratos/novo')) {
       this.findLastItemId()
       this.isEditContrato = false
     }
@@ -103,7 +101,7 @@ export class ContratoFormComponent implements OnInit {
           showConfirmButton: false,
           timer: 2000
         }) 
-        this.router.navigate(['./contratos'])
+        this.router.navigate(['./documentos/contratos'])
       },
       err => {
         Swal.fire({

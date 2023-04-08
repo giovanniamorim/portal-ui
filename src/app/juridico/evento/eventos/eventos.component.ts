@@ -24,6 +24,7 @@ export class EventosComponent implements OnInit, AfterViewInit  {
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
+  showFirstLastButtons = true
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -77,7 +78,6 @@ export class EventosComponent implements OnInit, AfterViewInit  {
         .pipe(take(1))
         .subscribe(
             (eventos) => {
-                console.log("Eventos: ", eventos);
                 this.datasource = new MatTableDataSource(eventos.content) ;
                 this.datasource.sort = this.sort;
                 this.carregando = false;

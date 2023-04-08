@@ -6,21 +6,34 @@ import { BalancoFormComponent } from './balanco-form/balanco-form.component';
 import { BalancosComponent } from './balancos/balancos.component';
 
 const routes: Routes = [
-  { 
-    path: "", component: BalancosComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ROLE_READ']}
-   },
-  { 
-    path: "novo", component: BalancoFormComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ROLE_CREATE']}
-   },
-  { 
-    path: "editar/:id", component: BalancoFormComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ROLE_UPDATE']}
-   },
+  {
+    path: '',
+    data: {
+      title: 'Contábil',
+    },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'balancos',
+      },
+      { 
+        path: '', component: BalancosComponent,
+        canActivate: [AuthGuard],
+        data: {title: 'Balanços', roles: ['ROLE_READ']}
+      },
+      { 
+        path: "novo", component: BalancoFormComponent,
+        canActivate: [AuthGuard],
+        data: {title: 'Novo Balanço', roles: ['ROLE_CREATE']}
+      },
+      { 
+        path: "editar/:id", component: BalancoFormComponent,
+        canActivate: [AuthGuard],
+        data: {title: 'Editar Balanço', roles: ['ROLE_UPDATE']}
+      }
+    ]
+  }
 
 ];
 

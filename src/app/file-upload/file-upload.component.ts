@@ -1,8 +1,8 @@
-import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
+
 import { FilesService } from '../files/files.service';
-import { FileUploadService } from './file-upload.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -27,6 +27,8 @@ export class FileUploadComponent implements OnInit, OnChanges {
   typeMessage!: string;
   showTopMessage: boolean = false
   isImageType!: boolean;
+  arquivo!: string;
+  fileId!: any;
 
 
   constructor(
@@ -34,7 +36,6 @@ export class FileUploadComponent implements OnInit, OnChanges {
     ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("changes o upload-file componentes", changes);
     this.showTopMessage = changes.fileName.currentValue.startsWith('undefine') ? false : true;
     this.fileName  = changes.fileName.currentValue
     this.fileName.includes('undefined') ? this.showTopMessage = false : this.showTopMessage = true;
@@ -43,51 +44,45 @@ export class FileUploadComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.imageInfos = this.filesService.getFiles();
-
     // No caso de edição de lançamentos
     if(this.editingId > 0){
       if(this.typeLancamento === 'receitas'){
         this.fileName = "receita_" + this.editingId + ".jpg"
       }
-  
       if(this.typeLancamento === 'despesas'){
         this.fileName = "despesa_" + this.editingId + ".jpg"
       }
     }
-    
   }
 
 
   selectFiles(event: any): void {
+    
     this.message = [];
     this.progressInfos = [];
     this.selectedFileNames = [];
     this.selectedFiles = event.target.files;
-  
     this.previews = [];
 
     if (this.selectedFiles && this.selectedFiles[0]) {
       const numberOfFiles = this.selectedFiles.length;
       for (let i = 0; i < numberOfFiles; i++) {
         const reader = new FileReader();
-  
         reader.onload = (e: any) => {
           this.previews.push(e.target.result);
         };
-        
         reader.readAsDataURL(this.selectedFiles[i]);
         this.selectedFileNames.push(this.selectedFiles[i].name);
         if(this.selectedFiles[i].name.includes('jpg')){
           this.isImageType = true
         }
-        console.log("target.result file-upload", this.selectedFiles[i].name);
+        this.arquivo = this.selectedFiles[i].name
       }
     }
   }
 
   uploadFiles(): void {
     this.message = [];
-  
     if (this.selectedFiles) {
       for (let i = 0; i < this.selectedFiles.length; i++) {
         this.upload(i, this.selectedFiles[i]);
@@ -104,10 +99,10 @@ export class FileUploadComponent implements OnInit, OnChanges {
   
     if (file.name === this.fileName) {
       this.filesService.uploadFile(file).subscribe(
-        (event: any) => {
-          if(event.message) {
+        (res: any) => {
+          if(res.message) {
             this.typeMessage = 'success'
-            this.message.push(event.message)
+            this.message.push(res.message)
             this.imageInfos = this.filesService.getFiles();
           }
           
@@ -121,12 +116,45 @@ export class FileUploadComponent implements OnInit, OnChanges {
           //   this.imageInfos = this.filesService.getFiles();
           // }
         },
+
         (err: any) => {
-          this.progressInfos[idx].value = 0;
-          console.log("Event erro: ", err);
-          const msg = err.error.message;
-          this.typeMessage = 'danger'
-          this.message.push(msg);
+          // this.progressInfos[idx].value = 0;
+          // const msg = err.error.message;
+          // this.typeMessage = 'danger'
+          // this.message.push(msg);
+
+          Swal.fire({
+            title: 'Substituir arquivo?',
+            text: err.error.message,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, substitua o arquivo!'
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              // Identificar e deletar o arquivo
+              this.filesService.findId(this.arquivo).subscribe(res => {
+                this.fileId = res;
+                this.filesService.deleteById(this.fileId).subscribe((res:any) => {
+                  this.upload(idx, file) ;
+                    Swal.fire({
+                      position: 'top-end',
+                      icon: 'success',
+                      title: 'Arquivo atualizado com sucesso! \n Salve o seu registro.',
+                      showConfirmButton: false,
+                      timer: 2000
+                    })
+                });
+              })
+
+            } else if (result.isDenied) {
+              Swal.fire('Ação cancelada', '', 'info')
+            }
+            
+          })
+
         });
     } else {
      
@@ -151,8 +179,6 @@ export class FileUploadComponent implements OnInit, OnChanges {
   
     this.previews = [];
   }
-  
-  
   
 
 }

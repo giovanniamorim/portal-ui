@@ -6,21 +6,34 @@ import { ExecucaoFormComponent } from './execucao-form/execucao-form.component';
 import { ExecucoesComponent } from './execucoes/execucoes.component';
 
 const routes: Routes = [
-  { 
-    path: "", component: ExecucoesComponent,
-    canActivate: [ AuthGuard ],
-    data: { roles: ['ROLE_READ']}
-   },
-  { 
-    path: "novo", component: ExecucaoFormComponent,
-    canActivate: [ AuthGuard ],
-    data: { roles: ['ROLE_CREATE']}
-   },
-  { 
-    path: "editar/:id", component: ExecucaoFormComponent,
-    canActivate: [ AuthGuard ],
-    data: { roles: ['ROLE_UPDATE']}
-   },
+  {
+    path: '',
+    data: {
+      title: 'Contábil',
+    },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'execucoes',
+      },
+      { 
+        path: "", component: ExecucoesComponent,
+        canActivate: [ AuthGuard ],
+        data: { title: 'Execuções', roles: ['ROLE_READ']}
+      },
+      { 
+        path: "novo", component: ExecucaoFormComponent,
+        canActivate: [ AuthGuard ],
+        data: { title: 'Nova Execução', roles: ['ROLE_CREATE']}
+      },
+      { 
+        path: "editar/:id", component: ExecucaoFormComponent,
+        canActivate: [ AuthGuard ],
+        data: { title: 'Editar Execução', roles: ['ROLE_UPDATE']}
+      },
+    ],
+  },
 
 ];
 

@@ -23,6 +23,7 @@ export class ExecucoesComponent implements OnInit, AfterViewInit  {
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
+  showFirstLastButtons = true
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

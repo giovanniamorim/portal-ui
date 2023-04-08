@@ -24,6 +24,7 @@ export class AssembleiasComponent implements OnInit, AfterViewInit  {
   carregando = false
   totalElements: any
   pathUrl!: string;
+  showFirstLastButtons = true;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

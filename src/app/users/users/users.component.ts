@@ -26,6 +26,7 @@ export class UsersComponent implements OnInit, AfterViewInit  {
   carregando = false
   totalElements: any
   userRoles: any
+  showFirstLastButtons = true
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

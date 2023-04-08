@@ -30,7 +30,7 @@ export class AcordoFormComponent implements OnInit {
 
   // Config File
   acordoFileName: string = 'acordo_';
-  middleFileUrl = '/api/file/download/'  
+  middleFileUrl = '/api/file/find?name='   
   baseUrl = environment.apiUrl
   acordoList: any;
   lastItemId: any;

@@ -25,6 +25,7 @@ export class InventarioComponent implements OnInit, AfterViewInit  {
   totalElements: any
   imgId: any;
   imgSrc!: string;
+  showFirstLastButtons = true;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

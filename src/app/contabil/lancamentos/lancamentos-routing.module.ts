@@ -9,31 +9,42 @@ import { LancamentosComponent } from './lancamentos/lancamentos.component';
 
 
 const routes: Routes = [
+  {
+    path: '',
+    data: { title: 'Lançamentos'},
+    children: [
+        {
+          path: '',
+          pathMatch: 'full',
+          redirectTo: 'despesas',
+        },
         { 
           path: "novo", component: LancamentoFormComponent,
           canActivate: [AuthGuard],
-          data: { roles: ['ROLE_CREATE'] }
+          data: { roles: ['ROLE_CREATE'], title: 'Novo Lançamento' }
          },
         { 
           path: "receitas", component: LancamentosComponent,
           canActivate: [AuthGuard],
-          data: { roles: ['ROLE_READ'] }
+          data: { roles: ['ROLE_READ'], title: 'Receitas' }
          },
         { 
           path: "despesas", component: LancamentosComponent,
           canActivate: [AuthGuard],
-          data: { roles: ['ROLE_READ'] }
+          data: { roles: ['ROLE_READ'], title: 'Despesas' }
          },
         { 
           path: "receitas/editar/:id", component: LancamentoFormComponent,
           canActivate: [AuthGuard],
-          data: { roles: ['ROLE_UPDATE'] } 
+          data: { roles: ['ROLE_UPDATE'], title: 'Editando Receita' } 
         },
         { 
           path: "despesas/editar/:id", component: LancamentoFormComponent,
           canActivate: [AuthGuard],
-          data: { roles: ['ROLE_UPDATE'] } 
+          data: { roles: ['ROLE_UPDATE'], title: 'Editando Despesa' } 
         }
+      ]
+    }
 ]
 
 @NgModule({

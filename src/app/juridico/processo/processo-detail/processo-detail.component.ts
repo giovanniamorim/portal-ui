@@ -3,7 +3,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, take } from 'rxjs';
 import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
 
@@ -32,6 +32,8 @@ export interface Response {
   styleUrls: ['./processo-detail.component.scss'],
 })
 export class ProcessoDetailComponent implements AfterViewInit, OnInit {
+
+  displayedColumns: string[] = ['id', 'nome', 'data', 'descricao', 'fileUrl', 'actions'];
  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -42,6 +44,7 @@ export class ProcessoDetailComponent implements AfterViewInit, OnInit {
   datasource = new MatTableDataSource();
   eventosFiltrados: any[] = [];
   perfil!: string;
+  showFirstLastButtons = true
 
   constructor(
     private processoService: ProcessoService,
@@ -65,6 +68,7 @@ export class ProcessoDetailComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit() {
+    this.listarEventos({ page: "0", size: "5" })
     this.datasource.sort = this.sort;
   }
 
@@ -77,42 +81,42 @@ export class ProcessoDetailComponent implements AfterViewInit, OnInit {
     })
   }
 
-  // public listarProcessos = (request:any) => {
-  //   this.carregando = true;
-  //   this.processoService
-  //       .listAll( request)
-  //       .pipe(
-  //         )
-  //         .subscribe(
-  //           (processos) => {
-                        
-  //               this.datasource = new MatTableDataSource(processos.content.forEach((element:any) => {
-  //                 this.processoService.listAll(element.id).subscribe(
-  //                   (res:any) => {
-  //                     element.eventos = res.content.forEach((item:any) => {
-  //                       this.eventosFiltrados = item.eventos
-  //                       console.log("item res", item.eventos);
-  //                     })
-  //                   }
-  //                 )
-                  
-  //               }));
-  //               this.datasource.sort = this.sort;
-  //               this.carregando = false;
-  //               this.totalElements = processos.totalElements
-  //           },
-  //           (error) => {
-  //               this.datasource = new MatTableDataSource();
-  //               this.carregando = false;
-  //               Swal.fire({
-  //                 title: 'Error!',
-  //                 text: error,
-  //                 icon: 'error',
-  //                 confirmButtonText: 'Ok'
-  //               })
-  //           }
-  //       );
-  // }
+  meusEventos() {
+    this.processo.eventos.subscribe((eventos:any) => {
+                this.datasource = new MatTableDataSource(eventos.content) ;
+                this.datasource.sort = this.sort;
+                this.carregando = false;
+                this.totalElements = eventos.totalElements
+    })
+  }
+
+  public listarEventos = (request:any) => {
+    this.carregando = true;
+    this.eventoService
+        .listAll( request)
+        .pipe(take(1))
+        .subscribe(
+            (eventos) => {
+                this.datasource = new MatTableDataSource(eventos.content) ;
+                this.datasource.sort = this.sort;
+                this.carregando = false;
+                this.totalElements = eventos.totalElements
+                
+            },
+            (error) => {
+                this.datasource = new MatTableDataSource();
+                this.carregando = false;
+                console.log("Erro ao listar itens");
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'Erro ao listar itens',
+                  icon: 'error',
+                  confirmButtonText: 'Ok'
+                })
+            }
+        );
+  }
+
 
   onDelete(Processo: IProcesso){
     Swal.fire({
@@ -184,6 +188,10 @@ onDeleteEvento(evento: IEvento){
     this.router.navigate(['/juridico/eventos/editar', evento.id])
   }
 
+  public addEvento() {
+    this.router.navigate(['novo'], {relativeTo: this.route})
+  }
+
   searchEventos(){
       // Declare variables
       let input:any, filter, table:any, tr, td, i, txtValue;
@@ -212,7 +220,7 @@ onDeleteEvento(evento: IEvento){
     }
 
     findRoles(){
-      if(this.auth.temPermissao('ROLE_READ')){
+      if(!this.auth.temPermissao('ROLE_CREATE')){
         this.perfil = 'SINDICALIZADO'
       }
     }

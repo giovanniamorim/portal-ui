@@ -25,6 +25,7 @@ import { ModalImageComponent } from '../lancamentos/modal/modal-image.component'
 import { LancamentoFormComponent } from './lancamento-form/lancamento-form.component';
 import { LancamentosRoutingModule } from './lancamentos-routing.module';
 import { LancamentosComponent } from './lancamentos/lancamentos.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete'; 
 
 
 
@@ -42,8 +43,6 @@ import { LancamentosComponent } from './lancamentos/lancamentos.component';
         MatToolbarModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
-        MatButtonModule,
-        MatIconModule,
         MatGridListModule,
         MatInputModule,
         MatFormFieldModule,
@@ -56,7 +55,10 @@ import { LancamentosComponent } from './lancamentos/lancamentos.component';
         MatDatepickerModule,
         SharedModule,
         NgxCurrencyModule,
-        FileUploadModule
+        MatIconModule,
+        FileUploadModule,
+        MatButtonModule,
+        MatAutocompleteModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

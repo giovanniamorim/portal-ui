@@ -22,7 +22,6 @@ export class BalancoService {
   constructor(private httpClient: HttpClient) {}
 
   listAll(request: any): Observable<any> {
-    console.log("Headesr no balanço1: ", this.headers);
     const params = request
     return this.httpClient.get<IBalanco[]>(`${this.BaseUrl}`, {
       headers: this.headers,
@@ -31,7 +30,6 @@ export class BalancoService {
   }
 
   getAll(): Observable<any> {
-    console.log("Headesr no balanço2: ", this.headers);
     return this.httpClient.get<IBalanco[]>(`${this.BaseUrl}/todos`, {
       headers: this.headers,
     })
@@ -50,8 +48,6 @@ export class BalancoService {
   }
 
   loadById(id: number) {
-    console.log("Headesr no balanço3: ", this.headers);
-    
     return this.httpClient.get<IBalanco>(`${this.BaseUrl}/${id}`, {
       headers: this.headers,
     })

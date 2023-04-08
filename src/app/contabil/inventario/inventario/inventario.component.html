@@ -109,6 +109,7 @@
     </table>
     <mat-paginator 
         [length]="totalElements"
+        [showFirstLastButtons]="showFirstLastButtons"
         [pageSize]="5"
         [pageSizeOptions]="[5, 10, 25, 100]"
         (page)="nextPage($event)"
@@ -131,10 +132,11 @@
       <div class="modal-header">
         <h5 class="modal-title">Item do Inventário de ID: {{imgId}} </h5>
       </div>
-      <div class="modal-body">
-        <img src="{{imgSrc}}" class="image-modal" />
-      </div>
+
       <div class="modal-footer">
+        <a href="{{ imgSrc }}" download>
+          <button type="button" class="btn btn-primary">Download</button>
+        </a>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
       </div>
     </div>

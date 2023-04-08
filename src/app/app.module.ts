@@ -38,6 +38,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
 import { SegurancaModule } from './seguranca/seguranca.module';
+import { MatIconModule } from '@angular/material/icon';
 
 // Import routing module
 // Import app component
@@ -87,6 +88,7 @@ const APP_CONTAINERS = [
     MatToolbarModule,
     MatButtonModule,
     MatInputModule,
+    MatIconModule,
     MatFormFieldModule,
     MatProgressBarModule
   ],

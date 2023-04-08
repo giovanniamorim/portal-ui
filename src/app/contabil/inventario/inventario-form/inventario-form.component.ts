@@ -27,7 +27,7 @@ export class InventarioFormComponent implements OnInit {
   
   // Config File
   inventarioFileName: string = 'inventario_';
-  middleFileUrl = '/api/file/download/'  
+  middleFileUrl = '/api/file/find?name='  
   baseUrl = environment.apiUrl
   invantarioList: any;
   lastItemId!: number;
@@ -57,9 +57,6 @@ export class InventarioFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     ) {
-
-      this.findLastItemId()
-
         this.form =  this.formBuilder.group({
           dataAquisicao: [new FormControl(new Date()), [Validators.required]],
           departamento: [''],
@@ -77,12 +74,12 @@ export class InventarioFormComponent implements OnInit {
   ngOnInit(): void {
 
     if(this.router.url.includes(`/inventario/editar/`)){
-      this.isEditInventario= true
+      this.isEditInventario = true
       this.currentId =  parseInt(this.router.url.substring(19))
       this.inventarioFileName = `inventario_${this.currentId}.jpg`
     } else if(this.router.url.includes('/inventario/novo')) {
       this.findLastItemId()
-      this.isEditInventario= false
+      this.isEditInventario = false
     }
 
     this.route.params.subscribe(
@@ -138,9 +135,7 @@ export class InventarioFormComponent implements OnInit {
   }
 
   onEdit(){
-    console.log("Editando: ", this.form.value);
     this.inventarioService.updateInventario(this.currentId, this.form.value)
-    
       .subscribe(
         res => {
           Swal.fire({
@@ -149,7 +144,6 @@ export class InventarioFormComponent implements OnInit {
             title: 'Balancete atualizado com sucesso!',
             showConfirmButton: false,
             timer: 2000
-            
           })
           this.router.navigate(['./inventario'])
         },
@@ -174,8 +168,5 @@ export class InventarioFormComponent implements OnInit {
         error: (e) => console.error(e)
       });
   }
-
-
-
 
 }

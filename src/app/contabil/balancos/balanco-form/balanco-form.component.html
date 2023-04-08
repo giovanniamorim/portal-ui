@@ -16,7 +16,7 @@
           <span class="material-icons card-title-icon">edit_attributes</span>     
           <h3 class="card-title" *ngIf="isEditBalanco">
             Editando Balanço. ID: {{currentId}}</h3>
-            <h3 class="card-title" *ngIf="!isEditBalanco">Novo Balanço </h3>
+            <h3 class="card-title" *ngIf="!isEditBalanco">Novo Balanço {{ isEditBalanco }} </h3>
           </div>
 
         <mat-card-content class="toolbar-card-content">
@@ -62,7 +62,8 @@
             Salvar Balanço
           </button>
 
-          <button  *ngIf="isEditBalanco"
+          <button
+            *ngIf="isEditBalanco"
             class="header-button" 
             mat-raised-button color="third"
             (click)="onEdit()"

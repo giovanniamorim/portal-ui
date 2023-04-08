@@ -101,17 +101,7 @@ export const navItems: INavData[] = [
     name: 'Processos',
     url: '/juridico/processos',
     icon: 'fa fa-balance-scale'
-  },
-
-  {
-    name: 'Upload Arquivos',
-    url: '/arquivos',
-    iconComponent: { name: 'cil-speedometer' },
-    badge: {
-      color: 'info',
-      text: 'NEW'
-    }
-  },
+  }
 
 
 ];

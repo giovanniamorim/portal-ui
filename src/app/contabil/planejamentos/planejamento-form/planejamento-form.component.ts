@@ -26,7 +26,7 @@ export class PlanejamentoFormComponent implements OnInit {
 
   // Config File
   planejamentoFileName: string = 'planejamento_';
-  middleFileUrl = '/api/file/download/'  
+  middleFileUrl = '/api/file/find?name='  
   baseUrl = environment.apiUrl
   planejamentoList: any;
   lastItemId: any;
@@ -82,7 +82,7 @@ export class PlanejamentoFormComponent implements OnInit {
 
   onSubmit(){
     this.submitted = true;
-    console.log(this.form.value);
+    this.form.get('fileUrl')?.setValue(`${this.baseUrl}${this.middleFileUrl}${this.planejamentoFileName}`);
     this.planejamentoService.create(this.form.value)
     .subscribe( 
       res => {

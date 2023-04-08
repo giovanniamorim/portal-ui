@@ -1,6 +1,6 @@
 import { CommonModule, registerLocaleData } from '@angular/common';
 import ptBr from '@angular/common/locales/pt';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -26,6 +26,7 @@ import { ProcessoDetailComponent } from './processo-detail/processo-detail.compo
 import { ProcessoFormComponent } from './processo-form/processo-form.component';
 import { ProcessoRoutingModule } from './processo-routing.module';
 import { ProcessosComponent } from './processos/processos.component';
+import { EventoModule } from '../evento/evento.module';
 
 registerLocaleData(ptBr);
 
@@ -56,8 +57,10 @@ registerLocaleData(ptBr);
         MatDatepickerModule,
         MatSelectModule,
         MatListModule,
+        EventoModule,
         FileUploadModule
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [
         { provide: MAT_DATE_LOCALE, useValue: 'pt-BR',},
         { provide: LOCALE_ID, useValue: 'pt' },

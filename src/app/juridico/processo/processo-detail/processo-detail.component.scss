@@ -215,6 +215,51 @@ table {
       position: absolute;
       top: 50%;
     }
+
+    // CONFIG COLLUNS
+    .mat-column-id {
+      word-wrap: normal !important;
+      white-space: unset !important;
+      flex: 0 0 28% !important;
+      width: 5% !important;
+    }
+
+    .mat-column-nome {
+      word-wrap: normal !important;
+      white-space: unset !important;
+      flex: 0 0 28% !important;
+      width: 15% !important;
+    }
+
+    .mat-column-data {
+      word-wrap: normal !important;
+      white-space: unset !important;
+      flex: 0 0 28% !important;
+      width: 10% !important;
+    }
+
+    .mat-column-descricao {
+      word-wrap: normal !important;
+      white-space: unset !important;
+      flex: 0 0 28% !important;
+      width: 50% !important;
+    }
+
+    .mat-column-fileUrl {
+      word-wrap: break-word !important;
+      white-space: unset !important;
+      flex: 0 0 28% !important;
+      width: 10% !important;
+    }
+  
+    .mat-column-actions {
+      word-wrap: break-word !important;
+      white-space: unset !important;
+      flex: 0 0 28% !important;
+      width: 10% !important;
+    }
+
+
     /*============ colors ========*/
     .alert.alert-success .icon,
     .alert.alert-success .icon:after {

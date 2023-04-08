@@ -29,7 +29,7 @@ export class RegimentoFormComponent implements OnInit {
 
   // Config File
   regimentoFileName: string = 'regimento_';
-  middleFileUrl = '/api/file/download/'  
+middleFileUrl = '/api/file/find?name='  
   baseUrl = environment.apiUrl
   regimentoList: any;
   lastItemId: any;

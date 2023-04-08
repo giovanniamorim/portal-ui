@@ -6,21 +6,34 @@ import { PlanejamentoFormComponent } from './planejamento-form/planejamento-form
 import { PlanejamentosComponent } from './planejamentos/planejamentos.component';
 
 const routes: Routes = [
-  { 
-    path: "", component: PlanejamentosComponent,
-    canActivate: [ AuthGuard ],
-    data: { roles: ['ROLE_READ']}
-   },
-  { 
-    path: "novo", component: PlanejamentoFormComponent,
-    canActivate: [ AuthGuard ],
-    data: { roles: ['ROLE_CREATE']}
-   },
-  { 
-    path: "editar/:id", component: PlanejamentoFormComponent,
-    canActivate: [ AuthGuard ],
-    data: { roles: ['ROLE_UPDATE']}
-   },
+  {
+    path: '',
+    data: {
+      title: 'Contábil',
+    },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'planejamentos',
+      },
+      { 
+        path: '', component: PlanejamentosComponent,
+        canActivate: [ AuthGuard ],
+        data: {title: 'Planejamentos', roles: ['ROLE_READ']}
+      },
+      { 
+        path: "novo", component: PlanejamentoFormComponent,
+        canActivate: [ AuthGuard ],
+        data: { title: 'Novo Planejamento', roles: ['ROLE_CREATE']}
+      },
+      { 
+        path: "editar/:id", component: PlanejamentoFormComponent,
+        canActivate: [ AuthGuard ],
+        data: { title: 'Editar Planejamento', roles: ['ROLE_UPDATE']}
+      },
+    ],
+  },
 
 ];
 

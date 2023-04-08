@@ -32,10 +32,19 @@ export class FilesService {
   }
 
   getFiles(): Observable<any> {
-    console.log("Token no file service get: ", this.token);
-    console.log("Headers no getfiles:", this.headers);
     return this.httpClient.get(`${this.baseUrl}/files`, {
       headers: this.headers});
+  }
+
+  getByName(name: string) {
+    return this.httpClient.get(`${this.baseUrl}/file/find?name=${name}`, {
+      headers: this.headers
+    })
+  }
+
+  findId(fileName: string) {
+    return this.httpClient.get(`${this.baseUrl}/file/findId?name=${fileName}`, 
+    {headers: this.headers})
   }
 
   getAllFiles(): Observable<any> {
@@ -45,6 +54,12 @@ export class FilesService {
 
   deleteFile(arquivo: any) {
     return this.httpClient.delete(`${this.baseUrl}/file/${arquivo.id}`, {
+      headers: this.headers,
+    })
+  }
+
+  deleteById(id: any) {
+    return this.httpClient.delete(`${this.baseUrl}/file/${id}`, {
       headers: this.headers,
     })
   }

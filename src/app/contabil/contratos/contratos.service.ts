@@ -62,8 +62,6 @@ export class ContratosService {
   }
 
   updateContrato(id: number, contrato: IContrato): Observable<IContrato> {
-    console.log('id no service', id)
-    console.log('contrato no service', contrato)
     return this.httpClient
       .put<IContrato>(`${this.BaseUrl}/${id}`, contrato, {
         headers: this.headers,

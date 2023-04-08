@@ -134,13 +134,6 @@ const routes: Routes = [
       
     ]
   },
-  // {
-  //   path: '404',
-  //   component: Page404Component,
-  //   data: {
-  //     title: 'Page 404'
-  //   }
-  // },
   {
     path: '500',
     component: Page500Component,

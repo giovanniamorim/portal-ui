@@ -121,8 +121,8 @@
             color="primary"
             routerLink="/juridico/eventos/novo"
           >
-            <mat-icon>add</mat-icon>
-            Adicionar Eventos
+            <mat-icon>add_circle_outline</mat-icon>
+            Incluir Evento
           </button>
       </div>
 
@@ -132,47 +132,79 @@
   </mat-card>
 
   <div class="table-container mb-5">
-    
-    <div class="table-responsive mt-3 mat-elevation-z8" >
-      <table class="table table-hover table-striped">
-        <thead class="th ">
-          <tr>
-            <th>#</th>
-            <th>Nome</th>
-            <th>Data</th>
-            <th>Descrição</th>
-            <th>Arquivo</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody class="tbody">
-          <tr *ngFor="let p of processo.eventos ">
-            <th> {{p.id}} </th>
-            <th> {{p.nome}} </th>
-            <th> {{p.data}} </th>
-            <th> {{p.descricao}} </th>
-            <th> 
-              <span *ngIf="p.fileUrl">
-                <a href="{{ p.fileUrl }}">
-                  <span class="material-icons">picture_as_pdf</span>
-                </a>
-              </span> 
-            </th>
 
-            <th> 
-              <button *ngIf="perfil !== 'SINDICALIZADO'" (click)="onEditEvento(p)" mat-icon-button color="primary" aria-label="Editar Evento">
+    <div class="table-container" *ngIf="totalElements > 0">
+      <table mat-table 
+            [dataSource]="datasource" 
+            matSort (matSortChange)="listarEventos($event)"
+            class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por Id">#</th>
+          <td mat-cell *matCellDef="let evento">{{ evento.id }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="data">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header >Data</th>
+          <td mat-cell *matCellDef="let evento">
+            {{ evento.data | date: 'dd/MM/yyyy' }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header >Evento</th>
+          <td mat-cell *matCellDef="let evento">
+            {{ evento.nome }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="descricao">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header >Descrição</th>
+          <td mat-cell *matCellDef="let evento">
+            {{ evento.descricao }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="fileUrl">
+          <th mat-header-cell *matHeaderCellDef >Arquivo</th>
+          <td mat-cell *matCellDef="let evento">
+            <span *ngIf="evento.fileUrl">
+              <a href="{{ evento.fileUrl }}">
+                <span class="material-icons">picture_as_pdf</span>
+              </a>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell class="header-last-column" *matHeaderCellDef></th>
+          <td mat-cell class="last-column" *matCellDef="let evento">
+            <button *ngIf="perfil !== 'SINDICALIZADO'" (click)="onEdit(evento)" mat-icon-button color="primary" aria-label="Editar Evento">
               <mat-icon>edit</mat-icon>
-              </button>
-              <button *ngIf="perfil !== 'SINDICALIZADO'" (click)="onDeleteEvento(p)" mat-icon-button color="accent" aria-label="Excluir Evento">
-                <mat-icon>delete</mat-icon>
-              </button> 
-          </th>
-          
-          </tr>
-        </tbody>
-        
+            </button>
+            <button *ngIf="perfil !== 'SINDICALIZADO'" (click)="onDelete(evento)" mat-icon-button color="accent" aria-label="Excluir Evento">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
+      <mat-paginator 
+          [length]="totalElements"
+          [showFirstLastButtons]="showFirstLastButtons"
+          [pageSize]="5"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          (page)="nextPage($event)"
+          >
+      </mat-paginator>
+  
     </div>
+    
+      <div *ngIf="carregando" class="spinner">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+    
+    
   </div>
   
 </div>

@@ -6,21 +6,34 @@ import { InventarioFormComponent } from './inventario-form/inventario-form.compo
 import { InventarioComponent } from './inventario/inventario.component';
 
 const routes: Routes = [
-  { 
-    path: "", component: InventarioComponent,
-    canActivate: [ AuthGuard ],
-    data: { roles: ['ROLE_READ']}
-   },
-  { 
-    path: "novo", component: InventarioFormComponent,
-    canActivate: [ AuthGuard ],
-    data: { roles: ['ROLE_CREATE']}
-   },
-  { 
-    path: "editar/:id", component: InventarioFormComponent,
-    canActivate: [ AuthGuard ],
-    data: { roles: ['ROLE_UPDATE']}
-   },
+  {
+    path: '',
+    data: {
+      title: 'Contábil',
+    },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'inventario',
+      },
+      { 
+        path: '', component: InventarioComponent,
+        canActivate: [ AuthGuard ],
+        data: {title: 'Inventário', roles: ['ROLE_READ']}
+      },
+      { 
+        path: "novo", component: InventarioFormComponent,
+        canActivate: [ AuthGuard ],
+        data: { title: 'Novo Item', roles: ['ROLE_CREATE']}
+      },
+      { 
+        path: "editar/:id", component: InventarioFormComponent,
+        canActivate: [ AuthGuard ],
+        data: { title: 'Editar Item', roles: ['ROLE_UPDATE']}
+      },
+    ],
+  },
 
 ];
 

@@ -61,14 +61,9 @@ export class InventarioService {
       .pipe(catchError(this.errorHandler))
   }
 
-  updateInventario(
-    id: number,
-    inventario: IInventario,
-  ): Observable<IInventario> {
+  updateInventario(id: number, inventario: IInventario): Observable<IInventario> {
     return this.httpClient
-      .put<IInventario>(`${this.BaseUrl}/${id}`, inventario, {
-        headers: this.headers,
-      })
+      .put<IInventario>(`${this.BaseUrl}/${id}`, inventario, { headers: this.headers })
       .pipe(catchError(this.errorHandler))
   }
 

@@ -6,24 +6,37 @@ import { AssembleiasComponent } from './assembleias/assembleias.component';
 
 
 const routes: Routes = [
-  { 
-    path: "", 
-    component: AssembleiasComponent,
-    canActivate: [ AuthGuard ],
-    data: { roles: ['ROLE_READ']}
-   },
-  { 
-    path: "novo", 
-    component: AssembleiaFormComponent,
-    canActivate: [ AuthGuard ],
-    data: { roles: ['ROLE_CREATE']}
+  {
+    path: '',
+    data: {
+      title: 'Documentos',
+    },
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'assembleias',
+      },
+      { 
+        path: "", 
+        component: AssembleiasComponent,
+        canActivate: [ AuthGuard ],
+        data: { title: 'Assembleias', roles: ['ROLE_READ']}
+      },
+      { 
+        path: "novo", 
+        component: AssembleiaFormComponent,
+        canActivate: [ AuthGuard ],
+        data: { title: 'Nova Assembleia', roles: ['ROLE_CREATE']}
+      },
+      { 
+        path: "editar/:id", 
+        component: AssembleiaFormComponent,
+        canActivate: [ AuthGuard ],
+        data: {title: 'Editar Assembleia', roles: ['ROLE_UPDATE']}
+      },
+    ],
   },
-  { 
-    path: "editar/:id", 
-    component: AssembleiaFormComponent,
-    canActivate: [ AuthGuard ],
-    data: {roles: ['ROLE_UPDATE']}
-   },
 
 ];
 

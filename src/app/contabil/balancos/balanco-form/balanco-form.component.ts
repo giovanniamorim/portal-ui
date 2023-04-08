@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
-import { IBalanco, IMeses } from '../interfaces/balanco.interface';
 import { BalancoService } from '../balanco.service';
-import { environment } from 'src/environments/environment';
+import { IBalanco, IMeses } from '../interfaces/balanco.interface';
 
 @Component({
   selector: 'app-balanco-form',
@@ -24,7 +24,7 @@ export class BalancoFormComponent implements OnInit {
   submitted = false;
 
   // Config file
-  middleFileUrl = '/api/file/download/'  
+  middleFileUrl = '/api/file/find?name='  
   baseUrl = environment.apiUrl
   balancoFileName: string = 'balanco_';
   balancoList: any;
@@ -58,7 +58,7 @@ export class BalancoFormComponent implements OnInit {
           descricao: [null, [Validators.required]],
           fileUrl: ['']
       })
-    }
+  }
 
 
   ngOnInit(): void {

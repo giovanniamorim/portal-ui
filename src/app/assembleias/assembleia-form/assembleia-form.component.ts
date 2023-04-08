@@ -26,7 +26,7 @@ export class AssembleiaFormComponent implements OnInit {
   isDisabled: boolean = true;
   
   // Config file
-  middleFileUrl = '/api/file/download/'  
+middleFileUrl = '/api/file/find?name='  
   baseUrl = environment.apiUrl
   ataFileName!: string;
   assembleiaList: any;
