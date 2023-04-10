@@ -39,6 +39,7 @@ import { AppComponent } from './app.component';
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
 import { SegurancaModule } from './seguranca/seguranca.module';
 import { MatIconModule } from '@angular/material/icon';
+import { NgxMaskModule } from 'ngx-mask';
 
 // Import routing module
 // Import app component
@@ -90,7 +91,10 @@ const APP_CONTAINERS = [
     MatInputModule,
     MatIconModule,
     MatFormFieldModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    NgxMaskModule.forRoot({
+      dropSpecialCharacters: false
+    })
   ],
   providers: [
     {

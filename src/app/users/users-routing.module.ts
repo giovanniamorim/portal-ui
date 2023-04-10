@@ -4,6 +4,7 @@ import { AuthGuard } from '../seguranca/auth.guard';
 import { UserFormComponent } from './user-form/user-form.component';
 
 import { UsersComponent } from './users/users.component';
+import { UserDetailsComponent } from './user-details/user-details.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,11 @@ const routes: Routes = [
         path: "editar/:id", component: UserFormComponent,
         canActivate: [ AuthGuard],
         data: { title: 'Editar Usuário', roles: ['ROLE_UPDATE']}
+      },
+      { 
+        path: "detalhe/:id", component: UserDetailsComponent,
+        canActivate: [ AuthGuard],
+        data: { title: 'Editar Usuário', roles: ['ROLE_READ']}
       },
       ],
     }

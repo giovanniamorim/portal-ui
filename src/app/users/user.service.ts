@@ -57,7 +57,9 @@ export class UserService {
   }
 
   findByEmail(email: string) {
-    return this.httpClient.get<IUser>(`${this.BaseUrl}/perfil?email=${email}`)
+    return this.httpClient.get<IUser>(`${this.BaseUrl}/perfil?email=${email}`,{
+      headers: this.headers,
+    })
   }
   
 
@@ -76,7 +78,6 @@ export class UserService {
       .put<IUser>(`${this.BaseUrl}/${codigo}`, usuario, {
         headers: this.headers,
       })
-      .pipe(catchError(this.errorHandler))
   }
 
   errorHandler(error: any) {
@@ -91,7 +92,7 @@ export class UserService {
       })
     } else {
       // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.message}`
+      errorMessage = `${error}`
       Swal.fire({
         icon: 'error',
         title: 'Oops...',

@@ -22,12 +22,16 @@ import { FileUploadModule } from '../file-upload/file-upload.module';
 import { UserFormComponent } from './user-form/user-form.component';
 import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './users/users.component';
+import { NgxMaskModule } from 'ngx-mask';
+import { UserDetailsComponent } from './user-details/user-details.component'
+import { MatDividerModule } from '@angular/material/divider';
 
 
 @NgModule({
     declarations: [
         UsersComponent,
         UserFormComponent,
+        UserDetailsComponent
     ],
     imports: [
         CommonModule,
@@ -49,7 +53,9 @@ import { UsersComponent } from './users/users.component';
         MatSelectModule,
         MatCheckboxModule,
         SharedModule,
-        FileUploadModule
+        FileUploadModule,
+        MatDividerModule,
+        NgxMaskModule.forChild()
     ]
 })
 export class UsersModule { }

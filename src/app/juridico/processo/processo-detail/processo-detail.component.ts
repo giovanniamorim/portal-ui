@@ -154,8 +154,6 @@ export class ProcessoDetailComponent implements AfterViewInit, OnInit {
   }
 
 onDeleteEvento(evento: IEvento){
-  console.log("Evento ao deletar:", evento);
-  
   Swal.fire({
     title: 'Deseja remover o Evento?',
     text: "ATENÇÃO: Esta operação é irreversível!",

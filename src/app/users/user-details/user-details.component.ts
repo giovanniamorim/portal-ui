@@ -8,11 +8,11 @@ import { UserService } from '../user.service';
 
 
 @Component({
-  selector: 'app-user-form',
-  templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.scss'],
+  selector: 'app-user-details',
+  templateUrl: './user-details.component.html',
+  styleUrls: ['./user-details.component.scss'],
 })
-export class UserFormComponent implements OnInit {
+export class UserDetailsComponent implements OnInit {
   
   form: FormGroup;
   isEditUser!: boolean
@@ -40,6 +40,7 @@ export class UserFormComponent implements OnInit {
   userList: any;
   lastItemId: any;
   addPermitions: IPermissoes[] = [];
+  user!: IUser;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,8 +51,8 @@ export class UserFormComponent implements OnInit {
         this.form =  this.formBuilder.group({
           nome: ['', [Validators.required]],
           email: ['', [Validators.required, Validators.email]],
-          celular: [''],
-          cpf: [''],
+          celular: ['', {disabled: true}],
+          cpf: ['', {disabled: true}],
           rg: [''],
           rgOrgaoExp: [''],
           matricula: [''],
@@ -60,10 +61,10 @@ export class UserFormComponent implements OnInit {
           permissoes: ['', Validators.required]
       })
 
-      if(this.router.url.includes(`/usuarios/editar/`)){
+      if(this.router.url.includes(`/detalhe/editar/`)){
         this.isEditUser = true
-        this.currentId =  parseInt(this.router.url.substring(17))
-      } else if(this.router.url.includes('/usuarios/novo')) {
+        this.currentId =  parseInt(this.router.url.substring(16))
+      } else if(this.router.url.includes('/detalhe/novo')) {
         this.findLastItemId()
         this.isEditUser = false
       }
@@ -74,9 +75,10 @@ export class UserFormComponent implements OnInit {
        this.route.params.subscribe(
       (params: any) => {
         const id = params.id
-        const balanco$ = this.userService.loadById(id);
-        balanco$.subscribe(balanco => {
-          this.updateForm(balanco)
+        const usuario$ = this.userService.loadById(id);
+        usuario$.subscribe(usuario => {
+          this.user = usuario
+          this.updateForm(usuario)
         })
       }
     )
@@ -92,9 +94,7 @@ export class UserFormComponent implements OnInit {
       rg: user.rg,
       rgOrgaoExp: user.rgOrgaoExp,
       matricula: user.matricula,
-      situacao: user.situacao,
-      // senha: user.senha,
-      // permissoes: this.addPermitions
+      situacao: user.situacao
     })
   }
 
@@ -140,7 +140,7 @@ export class UserFormComponent implements OnInit {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        this.userService.updateUser(this.currentId, this.form.value)
+        this.userService.updateUser(this.user.codigo, this.form.value)
         .subscribe(
           res => {
             Swal.fire('Usuário salvo com sucesso!', '', 'success')
@@ -195,6 +195,23 @@ export class UserFormComponent implements OnInit {
       this.password = 'password';
       this.show = false;
     }
+  }
+
+  // getInitials(nameString:any , i:any){
+  //   const fullName = nameString.split(' ');
+  //   const initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
+  //   return initials.toUpperCase();
+  // }
+
+  getInitials(fullName: any) {
+    const nome = fullName.trim().split(' ');
+    const initials = nome.reduce((acc:any, curr:any, index:any) => {
+      if(index === 0 || index === nome.length - 1){
+        acc = `${acc}${curr.charAt(0).toUpperCase()}`;
+      }
+      return acc;
+    }, '');
+    return initials;
   }
 
 

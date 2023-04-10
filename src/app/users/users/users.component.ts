@@ -152,11 +152,16 @@ export class UsersComponent implements OnInit, AfterViewInit  {
     this.router.navigate(['editar', user.codigo], {relativeTo: this.route})
   }
 
+  onDetail(user: IUser){
+    this.router.navigate(['detalhe', user.codigo], {relativeTo: this.route})
+  }
+  
   findRoles(){
     if(!this.auth.temPermissao('ROLE_CREATE')){
       this.perfil = 'SINDICALIZADO'
     }
   }
+  
 
 
 }

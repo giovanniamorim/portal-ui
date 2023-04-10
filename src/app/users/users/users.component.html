@@ -81,6 +81,9 @@
           <button *ngIf="perfil !== 'SINDICALIZADO'" (click)="onDelete(user)" mat-icon-button color="accent" aria-label="Excluir Usuário">
             <mat-icon>delete</mat-icon>
           </button>
+          <button *ngIf="perfil !== 'SINDICALIZADO'" (click)="onDetail(user)" mat-icon-button color="primary" aria-label="Detalhe do Usuário">
+            <mat-icon>visibility</mat-icon>
+          </button>
         </td>
       </ng-container>
 

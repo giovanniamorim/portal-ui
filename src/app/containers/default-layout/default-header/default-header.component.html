@@ -13,45 +13,6 @@
         size="lg"
       ></svg>
     </button>
-    <c-header-nav *ngIf="perfil !== 'SINDICALIZADO'" class="d-none d-lg-flex me-auto">
-      <c-dropdown alignment="start" variant="nav-item">
-        <button
-          cButton
-          color=""
-          [caret]="false"
-          cDropdownToggle
-          class="py-0"
-        >
-        <svg cIcon name="cilBell" size="lg"></svg> Configurações e Acessos
-        </button>
-        <ul cDropdownMenu class="pt-0 pr-5 w-auto">
-          <li>
-            <h6 cDropdownHeader class="bg-light fw-semibold py-2">Acessos</h6>
-          </li>
-          <li>
-            <a routerLink="usuarios" cDropdownItem>
-              <svg cIcon class="me-2" name="cilUser"></svg>
-              Usuários
-              {{ usuario.jwtPayload.nome | json }}
-
-            </a>
-          </li>
-
-          <li>
-            <h6 cDropdownHeader class="bg-light fw-semibold py-2">Configurações</h6>
-          </li>
-          <li></li>
-          <li>
-            <a routerLink="uploads" cDropdownItem>
-              <svg cIcon class="me-2" name="cilUser"></svg>
-              Upload de Arquivos
-            </a>
-          </li>
-          <li></li>
-        </ul>
-      </c-dropdown>
-    </c-header-nav>
-
     
     <c-header-nav class="ms-3">
       <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
@@ -66,40 +27,28 @@
 <!--</c-header>-->
 
 <ng-template #userDropdown>
-  <span class="text_name">
-    {{usuario.jwtPayload.nome}}
-  </span>
   <c-dropdown alignment="end" variant="nav-item">
     <button
       cButton
-      color=""
       [caret]="false"
       cDropdownToggle
-      class="py-0"
+      class="rounded-circle btn-secondary"
     >
-      <c-avatar
-        cTextColor="primary"
-        shape="rounded-1"
-        size="md"
-        src="./assets/img/avatars/user_default.png"
-        status="success"
-      >
-      </c-avatar>
+      {{ getInitials(userLogged.nome) }}
     </button>
     <ul cDropdownMenu class="pt-0 pr-5 w-auto">
       <li>
         <h6 cDropdownHeader class="bg-light fw-semibold py-2">Minha Conta</h6>
-     
-      <li></li>
       <li>
-
-        <button (click)="viewPerfil()" mat-icon-button color="primary" aria-label="Editar Usuário">
-            <mat-icon>edit</mat-icon>
-          </button>
-
-        <a routerLink="usuarios/editar/{this.userLogged.codigo}" cDropdownItem>
+        <a routerLink="usuarios/detalhe/{{userLogged.codigo}}" cDropdownItem>
           <svg cIcon class="me-2" name="cilUser"></svg>
           Perfil
+        </a>
+      </li>
+      <li>
+        <a routerLink="usuarios/detalhe/{{userLogged.codigo}}" cDropdownItem>
+          <svg cIcon class="me-2" name="cilLockLocked"></svg>
+          Alterar Senha
         </a>
       </li>
      
@@ -108,7 +57,7 @@
       </li>
       <li>
         <a href="javascript:;" (click)="logout()" cDropdownItem>
-          <svg cIcon class="me-2" name="cilLockLocked"></svg>
+          <svg cIcon class="me-2" name="cilExitToApp"></svg>
           Sair
         </a>
       </li>

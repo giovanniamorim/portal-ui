@@ -1,4 +1,153 @@
-<div class="page-container">
+<div class="card-body">
+  <button class="header-button" mat-raised-button color="primary" routerLink="/usuarios" >
+    <mat-icon>arrow_circle_left</mat-icon>
+    Voltar
+  </button>
+  <h5 class="header-title">Detalhes do Usuário</h5>
+  <h6 class="header-subtitle mb-1">
+    Página de detalhes do usuário
+  </h6>
+</div>
+
+<div class="row mt-3">
+
+  <div class="col col-lg-4  col-md-4 col-sm-12">
+    <mat-card>
+      <mat-card-content>
+            <div class="panel-body mt-3 text-center">
+                <div class="avatar">
+                  {{ getInitials(user.nome) }}
+                </div>
+                <h3 class="nome mb-2"> {{ user.nome }} </h3>
+                <div class="mv-lg">
+                    <p> {{ user.email }} </p>
+                </div>
+                <div class="mv-lg">
+                  <span class="btn btn-info btn-sm btn-custom"> {{ user.situacao }} </span>
+                </div>
+            </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="mt-3 mb-3">
+      <mat-card-content class="toolbar-card-content">
+        <div class="panel-body mt-3 text-center">
+          <p>Permissões</p>
+          <span *ngFor="let role of user?.permissoes" class="mt-2">
+            <button class="btn btn-info btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_CREATE'"> Escrita </button>
+            <button class="btn btn-success btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_READ'"> Leitura </button>
+            <button class="btn btn-warning btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_UPDATE'"> Atualização </button>
+            <button class="btn btn-danger btn-sm btn-custom" *ngIf="role.descricao ==='ROLE_DELETE'"> Deleção </button>
+          </span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col col-lg-8  col-md-8 col-sm-12">
+    <mat-card>
+      <div class="mt-3 mb-3">
+        <span class="material-icons card-title-icon">edit_attributes</span>
+        <h3 class="card-title">
+          Detalhe do usuário de ID: {{ user.codigo }}
+        </h3>
+
+      </div>
+      <mat-card-content class="toolbar-card-content mt-3">
+        <form [formGroup]="form"> 
+          <div class="row">
+            <div class="col col-lg-3 col-md-3 col-sm-12">
+              <mat-form-field appearance="fill">
+                <mat-label>Celular</mat-label>
+                <input
+                  matInput
+                  mask="(00) 0 0000-0000"
+                  placeholder="Celular"
+                  formControlName="celular"
+                />
+              </mat-form-field>
+              </div>
+            <div class="col col-lg-4 col-md-4 col-sm-12">
+              <mat-form-field appearance="fill">
+                <mat-label>CPF</mat-label>
+                <input
+                  matInput
+                  disable
+                  mask="000.000.000-00"
+                  placeholder="CPF"
+                  formControlName="cpf"
+                  required
+                />
+              </mat-form-field>
+            </div>
+            <div class="col col-lg-3 col-md-3 col-sm-12">
+              <mat-form-field appearance="fill">
+                <mat-label>RG</mat-label>
+                <input
+                  matInput
+                  placeholder="RG"
+                  formControlName="rg"
+                />
+              </mat-form-field>
+            </div>
+            <div class="col col-lg-2 col-md-2 col-sm-12">
+              <mat-form-field appearance="fill">
+                <mat-label>Órgão Expeditor</mat-label>
+                <input
+                  matInput
+                  placeholder="Órgão Expeditor"
+                  formControlName="rg_orgao_exp"
+                />
+              </mat-form-field>
+              </div>
+          </div>
+          <div class="row">
+  
+              <mat-form-field appearance="fill">
+                <mat-label>Matrícula</mat-label>
+                <input
+                  matInput
+                  placeholder="Matrícula"
+                  formControlName="matricula"
+                />
+              </mat-form-field>
+          </div>
+
+        </form>
+      </mat-card-content>
+      <mat-card-actions class="mt-3 mb-3" align="end">
+  
+        <button 
+          class="header-button" 
+          mat-raised-button color="third"
+          (click)="onEdit()"
+          >
+          <mat-icon>save_circle_outline</mat-icon>
+          Atualizar
+        </button>
+      </mat-card-actions> 
+    </mat-card>
+  </div>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="page-container">
   <div class="card-body">
     <button class="header-button" mat-raised-button color="primary" routerLink="/usuarios" >
       <mat-icon>arrow_circle_left</mat-icon>
@@ -36,6 +185,7 @@
             <mat-form-field appearance="fill">
               <mat-label>Email</mat-label>
               <input
+                disable
                 matInput
                 placeholder="Email"
                 formControlName="email"
@@ -63,6 +213,7 @@
               <mat-label>CPF</mat-label>
               <input
                 matInput
+                disable
                 mask="000.000.000-00"
                 placeholder="CPF"
                 formControlName="cpf"
@@ -163,4 +314,4 @@
   </mat-card>
 
 
-</div>
+</div> -->

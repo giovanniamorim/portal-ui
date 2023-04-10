@@ -1,3 +1,18 @@
 .text_name {
     padding-top: 10px;
 }
+
+.avatar-top {
+    
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #303c54;
+    color: #fff;
+    font-size: 10px;
+}
+
+
+.btn-secondary, .btn-secondary:hover, .btn-secondary:active, .btn-secondary:visited {
+    background-color: #303c54 !important;
+}
