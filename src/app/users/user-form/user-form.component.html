@@ -109,29 +109,19 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="fill" *ngIf="!isEditUser">
-              <mat-label>Senha</mat-label>
-              <input
-                matInput
-                [type]="password"
-                placeholder="Senha"
-                formControlName="senha"
-                required
-              />
-              <button (click)="showPassword()">
-                <i class="fa fa-eye" aria-hidden="true" *ngIf="!show"></i>
-                <i class="fa fa-eye-slash" aria-hidden="true" *ngIf="show"></i>
-              </button>
-            </mat-form-field>
         </div>
-        <div class="col col-lg-4 col-md-4 col-sm-12" *ngIf="!isEditUser">
-          <section *ngFor="let item of listaPermissoes">
-            <mat-checkbox [checked]="item.descricao" (change)="onChange(item)" formControlName="permissoes" >
-              {{ item.descricao }}
-            </mat-checkbox>
-          </section>
 
-        </div>
+        <!-- <div class="col col-lg-4 col-md-4 col-sm-12" *ngIf="isEditUser && perfil !== 'SINDICALIZADO'">
+          <mat-form-field>
+
+            <div *ngFor="let item of listaPermissoes">
+              <mat-checkbox [checked]="item.descricao" (change)="onChange(item)" formControlName="permissoes" >
+                {{ item.descricao }}
+              </mat-checkbox>
+            </div>
+          </mat-form-field>
+
+        </div> -->
         
 
       </form>

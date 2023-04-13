@@ -36,7 +36,7 @@ const routes: Routes = [
       { 
         path: "detalhe/:id", component: UserDetailsComponent,
         canActivate: [ AuthGuard],
-        data: { title: 'Editar Usuário', roles: ['ROLE_READ']}
+        data: { title: 'Detalhes do Usuário', roles: ['ROLE_READ']}
       },
       ],
     }

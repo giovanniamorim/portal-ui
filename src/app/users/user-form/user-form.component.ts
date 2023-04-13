@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 const bcrypt = require("bcryptjs")
 import { IPermissoes, ISituacao, IUser } from '../interfaces/user.interface';
 import { UserService } from '../user.service';
+import { AuthService } from 'src/app/seguranca/auth.service';
+import { log } from 'console';
 
 
 @Component({
@@ -19,9 +21,7 @@ export class UserFormComponent implements OnInit {
   editar: any
   currentId!: number
   submitted = false;
-  isDisabled: boolean = true;
   show = false;
-  password!: string
   
 
   listaPermissoes: IPermissoes[] = [
@@ -40,14 +40,20 @@ export class UserFormComponent implements OnInit {
   userList: any;
   lastItemId: any;
   addPermitions: IPermissoes[] = [];
+  addDefaultPermitions: IPermissoes[] = [{ codigo: 2, descricao: "ROLE_READ" }];
+  perfil!: string;
+  usuario!: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
+    private auth: AuthService
     ) {
-        this.form =  this.formBuilder.group({
+      this.findSelectedUser()
+
+      this.form =  this.formBuilder.group({
           nome: ['', [Validators.required]],
           email: ['', [Validators.required, Validators.email]],
           celular: [''],
@@ -57,7 +63,7 @@ export class UserFormComponent implements OnInit {
           matricula: [''],
           situacao: [''],
           senha: ['', Validators.required],
-          permissoes: ['', Validators.required]
+          permissoes: ['']
       })
 
       if(this.router.url.includes(`/usuarios/editar/`)){
@@ -67,20 +73,24 @@ export class UserFormComponent implements OnInit {
         this.findLastItemId()
         this.isEditUser = false
       }
+      
     }
 
 
   ngOnInit(): void {
-       this.route.params.subscribe(
+    this.findRoles()
+    
+    this.route.params.subscribe(
       (params: any) => {
         const id = params.id
-        const balanco$ = this.userService.loadById(id);
-        balanco$.subscribe(balanco => {
-          this.updateForm(balanco)
+        const user$ = this.userService.loadById(id);
+        user$.subscribe(user => {
+          this.updateForm(user)
         })
       }
     )
   }
+
 
   updateForm(user: IUser){
     this.form.patchValue({
@@ -93,15 +103,14 @@ export class UserFormComponent implements OnInit {
       rgOrgaoExp: user.rgOrgaoExp,
       matricula: user.matricula,
       situacao: user.situacao,
-      // senha: user.senha,
-      // permissoes: this.addPermitions
+      senha: user.senha,
+      permissoes: user.permissoes
     })
   }
 
   onSubmit(){
+    this.form.get('permissoes')?.setValue(this.addDefaultPermitions)
     this.submitted = true;
-    console.log(this.form.value);
-    // this.form.get('permissoes')?.setValue(this.addPermitions)
     this.userService.create(this.form.value)
     .subscribe( 
       res => {
@@ -115,10 +124,14 @@ export class UserFormComponent implements OnInit {
         this.router.navigate(['./usuarios'])
       },
       err => {
+        let fullMessage = err.error[0]?.mensagemUsuario
+        let cutMessage = fullMessage.indexOf(":")
+        let finalMessage = fullMessage.slice(cutMessage + 1)
+        
         Swal.fire({
           icon: 'error',
-          title: err.error.status,
-          text: err.error.message
+          title: err.status,
+          text: finalMessage
         })
       },
       
@@ -126,9 +139,7 @@ export class UserFormComponent implements OnInit {
 
   }
 
-  onEdit(){
-    this.form.get('permissoes')?.setValue(this.addPermitions)
-    console.log("valor do form no edit:", this.form.value );
+  onEdit(){   
 
     Swal.fire({
       title: 'Deseja atualizar o usuário?',
@@ -143,16 +154,20 @@ export class UserFormComponent implements OnInit {
         this.userService.updateUser(this.currentId, this.form.value)
         .subscribe(
           res => {
+            console.log("Res", res);
+            
             Swal.fire('Usuário salvo com sucesso!', '', 'success')
             this.router.navigate(['./usuarios'])
           },
           err => {
-            console.log("Erro ao atualizar usuario: ", err);
+            let fullMessage = err.error[0]?.mensagemUsuario
+            let cutMessage = fullMessage.indexOf(":")
+            let finalMessage = fullMessage.slice(cutMessage + 1)
             
             Swal.fire({
               icon: 'error',
-              title: `Erro: ${err.status}`,
-              text: err.error[0].mensagemUsuario
+              title: err.status,
+              text: finalMessage
             })
           }
         )
@@ -187,13 +202,21 @@ export class UserFormComponent implements OnInit {
     
   }
 
-  showPassword() {
-    if (this.password === 'password') {
-      this.password = 'text';
-      this.show = true;
-    } else {
-      this.password = 'password';
-      this.show = false;
+
+  findSelectedUser(){
+    this.userService.loadById(this.currentId)
+        .subscribe((user: IUser) => {
+          console.log("User: -> ", user);
+          
+          this.usuario = user
+        });
+    
+  }
+
+
+  findRoles(){
+    if(!this.auth.temPermissao('ROLE_CREATE')){
+      this.perfil = 'SINDICALIZADO'
     }
   }
 

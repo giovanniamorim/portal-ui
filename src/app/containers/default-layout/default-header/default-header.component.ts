@@ -48,9 +48,6 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
 
   findPerfil(){
     this.usuario = this.auth
-   
-    
-    
   }
 
   findRoles(){
@@ -62,8 +59,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   findUser(){
     this.userService.findByEmail(this.auth.jwtPayload.user_name)
         .subscribe((user: IUser) => {
-          this.userLogged = user,
-          console.log("Usuário no header: ", this.userLogged);
+          this.userLogged = user
         });
     
   }

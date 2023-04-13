@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-const bcrypt = require("bcryptjs")
+
 import { IPermissoes, ISituacao, IUser } from '../interfaces/user.interface';
 import { UserService } from '../user.service';
-
 
 @Component({
   selector: 'app-user-details',
@@ -58,7 +57,7 @@ export class UserDetailsComponent implements OnInit {
           matricula: [''],
           situacao: [''],
           senha: ['', Validators.required],
-          permissoes: ['', Validators.required]
+          permissoes: ['']
       })
 
       if(this.router.url.includes(`/detalhe/editar/`)){
@@ -67,6 +66,9 @@ export class UserDetailsComponent implements OnInit {
       } else if(this.router.url.includes('/detalhe/novo')) {
         this.findLastItemId()
         this.isEditUser = false
+      } else if(this.router.url.includes('/usuarios/detalhe/')){
+        this.currentId =  parseInt(this.router.url.substring(18))
+        this.isEditUser = true
       }
     }
 
@@ -75,10 +77,12 @@ export class UserDetailsComponent implements OnInit {
        this.route.params.subscribe(
       (params: any) => {
         const id = params.id
-        const usuario$ = this.userService.loadById(id);
-        usuario$.subscribe(usuario => {
-          this.user = usuario
-          this.updateForm(usuario)
+        const user$ = this.userService.loadById(id);
+        user$.subscribe(user => {
+          console.log("User no details init", user);
+          this.user = user;
+          
+          this.updateForm(user)
         })
       }
     )
@@ -86,7 +90,7 @@ export class UserDetailsComponent implements OnInit {
 
   updateForm(user: IUser){
     this.form.patchValue({
-      codigo: this.currentId,
+      codigo: user.codigo,
       nome: user.nome,
       email: user.email,
       celular: user.celular,
@@ -94,14 +98,16 @@ export class UserDetailsComponent implements OnInit {
       rg: user.rg,
       rgOrgaoExp: user.rgOrgaoExp,
       matricula: user.matricula,
-      situacao: user.situacao
+      situacao: user.situacao,
+      senha: user.senha,
+      permissoes: user.permissoes
     })
   }
 
   onSubmit(){
+    
     this.submitted = true;
     console.log(this.form.value);
-    // this.form.get('permissoes')?.setValue(this.addPermitions)
     this.userService.create(this.form.value)
     .subscribe( 
       res => {
@@ -127,9 +133,6 @@ export class UserDetailsComponent implements OnInit {
   }
 
   onEdit(){
-    this.form.get('permissoes')?.setValue(this.addPermitions)
-    console.log("valor do form no edit:", this.form.value );
-
     Swal.fire({
       title: 'Deseja atualizar o usuário?',
       icon: 'success',
@@ -138,21 +141,20 @@ export class UserDetailsComponent implements OnInit {
       cancelButtonText: `Cancelar`,
       
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.userService.updateUser(this.user.codigo, this.form.value)
         .subscribe(
           res => {
             Swal.fire('Usuário salvo com sucesso!', '', 'success')
-            this.router.navigate(['./usuarios'])
           },
           err => {
-            console.log("Erro ao atualizar usuario: ", err);
-            
+            let fullMessage = err.error[0]?.mensagemUsuario
+            let cutMessage = fullMessage.indexOf(":")
+            let finalMessage = fullMessage.slice(cutMessage + 1)
             Swal.fire({
               icon: 'error',
-              title: `Erro: ${err.status}`,
-              text: err.error[0].mensagemUsuario
+              title: err.status,
+              text: finalMessage
             })
           }
         )
@@ -197,12 +199,6 @@ export class UserDetailsComponent implements OnInit {
     }
   }
 
-  // getInitials(nameString:any , i:any){
-  //   const fullName = nameString.split(' ');
-  //   const initials = fullName.shift().charAt(0) + fullName.pop().charAt(0);
-  //   return initials.toUpperCase();
-  // }
-
   getInitials(fullName: any) {
     const nome = fullName.trim().split(' ');
     const initials = nome.reduce((acc:any, curr:any, index:any) => {
@@ -216,3 +212,5 @@ export class UserDetailsComponent implements OnInit {
 
 
 }
+
+
