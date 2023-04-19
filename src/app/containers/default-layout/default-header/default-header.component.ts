@@ -33,7 +33,9 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     super();
     
   }
+
   ngOnInit(): void {
+    this.findRoles()
     this.findPerfil()
     this.findUser()
   }

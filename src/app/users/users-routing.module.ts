@@ -5,6 +5,7 @@ import { UserFormComponent } from './user-form/user-form.component';
 
 import { UsersComponent } from './users/users.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,11 @@ const routes: Routes = [
         path: "detalhe/:id", component: UserDetailsComponent,
         canActivate: [ AuthGuard],
         data: { title: 'Detalhes do Usuário', roles: ['ROLE_READ']}
+      },
+      { 
+        path: "change-password", component: ChangePasswordComponent,
+        canActivate: [ AuthGuard],
+        data: { title: 'Alterar Senha', roles: ['ROLE_READ']}
       },
       ],
     }

@@ -102,6 +102,5 @@ export const navItems: INavData[] = [
     url: '/juridico/processos',
     icon: 'fa fa-balance-scale'
   }
-
-
+  
 ];

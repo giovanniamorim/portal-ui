@@ -5,9 +5,9 @@ import { DefaultLayoutComponent } from './containers';
 import { Page500Component } from './views/pages/page500/page500.component';
 
 import { AuthGuard } from './seguranca/auth.guard';
-import { LoginFormComponent } from './seguranca/login-form/login-form.component';
 import { Page403Component } from './seguranca/page-403/page-403.component';
 import { Page404Component } from './seguranca/page-404/page-404.component';
+import { LoginFormComponent } from './seguranca/login-form/login-form.component';
 
 const routes: Routes = [
   {

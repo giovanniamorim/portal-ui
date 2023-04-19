@@ -1,10 +1,10 @@
 <div class="card-body">
-  <button class="header-button" mat-raised-button color="primary" routerLink="/usuarios" >
+  <button  *ngIf="perfil !== 'SINDICALIZADO'" class="header-button" mat-raised-button color="primary" routerLink="/usuarios" >
     <mat-icon>arrow_circle_left</mat-icon>
     Voltar
   </button>
   <h5 class="header-title">Detalhes do Usuário</h5>
-  <h6 class="header-subtitle mb-1">
+  <h6 class="header-subtitle mb-1" >
     Página de detalhes do usuário
   </h6>
 </div>

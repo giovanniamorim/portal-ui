@@ -25,13 +25,15 @@ import { UsersComponent } from './users/users.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { UserDetailsComponent } from './user-details/user-details.component'
 import { MatDividerModule } from '@angular/material/divider';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 @NgModule({
     declarations: [
         UsersComponent,
         UserFormComponent,
-        UserDetailsComponent
+        UserDetailsComponent,
+        ChangePasswordComponent
     ],
     imports: [
         CommonModule,
@@ -48,6 +50,7 @@ import { MatDividerModule } from '@angular/material/divider';
         MatFormFieldModule,
         MatPaginatorModule,
         ReactiveFormsModule,
+        FormsModule,
         MatDialogModule,
         MatSortModule,
         MatSelectModule,

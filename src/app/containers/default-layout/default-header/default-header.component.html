@@ -13,6 +13,31 @@
         size="lg"
       ></svg>
     </button>
+
+    <c-header-nav *ngIf="perfil !== 'SINDICALIZADO'" class="d-none d-lg-flex me-auto">
+      <c-dropdown alignment="start" variant="nav-item">
+        <button
+          cButton
+          color=""
+          [caret]="false"
+          cDropdownToggle
+          class="py-0"
+        >
+        <svg cIcon name="cilBell" size="lg"></svg> Acessos
+        </button>
+        <ul cDropdownMenu class="pt-0 pr-5 w-auto">
+          <li>
+            <h6 cDropdownHeader class="bg-light fw-semibold py-2">Acessos</h6>
+          </li>
+          <li>
+            <a routerLink="usuarios" cDropdownItem>
+              <svg cIcon class="me-2" name="cilUser"></svg>
+              Usuários
+            </a>
+          </li>
+        </ul>
+      </c-dropdown>
+    </c-header-nav>
     
     <c-header-nav class="ms-3">
       <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
@@ -46,7 +71,7 @@
         </a>
       </li>
       <li>
-        <a routerLink="usuarios/detalhe/{{userLogged.codigo}}" cDropdownItem>
+        <a routerLink="usuarios/change-password" cDropdownItem>
           <svg cIcon class="me-2" name="cilLockLocked"></svg>
           Alterar Senha
         </a>

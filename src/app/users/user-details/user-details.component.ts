@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 
 import { IPermissoes, ISituacao, IUser } from '../interfaces/user.interface';
 import { UserService } from '../user.service';
+import { AuthService } from 'src/app/seguranca/auth.service';
 
 @Component({
   selector: 'app-user-details',
@@ -21,7 +22,11 @@ export class UserDetailsComponent implements OnInit {
   isDisabled: boolean = true;
   show = false;
   password!: string
-  
+  userList: any;
+  lastItemId: any;
+  addPermitions: IPermissoes[] = [];
+  user!: IUser;
+  perfil!: string;
 
   listaPermissoes: IPermissoes[] = [
     { codigo: 1, descricao:'Escrita'}, 
@@ -36,16 +41,13 @@ export class UserDetailsComponent implements OnInit {
     { id: 3, nome: 'Aposentado(a)' },
     { id: 4, nome: 'Pensionista' }
   ]
-  userList: any;
-  lastItemId: any;
-  addPermitions: IPermissoes[] = [];
-  user!: IUser;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
+    private auth: AuthService
     ) {
         this.form =  this.formBuilder.group({
           nome: ['', [Validators.required]],
@@ -70,11 +72,11 @@ export class UserDetailsComponent implements OnInit {
         this.currentId =  parseInt(this.router.url.substring(18))
         this.isEditUser = true
       }
-    }
-
+  }
 
   ngOnInit(): void {
-       this.route.params.subscribe(
+    this.findRoles()
+    this.route.params.subscribe(
       (params: any) => {
         const id = params.id
         const user$ = this.userService.loadById(id);
@@ -105,7 +107,6 @@ export class UserDetailsComponent implements OnInit {
   }
 
   onSubmit(){
-    
     this.submitted = true;
     console.log(this.form.value);
     this.userService.create(this.form.value)
@@ -162,11 +163,14 @@ export class UserDetailsComponent implements OnInit {
       }
     })
 
-
-
-
   }
 
+  findRoles(){
+    if(!this.auth.temPermissao('ROLE_CREATE')){
+      this.perfil = 'SINDICALIZADO'
+    }
+  }
+  
   findLastItemId(): void {
     this.userService.listAll({ page: "0", size: "5" })
       .subscribe({
@@ -176,27 +180,6 @@ export class UserDetailsComponent implements OnInit {
         },
         error: (e) => console.error(e)
       });
-  }
-
-  onChange(permissao: any) {
-
-    if(this.addPermitions.includes(permissao)){
-      this.addPermitions.splice(this.addPermitions.indexOf(permissao), 1)
-    } else {
-      this.addPermitions.push(permissao)
-    }
-    console.log("Permissoes adicionadas: ", this.addPermitions);
-    
-  }
-
-  showPassword() {
-    if (this.password === 'password') {
-      this.password = 'text';
-      this.show = true;
-    } else {
-      this.password = 'password';
-      this.show = false;
-    }
   }
 
   getInitials(fullName: any) {
