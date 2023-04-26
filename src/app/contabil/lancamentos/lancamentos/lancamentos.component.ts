@@ -58,8 +58,6 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
       this.pathUrl = '/lancamentos/despesas'
     }
     this.findRoles();
-    this.getImageList()
-
     
   }
 
@@ -97,7 +95,7 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
 
   public listarLancamentos = (request:any) => {
 
-    this.getImageList();
+    
       this.carregando = true;
     
     if(this.tipoLancamentoPage === 'receitas'){
@@ -204,8 +202,6 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
     console.log("Image: ", lancamento);
     this.imgId = lancamento.id
     this.imgSrc = lancamento.fileUrl
-    console.log("this.imageUrl: ", this.imageUrl);
-    
   }
 
   findRoles(){
@@ -214,11 +210,11 @@ export class LancamentosComponent implements OnInit, AfterViewInit  {
     }
   }
 
-  getImageList() {
-    this.filesService.getFiles().subscribe((i: any) => this.listImages = i) ;
-    console.log("Lista de imagens no lanlamentos: ", this.listImages);
+  // getImageList() {
+  //   this.filesService.getFiles().subscribe((i: any) => this.listImages = i) ;
+  //   console.log("Lista de imagens no lanlamentos: ", this.listImages);
     
-  }
+  // }
 
 }
 

@@ -4,7 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { environment } from '../../environments/environment';
-import { IUser } from './interfaces/user.interface';
+import { IChangePassword, IUser } from './interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -78,6 +78,14 @@ export class UserService {
       .put<IUser>(`${this.BaseUrl}/${codigo}`, usuario, {
         headers: this.headers,
       })
+  }
+
+  changePassword(codigo: number, password: IChangePassword ): Observable<IChangePassword> {
+    console.log("recebido no  service: ", codigo,  password);
+    
+    return this.httpClient.put<IChangePassword>(`${this.BaseUrl}/change/${codigo}`, password, {
+      headers: this.headers
+    })
   }
 
   errorHandler(error: any) {

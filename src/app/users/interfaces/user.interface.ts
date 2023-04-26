@@ -23,3 +23,9 @@ export interface ISituacao {
     id: number,
     nome: string
 }
+
+export interface IChangePassword {
+    oldPassword: string
+    newPassword: string,
+    confirmPassword: string
+}

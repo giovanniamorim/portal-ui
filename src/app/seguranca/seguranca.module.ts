@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,6 +19,7 @@ import { Page403Component } from './page-403/page-403.component';
 import { Page404Component } from './page-404/page-404.component';
 import { SegurancaRoutingModule } from './seguranca-routing.module';
 
+
 export function tokenGetter(): string {
   return localStorage.getItem('token')!;
 }
@@ -31,6 +32,7 @@ export function tokenGetter(): string {
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatFormFieldModule,

@@ -1,54 +1,62 @@
 <div class="d-lg-flex half">
+
   <div
-    class="bg order-1 order-md-2"
-    style="background-image: url('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/13/a8/32/90/as-vistas-sao-muito-legais.jpg?w=1200&h=-1&s=1');"
-  ></div>
+      class="bg order-1 order-md-2"
+      style="background-image: url('https://app-47750.dc-us-1.absamcloud.com/portal-app/assets/images/bg_login?w=1200&h=-1&s=1');"
+    >
+  </div>
+  
+  <div class="bg order-1 order-md-2 bloco-sombra">
+
   <div class="contents order-2 order-md-1">
     <div class="container">
+      
       <div class="row align-items-center justify-content-center">
+
         <div class="col-md-7">
-            <div>
-                <img src="../../../assets/img/brand/logo-sindifisco-login.png" alt="Sindifisco-PA">
-            </div>
-          <p class="mb-4">
-            Bem-vindo. Aqui você acompanha como suas contribuições são
-            investidas.
+
+          <div class="img-logo">
+            <img src="https://app-47750.dc-us-1.absamcloud.com/portal-app/assets/img/brand/logo-sindifisco.png" style="width: 80px; margin-top: 10px;" alt="Sindifisco-PA">
+          </div>
+          <div class="title">Portal Transparência</div>
+          <p class="mb-4 text-top">
+            Bem-vindo. Aqui você acompanha como suas contribuições são investidas.
           </p>
+          
+          <!-- <div class="title-login">
+            Login</div>
+          <div class="subtitle-login mb-5">Para entrar na aplicação use suas credênciais.</div> -->
+            
           <div *ngIf="!isValid" class="alert alert-danger" role="alert">
             {{ message }}
           </div>
           <div *ngIf="carregando" class="spinner">
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
           </div>
-          <form autocomplete="off" #loginForm="ngForm">
-            <div class="form-group first">
-              <label for="username">Usuário</label>
-              <input 
-                type="email" 
-                name="usuario" 
-                class="form-control"
-                placeholder="Seu email"
-                ngModel required #usuario>
-            </div>
-            <div class="form-group last mb-3">
-              <label for="password">Senha</label>
-              <input
-                type="password"
-                class="form-control"
-                name="senha" 
-                placeholder="Senha" 
-                ngModel 
-                required 
-                #senha
-              />
-            </div>
 
+          <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+            <mat-form-field appearance="fill">
+              <mat-label for="usuario">Usuário</mat-label>
+                <input matInput formControlName="usuario" autocomplete="off">
+                <mat-error *ngIf="loginForm.controls['usuario'].invalid">Nome de usuário é obrigatório.</mat-error>
+                <button mat-icon-button matSuffix>
+                  <mat-icon>email</mat-icon>
+                </button>
+            </mat-form-field>
 
-            <div class="col-12">
-                <button class="btn btn-block btn-primary" type="submit" [disabled]="loginForm.invalid"
-                    (click)="login(usuario.value, senha.value); senha.value='';">Entrar</button>
-            </div>
+            <mat-form-field appearance="fill">
+              <mat-label>Senha</mat-label>
+              <input matInput [type]="hide ? 'password' : 'text'" formControlName="senha" type="senha" autocomplete="off">
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="loginForm.controls['senha'].invalid">Senha é obrigatória.</mat-error>
+            </mat-form-field>
+
+            <button type="submit" class="btn-block" mat-raised-button color="primary" [disabled]="loginForm.invalid">Entrar</button>
+
           </form>
+
         </div>
       </div>
     </div>

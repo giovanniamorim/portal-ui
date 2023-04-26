@@ -36,13 +36,13 @@ export class FilesService {
       headers: this.headers});
   }
 
-  getByName(name: string) {
+  getByName(name: string): Observable<any> {
     return this.httpClient.get(`${this.baseUrl}/file/find?name=${name}`, {
       headers: this.headers
     })
   }
 
-  findId(fileName: string) {
+  findId(fileName: string): Observable<any> {
     return this.httpClient.get(`${this.baseUrl}/file/findId?name=${fileName}`, 
     {headers: this.headers})
   }
