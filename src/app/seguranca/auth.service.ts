@@ -2,12 +2,14 @@ import { environment } from './../../environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  private readonly BaseUrl = environment.apiUrl + '/api'
   tokensRevokeUrl = environment.apiUrl + '/tokens/revoke';
   oauthTokenUrl = environment.apiUrl + '/oauth/token'
   jwtPayload: any;
@@ -26,10 +28,11 @@ export class AuthService {
     private jwtHelper: JwtHelperService
   ) {
     this.jwtHelper = new JwtHelperService();
-    this.carregarToken();
+    
   }
 
   login(usuario: string, senha: string): Promise<void> {
+    this.carregarToken();
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/x-www-form-urlencoded')
       .append('Authorization', 'Basic YW5ndWxhcjptMGIxbDMw');
@@ -119,6 +122,8 @@ export class AuthService {
         this.limparAccessToken();
       });
   }
+
+
 
 
 }

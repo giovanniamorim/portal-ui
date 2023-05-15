@@ -38,7 +38,7 @@ export class ProcessoDetailComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   currentId!: number
-  processo!: any;
+  processo: any = {};
   carregando = false
   totalElements: any
   datasource = new MatTableDataSource();

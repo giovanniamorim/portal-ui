@@ -18,6 +18,8 @@ import { MoneyHttpInterceptor } from './money-http-interceptor';
 import { Page403Component } from './page-403/page-403.component';
 import { Page404Component } from './page-404/page-404.component';
 import { SegurancaRoutingModule } from './seguranca-routing.module';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 export function tokenGetter(): string {
@@ -27,7 +29,9 @@ export function tokenGetter(): string {
   declarations: [
     LoginFormComponent,
     Page403Component,
-    Page404Component
+    Page404Component,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     CommonModule,

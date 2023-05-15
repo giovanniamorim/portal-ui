@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { catchError, Observable, throwError } from 'rxjs'
 import Swal from 'sweetalert2'
@@ -37,6 +37,30 @@ export class LancamentosService {
   listReceitas(request: any): Observable<any> {
     const params = request
     return this.httpClient.get<ILancamentos[]>(`${this.BaseUrl}/receitas`, {
+      headers: this.headers,
+      params,
+    })
+  }
+
+  busca(criterias: any): Observable<any> {
+    const params = criterias
+    return this.httpClient.get<ILancamentos[]>(`${this.BaseUrl}/busca`, {
+      headers: this.headers,
+      params,
+    })
+  }
+
+  buscaReceitas(request?: any): Observable<any> {
+    const params = request
+    return this.httpClient.get<ILancamentos[]>(`${this.BaseUrl}/busca?tipoLancamento=Receita`, {
+      headers: this.headers,
+      params,
+    })
+  }
+
+  buscaDespesas(request?: any): Observable<any> {
+    const params = request
+    return this.httpClient.get<ILancamentos[]>(`${this.BaseUrl}/busca?tipoLancamento=Despesa`, {
       headers: this.headers,
       params,
     })

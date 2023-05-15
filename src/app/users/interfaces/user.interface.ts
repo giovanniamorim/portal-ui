@@ -9,7 +9,8 @@ export interface IUser {
     rgOrgaoExp: string,
     matricula: string,
     situacao: ISituacao[]
-    senha: string
+    senha: string,
+    confirmarSenha: string,
     permissoes: IPermissoes[]
 
 }
@@ -29,3 +30,4 @@ export interface IChangePassword {
     newPassword: string,
     confirmPassword: string
 }
+

@@ -1,0 +1,12 @@
+.mat-card:not([class*="mat-elevation-z"]) {
+    box-shadow: none;
+}
+.mat-card {
+    padding: 0;
+}
+
+.mat-form-field {
+    display: contents;
+    position: relative;
+    text-align: left;
+}

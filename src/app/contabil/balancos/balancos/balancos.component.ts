@@ -18,7 +18,7 @@ import { IBalanco } from '../interfaces/balanco.interface';
 })
 export class BalancosComponent implements OnInit, AfterViewInit  {
 
-  displayedColumns: string[] = ['id', 'ano', 'mes', 'descricao', 'fileUrl', 'actions'];
+  displayedColumns: string[] = ['id', 'ano', 'descricao', 'fileUrl', 'actions'];
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any

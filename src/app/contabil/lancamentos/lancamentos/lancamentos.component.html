@@ -12,28 +12,27 @@
     <h5 class="header-title">Lançamentos - {{ tipoLancamentoPage === 'receitas' ? 'Receitas' : 'Despesas' }}</h5>
     <h6 class="header-subtitle mb-1">Lista de registros de lançamentos do tipo {{ tipoLancamentoPage === 'receitas' ? 'receitas' : 'despesas' }}</h6>
   </div>
-   <!-- Inicio do Card de busca -->
-  <mat-card class="mb-3 mt-3">
-    <mat-card-content class="toolbar-card-content">
-      <div class="row mt-2">
-        <div class="col col-lg-8 col-md-6 col-sm-12">
-          <mat-form-field>
-            <input matInput autocomplete="off" (keyup)="filterData($event)" placeholder="Busca" type="search" />
-            <mat-icon matSuffix>search</mat-icon>
-          </mat-form-field>
-        </div>
+
+  <app-busca (searchParams)="onSearchCriteria($event)" (resetParams)="onResetParams($event)" [tipoLancamento]="tipoLanc" ></app-busca>
+
+  <div *ngIf="showTopMessage">
+    <div *ngIf="typeMessage === 'warning'" class="alert alert-warning alert-dismissible d-flex align-items-center fade show" role="alert">
+      <i class="fa-regular fa-circle-xmark"></i>
+      <div class="icon hidden-xs">
+        <i class="fa fa-exclamation-circle"></i>
       </div>
-    </mat-card-content>
-  </mat-card>
-  <!-- Fim do Card de busca -->
-  <div class="alert alert-warning" *ngIf="!carregando && totalElements == 0">
-    <i class="fa-regular fa-circle-xmark"></i>
-    <div class="icon hidden-xs">
-      <i class="fa fa-exclamation-circle"></i>
+      <Br /> {{message}}
     </div>
-    <strong>Opps!</strong>
-    <Br /> Nenhum registro encontrado para sua busca
+    <div *ngIf="typeMessage === 'success'" class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert">
+      <i class="fa-regular fa-circle-xmark"></i>
+      <div class="icon hidden-xs">
+        <i class="fa fa-check-circle"></i>
+      </div>
+      <Br /> {{message}}
+    </div>
   </div>
+
+
   <div class="table-container" *ngIf="totalElements > 0">
     <table mat-table
           [dataSource]="datasource" 
@@ -129,6 +128,10 @@
         >
     </mat-paginator>
   </div>
+
+
+
+  
     <div *ngIf="carregando" class="spinner">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
@@ -144,7 +147,10 @@
         <h5 class="modal-title">Comprovante do Lançamento de ID: {{imgId}} </h5>
       </div>
       <div class="modal-body">
-        <img src="{{imgSrc}}" class="image-modal" />
+        <div *ngIf="carregandoImagem" class="spinner">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+        <img src="{{imgSrc}}" width="100%" class="image-modal" />
       </div>
       <div class="modal-footer">
         <a href="{{ imgSrc }}" download>

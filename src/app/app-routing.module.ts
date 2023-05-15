@@ -8,12 +8,28 @@ import { AuthGuard } from './seguranca/auth.guard';
 import { Page403Component } from './seguranca/page-403/page-403.component';
 import { Page404Component } from './seguranca/page-404/page-404.component';
 import { LoginFormComponent } from './seguranca/login-form/login-form.component';
+import { ForgotPasswordComponent } from './seguranca/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './seguranca/reset-password/reset-password.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+    data: {
+      title: 'Recuperar Senha'
+    }
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
+    data: {
+      title: 'Nova Senha'
+    }
   },
   {
     path: '',
@@ -148,6 +164,8 @@ const routes: Routes = [
       title: 'Login Page'
     }
   },
+
+  
   
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, 
   { path: 'nao-autorizado', component: Page403Component },

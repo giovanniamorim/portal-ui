@@ -25,7 +25,20 @@ export class UserDetailsComponent implements OnInit {
   userList: any;
   lastItemId: any;
   addPermitions: IPermissoes[] = [];
-  user!: IUser;
+  user: IUser = {
+    codigo: 0,
+    nome: '',
+    email: '',
+    celular: '',
+    cpf: '',
+    rg: '',
+    rgOrgaoExp: '',
+    matricula: '',
+    situacao: [],
+    senha: '',
+    confirmarSenha: '',
+    permissoes: []
+  };
   perfil!: string;
 
   listaPermissoes: IPermissoes[] = [
@@ -81,7 +94,6 @@ export class UserDetailsComponent implements OnInit {
         const id = params.id
         const user$ = this.userService.loadById(id);
         user$.subscribe(user => {
-          console.log("User no details init", user);
           this.user = user;
           
           this.updateForm(user)
@@ -143,7 +155,7 @@ export class UserDetailsComponent implements OnInit {
       
     }).then((result) => {
       if (result.isConfirmed) {
-        this.userService.updateUser(this.user.codigo, this.form.value)
+        this.userService.updateUser(this.user?.codigo, this.form.value)
         .subscribe(
           res => {
             Swal.fire('Usuário salvo com sucesso!', '', 'success')

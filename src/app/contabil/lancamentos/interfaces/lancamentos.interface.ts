@@ -11,7 +11,10 @@ export interface ILancamentos {
   modoPagamento: IModoPagamento
   tipoComprovante: ITipoComprovante
   obs: string
-  supCaixa: string
+  numDoc: string,
+  numCheque: string,
+  anoExercicio: string,
+  supCaixa: string,
   fileUrl: string
 }
 

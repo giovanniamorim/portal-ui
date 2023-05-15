@@ -54,7 +54,6 @@ export class BalancoFormComponent implements OnInit {
     ) {
         this.form =  this.formBuilder.group({
           ano: [null, [Validators.required]],
-          mes: [null, [Validators.required]],
           descricao: [null, [Validators.required]],
           fileUrl: ['']
       })
@@ -87,7 +86,6 @@ export class BalancoFormComponent implements OnInit {
     this.form.patchValue({
       id: this.currentId,
       ano: balanco.ano,
-      mes: balanco.mes,
       descricao: balanco.descricao,
       fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.balancoFileName}`
     })

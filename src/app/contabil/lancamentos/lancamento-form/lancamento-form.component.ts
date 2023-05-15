@@ -1493,7 +1493,10 @@ export class LancamentoFormComponent implements OnInit  {
         tipoComprovante: ['', [Validators.required]],
         supCaixa: ['', [Validators.required]],
         valor: ['', [Validators.required]],
+        numDoc: [''],
+        numCheque: [''],
         obs: [''],
+        anoExercicio: [''],
         fileUrl: ['']
       })
 
@@ -1579,6 +1582,9 @@ export class LancamentoFormComponent implements OnInit  {
       tipoComprovante: lancamento.tipoComprovante,
       supCaixa: lancamento.supCaixa,
       valor: lancamento.valor,
+      numDoc: lancamento.numDoc,
+      numCheque: lancamento.numCheque,
+      anoExercicio: lancamento.anoExercicio,
       obs: lancamento.obs,
       fileUrl: `${this.baseUrl}${this.middleFileUrl}${this.inicialFileName}${this.currentId}.jpg`
     })

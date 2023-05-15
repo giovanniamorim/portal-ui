@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-// import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { AuthService } from './../auth.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+// import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
@@ -21,9 +21,13 @@ export class LoginFormComponent implements OnInit, OnDestroy  {
   jwtPayload: any;
   message: string = ''
   loginForm!: FormGroup
+  resetForm!: FormGroup
   inProgress!: boolean
-
+  isReset: boolean = false
+  
   public token  = localStorage.getItem('token');
+  isSuccess: boolean = false;
+  errorMsg: string = '';
 
   constructor(
     private auth: AuthService,
@@ -37,6 +41,10 @@ export class LoginFormComponent implements OnInit, OnDestroy  {
     this.loginForm = this.formBuilder.group({
       usuario: ['', Validators.required],
       senha: ['', Validators.required]
+    })
+
+    this.resetForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]]
     })
 
 
@@ -77,6 +85,16 @@ export class LoginFormComponent implements OnInit, OnDestroy  {
     if(this.jwtPayload && this.jwtPayload.authorities ){
       this.isValid = true
     } 
+  }
+
+  formResetSenha(){
+    this.isReset = true
+    this.router.navigate(['/forgot-password']);
+  }
+
+
+  fazerLogin(){
+    this.isReset = false
   }
 
 

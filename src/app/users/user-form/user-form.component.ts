@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
-const bcrypt = require("bcryptjs")
+
 import { IPermissoes, ISituacao, IUser } from '../interfaces/user.interface';
 import { UserService } from '../user.service';
-import { AuthService } from 'src/app/seguranca/auth.service';
-import { log } from 'console';
 
+const bcrypt = require("bcryptjs")
+
+const PASSWORD_REGEX = /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#])[a-zA-Z0-9!@#]{8}$/;
 
 @Component({
   selector: 'app-user-form',
@@ -22,6 +24,10 @@ export class UserFormComponent implements OnInit {
   currentId!: number
   submitted = false;
   show = false;
+  hide = true;
+  showTopMessage: boolean = false
+  senhaMinLength = 8;
+  senhaMaxLength = 8;
   
 
   listaPermissoes: IPermissoes[] = [
@@ -43,6 +49,7 @@ export class UserFormComponent implements OnInit {
   addDefaultPermitions: IPermissoes[] = [{ codigo: 2, descricao: "ROLE_READ" }];
   perfil!: string;
   usuario!: any;
+  message!: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -62,7 +69,8 @@ export class UserFormComponent implements OnInit {
           rgOrgaoExp: [''],
           matricula: [''],
           situacao: [''],
-          senha: ['', Validators.required],
+          senha: ['', Validators.required, Validators.pattern(PASSWORD_REGEX)],
+          confirmarSenha: ['', Validators.required],
           permissoes: ['']
       })
 
@@ -103,7 +111,8 @@ export class UserFormComponent implements OnInit {
       rgOrgaoExp: user.rgOrgaoExp,
       matricula: user.matricula,
       situacao: user.situacao,
-      senha: user.senha,
+      // senha: user.senha,
+      // confirmarSenha: user.confirmarSenha,
       permissoes: user.permissoes
     })
   }
@@ -114,6 +123,8 @@ export class UserFormComponent implements OnInit {
     this.userService.create(this.form.value)
     .subscribe( 
       res => {
+        console.log("Resposta: ", res);
+        
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -124,16 +135,21 @@ export class UserFormComponent implements OnInit {
         this.router.navigate(['./usuarios'])
       },
       err => {
-        let fullMessage = err.error[0]?.mensagemUsuario
+        if(err.error = "As senhas não correspondem") {
+          this.form.get('confirmarSenha')?.setErrors({passwordMismatch: true})
+        }
+        console.log("Resposta ERR: ", err);
+        let fullMessage = err.error[0]?.mensagemUsuario || err.error
         let cutMessage = fullMessage.indexOf(":")
         let finalMessage = fullMessage.slice(cutMessage + 1)
+        
         
         Swal.fire({
           icon: 'error',
           title: err.status,
           text: finalMessage
         })
-      },
+      }
       
     )
 
@@ -149,13 +165,10 @@ export class UserFormComponent implements OnInit {
       cancelButtonText: `Cancelar`,
       
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.userService.updateUser(this.currentId, this.form.value)
         .subscribe(
-          res => {
-            console.log("Res", res);
-            
+          res => {            
             Swal.fire('Usuário salvo com sucesso!', '', 'success')
             this.router.navigate(['./usuarios'])
           },
@@ -171,14 +184,14 @@ export class UserFormComponent implements OnInit {
             })
           }
         )
-        
       }
     })
 
-
-
-
   }
+
+  
+
+  
 
   findLastItemId(): void {
     this.userService.listAll({ page: "0", size: "5" })
@@ -207,7 +220,6 @@ export class UserFormComponent implements OnInit {
     this.userService.loadById(this.currentId)
         .subscribe((user: IUser) => {
           console.log("User: -> ", user);
-          
           this.usuario = user
         });
     
@@ -219,6 +231,32 @@ export class UserFormComponent implements OnInit {
       this.perfil = 'SINDICALIZADO'
     }
   }
+
+  // All is this method
+  onPasswordChange() {
+    if (this.confirmarSenha.value == this.senha.value) {
+      this.confirmarSenha.setErrors(null);
+    } else {
+      this.confirmarSenha.setErrors({ mismatch: true });
+    }
+  }
+
+  // getting the form control elements
+  get senha(): AbstractControl {
+    return this.form.controls['senha'];
+  }
+
+  get confirmarSenha(): AbstractControl {
+    return this.form.controls['confirmarSenha'];
+  }
+
+  checkPasswords(group: FormGroup) { 
+    const password = group.controls.senha.value;
+    const confirmPassword = group.controls.confirmarSenha.value;
+
+    return password === confirmPassword ? null : { notSame: true };
+  }
+
 
 
 }

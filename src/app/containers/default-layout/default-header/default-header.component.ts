@@ -1,9 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { ClassToggleService, HeaderComponent } from '@coreui/angular';
-import { log } from 'console';
 import { AuthService } from 'src/app/seguranca/auth.service';
 import { IUser } from 'src/app/users/interfaces/user.interface';
 import { UserService } from 'src/app/users/user.service';
@@ -21,7 +18,20 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   public newNotifications = new Array(5)
   perfil!: string;
   usuario!:any
-  userLogged!: IUser;
+  userLogged: IUser = {
+    codigo: 0,
+    nome: '',
+    email: '',
+    celular: '',
+    cpf: '',
+    rg: '',
+    rgOrgaoExp: '',
+    matricula: '',
+    situacao: [],
+    senha: '',
+    confirmarSenha: '',
+    permissoes: []
+  };
 
   constructor(
     private classToggler: ClassToggleService,
@@ -67,7 +77,7 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
   }
 
   viewPerfil(){
-    this.router.navigate(['usuarios/editar/', this.userLogged.codigo], {relativeTo: this.route})
+    this.router.navigate(['usuarios/editar/', this.userLogged?.codigo], {relativeTo: this.route})
   }
 
   getInitials(fullName: any) {

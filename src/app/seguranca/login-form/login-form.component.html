@@ -2,7 +2,7 @@
 
   <div
       class="bg order-1 order-md-2"
-      style="background-image: url('https://app-47750.dc-us-1.absamcloud.com/portal-app/assets/images/bg_login?w=1200&h=-1&s=1');"
+      style="background-image: url('https://app-47750.dc-us-1.absamcloud.com/portal-app/assets/images/bg_login.jpg?w=1200&h=-1&s=1');"
     >
   </div>
   
@@ -22,10 +22,6 @@
           <p class="mb-4 text-top">
             Bem-vindo. Aqui você acompanha como suas contribuições são investidas.
           </p>
-          
-          <!-- <div class="title-login">
-            Login</div>
-          <div class="subtitle-login mb-5">Para entrar na aplicação use suas credênciais.</div> -->
             
           <div *ngIf="!isValid" class="alert alert-danger" role="alert">
             {{ message }}
@@ -34,6 +30,9 @@
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
           </div>
 
+          <div *ngIf="!isReset">
+
+          
           <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
             <mat-form-field appearance="fill">
               <mat-label for="usuario">Usuário</mat-label>
@@ -54,8 +53,14 @@
             </mat-form-field>
 
             <button type="submit" class="btn-block" mat-raised-button color="primary" [disabled]="loginForm.invalid">Entrar</button>
+            
 
           </form>
+        </div>
+          <div>
+            <div *ngIf="!isReset" class="mt-5">
+              <a (click)="formResetSenha()">Esqueci minha senha</a>
+            </div>
 
         </div>
       </div>
