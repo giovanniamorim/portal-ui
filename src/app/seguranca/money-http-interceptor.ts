@@ -15,6 +15,19 @@ export class MoneyHttpInterceptor implements HttpInterceptor {
   constructor(private auth: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log("Entrou no interceptor");
+
+    if(req.url.includes("/reset-password")){
+      console.log("Caiu no /reset-password");
+      return next.handle(req);
+      
+    }
+
+    if(req.url.includes("/forgot-password")){
+      console.log("Caiu no forgot-password");
+      return next.handle(req);
+      
+    }
     
     if (!req.url.includes('/oauth/token') && (req.url.includes("/forgot-password") || req.url.includes("/reset-password")) && this.auth.isAccessTokenInvalido()) {
       console.log("isAccessTokenInvalido", this.auth.isAccessTokenInvalido);
