@@ -52,10 +52,6 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
 
   logout() {
     this.auth.logout()
-      .then(() => {
-        this.router.navigate(['/login']);
-      })
-      // .catch(erro => this.errorHandler.handle(erro));
   }
 
   findPerfil(){

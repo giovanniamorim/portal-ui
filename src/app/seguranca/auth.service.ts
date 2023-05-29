@@ -3,6 +3,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private jwtHelper: JwtHelperService
+    private jwtHelper: JwtHelperService,
+    private router: Router
   ) {
     this.jwtHelper = new JwtHelperService();
     
@@ -113,6 +115,7 @@ export class AuthService {
   limparAccessToken() {
     localStorage.removeItem('token');
     this.jwtPayload = null;
+    this.router.navigate(['/login']);
   }
 
   logout() {
@@ -121,6 +124,7 @@ export class AuthService {
       .then(() => {
         this.limparAccessToken();
       });
+
   }
 
 
