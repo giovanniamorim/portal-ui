@@ -24,7 +24,7 @@ export class LancamentosComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'dataLancamento', 'planoConta',  'modoPagamento', 'tipoComprovante',  'supCaixa', 'valor', 'fileUrl', 'actions'];
+  displayedColumns: string[] = ['fileUrl', 'id', 'planoConta',  'valor'];
   datasource = new MatTableDataSource()
   carregando = false
   totalElements: any
@@ -162,11 +162,11 @@ export class LancamentosComponent implements OnInit, AfterViewInit {
               this.showTopMessage = true
               if(this.totalElements === 0){
                 this.typeMessage = 'warning'
-                this.message = 'Não encontramos registros para sua busca'
+                this.message = 'Nenhum registro encontrado'
           
               } else {
                 this.typeMessage = 'success'
-                this.message = `Encontramos ${this.totalElements} registros para sua busca`
+                this.message = `${this.totalElements} registros encontrados`
               }
           },
           (error) => {

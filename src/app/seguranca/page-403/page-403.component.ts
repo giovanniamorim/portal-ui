@@ -14,9 +14,8 @@ export class Page403Component {
   voltar() {
     this.auth.logout()
       .then(() => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['..']);
       })
-      // .catch(erro => this.errorHandler.handle(erro));
   }
 
   

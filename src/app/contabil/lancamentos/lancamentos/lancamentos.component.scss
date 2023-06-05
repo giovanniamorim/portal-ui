@@ -73,15 +73,16 @@ table {
 }
 
 .mat-column-dataLancamento {
-    white-space: unset !important;
-    flex: 0 0 28% !important;
-    width: 10% !important;
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  width: 10% !important;
 }
 
 .mat-column-planoConta {
-    white-space: unset !important;
-    flex: 0 0 28% !important;
-    width: 20% !important;
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  width: 20% !important;
+  font-size: 14px;
 }
 
 .mat-column-modoPagamento {
@@ -111,12 +112,15 @@ table {
   align-content: end;
   flex: 0 0 28% !important;
   width: 10% !important;
+  text-align: end;
 }
+
 
 .mat-column-fileUrl {
     white-space: unset !important;
     flex: 0 0 28% !important;
     width: 5% !important;
+    text-align: start;
 }
 
 .mat-column-actions {
@@ -155,7 +159,7 @@ table {
   color: #888;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 375px) {
   .alert {
     border-radius: 6px;
     display: table;
@@ -206,6 +210,15 @@ table {
     position: absolute;
     top: 50%;
   }
+
+  .custom-success {
+    font-size: 12px;
+  }
+
+  .custom-warming {
+    font-size: 12px;
+  }
+
   /*============ colors ========*/
   .alert.alert-success .icon,
   .alert.alert-success .icon:after {
@@ -229,6 +242,36 @@ table {
   .alert.alert-danger .icon:after {
     border-color: none;
     background: #c82630;
+  }
+
+  .cellid {
+    font-size: 12px;
+  }
+  
+  .celldate {
+    font-size: 12px;
+  }
+  
+  .cellid {
+    font-size: 11px;
+  }
+  
+  .cellplano {
+    font-size: 11px;
+    text-align: left;
+    text-overflow: ellipsis;
+    
+  }
+  
+  .cellvalor {
+    font-size: 12px;
+    text-align: right;
+    color: #c82630;
+  }
+
+  .iconimage {
+    text-align: start;
+
   }
 }
   

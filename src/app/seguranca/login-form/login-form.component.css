@@ -1,6 +1,7 @@
 body {
+  height: 100%;
   font-family: "Roboto", sans-serif;
-  background-color: #fff; }
+  background-color: #103183; }
 
 p {
   color: #b3b3b3;
@@ -24,6 +25,7 @@ h2 {
   font-size: 20px; }
 
 .half, .half .container > .row {
+  background-color: #103183;
   height: 100vh;
   min-height: 700px; }
 
@@ -247,6 +249,7 @@ h2 {
       height: 170px; }
 
     .half, .half .container > .row {
+      background-color: #103183;
       height: auto;
       min-height: 430px; }
       
@@ -298,4 +301,21 @@ figure figcaption {
   color: #fff;
   padding: 10px;
   border-radius: 5px;
+}
+
+.slog1 {
+  color: #ffff;
+  font-size: 21px;
+  font-weight: bolder;
+}
+
+.slog2 {
+  color: #5D97EB;
+  font-size: 21px;
+  font-weight: bolder;
+  font-style: italic;
+}
+
+.esqueci {
+  text-align: center;
 }

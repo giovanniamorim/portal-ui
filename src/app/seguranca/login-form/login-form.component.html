@@ -1,65 +1,67 @@
-<div class="d-lg-flex half">
+<div class="d-lg-flex half" >
 
-  <div
-      class="bg order-1 order-md-2"
-      style="background-image: url('https://www.sindifisco.app.br/assets/images/bg_login.jpg?w=1200&h=-1&s=1');"
-    >
-  </div>
-  
-  <div class="bg order-1 order-md-2 bloco-sombra">
+   <div class="bg order-1 order-md-2 bloco-sombra">
 
   <div class="contents order-2 order-md-1">
     <div class="container">
       
       <div class="row align-items-center justify-content-center">
 
-        <div class="col-md-7">
+        <div class="col-md-7" style="margin-top: 20%;">
 
           <div class="img-logo">
-            <img src="https://www.sindifisco.app.br/assets/img/brand/logo-sindifisco.png" style="width: 80px; margin-top: 10px;" alt="Sindifisco-PA">
+            <img src="https://www.sindifisco.app.br/assets/img/brand/logo_branca_sindifisco.png" style="width: 80px; margin-top: 10px;" alt="Sindifisco-PA">
           </div>
-          <div class="title">Portal Transparência</div>
-          <p class="mb-4 text-top">
-            Bem-vindo. Aqui você acompanha como suas contribuições são investidas.
-          </p>
+          <div style="margin-top: 15px; text-align: center;">
+            <span class="slog1">Portal</span> <span class="slog2">Transparência</span>
+          </div>
+
             
-          <div *ngIf="!isValid" class="alert alert-danger" role="alert">
+          <div *ngIf="!isValid" class="alert alert-danger" role="alert" >
             {{ message }}
           </div>
           <div *ngIf="carregando" class="spinner">
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
           </div>
 
-          <div *ngIf="!isReset">
+          <mat-card style="margin-top: 25px;">
+            <div *ngIf="!isReset">
 
-          
-          <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
-            <mat-form-field appearance="fill">
-              <mat-label for="usuario">Usuário</mat-label>
-                <input matInput formControlName="usuario" autocomplete="off">
-                <mat-error *ngIf="loginForm.controls['usuario'].invalid">Nome de usuário é obrigatório.</mat-error>
-                <button mat-icon-button matSuffix>
-                  <mat-icon>email</mat-icon>
-                </button>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill">
-              <mat-label>Senha</mat-label>
-              <input matInput [type]="hide ? 'password' : 'text'" formControlName="senha" type="senha" autocomplete="off">
-              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
-              <mat-error *ngIf="loginForm.controls['senha'].invalid">Senha é obrigatória.</mat-error>
-            </mat-form-field>
-
-            <button type="submit" class="btn-block" mat-raised-button color="primary" [disabled]="loginForm.invalid">Entrar</button>
             
+            <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+              <mat-form-field appearance="fill">
+                <mat-label for="usuario">Usuário</mat-label>
+                  <input matInput formControlName="usuario" autocomplete="off">
+                  <mat-error *ngIf="loginForm.controls['usuario'].invalid">Nome de usuário é obrigatório.</mat-error>
+                  <button mat-icon-button matSuffix>
+                    <mat-icon>email</mat-icon>
+                  </button>
+              </mat-form-field>
 
-          </form>
-        </div>
+              <mat-form-field appearance="fill">
+                <mat-label>Senha</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'" formControlName="senha" type="senha" autocomplete="off">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-error *ngIf="loginForm.controls['senha'].invalid">Senha é obrigatória.</mat-error>
+              </mat-form-field>
+
+              <button type="submit" class="btn-block" mat-raised-button color="primary" [disabled]="loginForm.invalid">Entrar</button>
+              
+
+            </form>
+            </div>
+          </mat-card>
           <div>
-            <div *ngIf="!isReset" class="mt-5">
-              <a (click)="formResetSenha()">Esqueci minha senha</a>
+            <div *ngIf="!isReset" class="mt-5 esqueci" style="height: 100vh;" >
+              <button
+                class="header-button"
+                mat-raised-button
+                (click)="formResetSenha()"
+              >
+              Esqueci minha senha
+            </button>
             </div>
 
         </div>
