@@ -163,10 +163,7 @@ const routes: Routes = [
     data: {
       title: 'Login Page'
     }
-  },
-
-  
-  
+  },  
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, 
   { path: 'nao-autorizado', component: Page403Component },
   { path: 'pagina-nao-encontrada', component: Page404Component },

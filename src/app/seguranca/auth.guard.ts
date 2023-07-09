@@ -37,7 +37,7 @@ export class AuthGuard implements CanActivate {
   podeAcessarRota(roles: string[]): boolean {
     
     if (roles && !this.auth.temQualquerPermissao(roles)) {
-      this.router.navigate(['/nao-autorizado']);
+      this.router.navigate(['/login']);
       return false;
     }
 

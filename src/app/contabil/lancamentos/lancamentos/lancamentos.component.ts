@@ -1,10 +1,10 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, Output, ViewChild, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, take, timeout, toArray } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
 
@@ -60,9 +60,6 @@ export class LancamentosComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
-
-
-
 
     this.tipoLancamentoPage = this.router.url.substring(13);
     if( this.tipoLancamentoPage === 'receitas') {
