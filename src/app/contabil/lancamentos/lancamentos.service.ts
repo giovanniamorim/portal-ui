@@ -1,10 +1,10 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { catchError, Observable, throwError } from 'rxjs'
-import Swal from 'sweetalert2'
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { catchError, Observable, throwError } from 'rxjs';
+import Swal from 'sweetalert2';
 
-import { environment } from '../../../environments/environment'
-import { ILancamentos } from './interfaces/lancamentos.interface'
+import { environment } from '../../../environments/environment';
+import { ILancamentos } from './interfaces/lancamentos.interface';
 
 @Injectable({
   providedIn: 'root',
