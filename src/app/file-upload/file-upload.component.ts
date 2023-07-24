@@ -36,6 +36,8 @@ export class FileUploadComponent implements OnInit, OnChanges {
     ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log("CHANGES NO FFILE-UPLOAD:", changes);
+    
     this.showTopMessage = changes.fileName.currentValue.startsWith('undefine') ? false : true;
     this.fileName  = changes.fileName.currentValue
     this.fileName.includes('undefined') ? this.showTopMessage = false : this.showTopMessage = true;
@@ -91,6 +93,10 @@ export class FileUploadComponent implements OnInit, OnChanges {
   }
 
   upload(idx: number, file: File): void {
+    console.log("file.name:", file.name);
+    console.log("this.fileName:", this.fileName);
+    
+    
 
     if(file.name !== this.fileName){
     } else {
@@ -118,42 +124,45 @@ export class FileUploadComponent implements OnInit, OnChanges {
         },
 
         (err: any) => {
+
+          console.log("ERRO NO UPLOAD: ", err);
+          
           // this.progressInfos[idx].value = 0;
           // const msg = err.error.message;
           // this.typeMessage = 'danger'
           // this.message.push(msg);
 
-          Swal.fire({
-            title: 'Substituir arquivo?',
-            text: err.error.message,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim, substitua o arquivo!'
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              // Identificar e deletar o arquivo
-              this.filesService.findId(this.arquivo).subscribe(res => {
-                this.fileId = res;
-                this.filesService.deleteById(this.fileId).subscribe((res:any) => {
-                  this.upload(idx, file) ;
-                    Swal.fire({
-                      position: 'top-end',
-                      icon: 'success',
-                      title: 'Arquivo atualizado com sucesso! \n Salve o seu registro.',
-                      showConfirmButton: false,
-                      timer: 2000
-                    })
-                });
-              })
+          // Swal.fire({
+          //   title: 'Substituir arquivo?',
+          //   text: err.error.message,
+          //   icon: 'warning',
+          //   showCancelButton: true,
+          //   confirmButtonColor: '#3085d6',
+          //   cancelButtonColor: '#d33',
+          //   confirmButtonText: 'Sim, substitua o arquivo!'
+          // }).then((result) => {
+          //   /* Read more about isConfirmed, isDenied below */
+          //   if (result.isConfirmed) {
+          //     // Identificar e deletar o arquivo
+          //     this.filesService.findId(this.arquivo).subscribe(res => {
+          //       this.fileId = res;
+          //       this.filesService.deleteById(this.fileId).subscribe((res:any) => {
+          //         this.upload(idx, file) ;
+          //           Swal.fire({
+          //             position: 'top-end',
+          //             icon: 'success',
+          //             title: 'Arquivo atualizado com sucesso! \n Salve o seu registro.',
+          //             showConfirmButton: false,
+          //             timer: 2000
+          //           })
+          //       });
+          //     })
 
-            } else if (result.isDenied) {
-              Swal.fire('Ação cancelada', '', 'info')
-            }
+          //   } else if (result.isDenied) {
+          //     Swal.fire('Ação cancelada', '', 'info')
+          //   }
             
-          })
+          // })
 
         });
     } else {

@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { map, Observable, startWith } from 'rxjs';
 
 import { IModoPagamento } from '../../plano-contas/interfaces/modo-pagamento.interface';
 import { ITipoComprovante } from '../../plano-contas/interfaces/tipo-comprovante.interface';
 import { IConta } from '../interfaces/lancamentos.interface';
-import { Observable, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-busca',
@@ -734,7 +735,8 @@ export class BuscaComponent implements OnInit, OnChanges {
   filteredOptions: Observable<IConta[]> | undefined ;
   
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private datePipe: DatePipe
   ){ }
 
   ngOnInit(): void {
@@ -750,7 +752,9 @@ export class BuscaComponent implements OnInit, OnChanges {
         supCaixa: [''],
         anoExercicio: [''],
         valorMin: [''],
-        valorMax: ['']
+        valorMax: [''],
+        page: [0], // Valor inicial de página
+        size: [5], // Valor inicial de tamanho
       })
 
       this.filterReceita = this.contas.filter(c => c.tipoLancamento === 'Receita')
@@ -786,27 +790,60 @@ export class BuscaComponent implements OnInit, OnChanges {
   }
 
   search(){
-    console.log("this.searchForm.value:", this.searchForm.value);
-    this.searchParams.emit(this.searchForm.value)
+    // Obtenha o valor do campo dataLancamentoDe do formulário
+    const dataLancamentoDe = this.searchForm.get('dataLancamentoDe')?.value;
+    const dataLancamentoAte = this.searchForm.get('dataLancamentoAte')?.value;
 
+    // Faça o parse da data para o formato 'yyyy-MM-dd' utilizando o date-fns
+    let dataLancamentoDeFormatada = this.datePipe.transform(dataLancamentoDe, 'yyyy-MM-dd');
+    let dataLancamentoAteFormatada = this.datePipe.transform(dataLancamentoAte, 'yyyy-MM-dd');
+    console.log("dataLancamentoDeFormatada: ", dataLancamentoDeFormatada);
+
+    if(dataLancamentoDeFormatada === null){
+      dataLancamentoDeFormatada = ""
+    }
+    if(dataLancamentoAteFormatada === null){
+      dataLancamentoAteFormatada = ""
+    }
+    
+    // Defina o valor formatado de dataLancamentoDe no formulário de busca
+    this.searchForm.get('dataLancamentoDe')?.setValue(dataLancamentoDeFormatada);
+    this.searchForm.get('dataLancamentoAte')?.setValue(dataLancamentoAteFormatada);
+
+    // Obtenha os valores de página e tamanho do formulário
+    const page = this.searchForm.get('page')?.value;
+    const size = this.searchForm.get('size')?.value;
+
+      // Adicione os valores de página e tamanho ao corpo da requisição
+    const requestBody = {
+      ...this.searchForm.value,
+      page,
+      size,
+    };
+
+    this.searchParams.emit(requestBody)
   }
 
-  resetarBusca(){
-    const resetForm = {
-      "id": "",
-      "tipoLancamento": this.tipoLancamento,
-      "dataLancamentoDe": "",
-      "dataLancamentoAte": "",
-      "planoConta": "",
-      "modoPagamento": "",
-      "tipoComprovante": "",
-      "numDoc": "",
-      "numCheque": "",
-      "supCaixa": "",
-      "anoExercicio": "",
-      "valorMin": "",
-      "valorMax": "",
-    }
-    this.resetParams.emit(resetForm)
+
+  resetarFormulario() {
+    this.searchForm.reset(
+       {
+        "id": "",
+        "tipoLancamento": this.tipoLancamento,
+        "dataLancamentoDe": "",
+        "dataLancamentoAte": "",
+        "planoConta": "",
+        "modoPagamento": "",
+        "tipoComprovante": "",
+        "numDoc": "",
+        "numCheque": "",
+        "supCaixa": "",
+        "anoExercicio": "",
+        "valorMin": "",
+        "valorMax": "",
+        
+      }
+    );
+    this.resetParams.emit(this.searchForm.value);
   }
 }

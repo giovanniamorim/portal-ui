@@ -1,6 +1,6 @@
 <div class="page-container mb-5">
   <div class="card-body">
-    <button *ngIf="perfil !== 'SINDICALIZADO' "
+    <button *ngIf="perfil !== 'SINDICALIZADO'"
       class="header-button"
       mat-raised-button
       color="primary"
@@ -34,8 +34,9 @@
 
 
   <div class="table-container" *ngIf="totalElements > 0">
-    <table mat-table
+    <mat-table matTableExporter 
           [dataSource]="datasource" 
+          #exporter="matTableExporter"
           matSort (matSortChange)="listarLancamentos($event)"
           class="mat-elevation-z8">
       <ng-container matColumnDef="id">
@@ -95,11 +96,9 @@
                 aria-label="Ver Arquivo"
                 (click)="onClick(lancamento)"
                 class="modal-hover-opacity"
-                data-toggle="modal" data-target="#imageModal"
               >
                 <mat-icon>file_present</mat-icon>
               </button>
-
           </span>
         </td>
       </ng-container>
@@ -118,7 +117,7 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+    </mat-table>
     <mat-paginator 
         [length]="totalElements"
         [showFirstLastButtons]="showFirstLastButtons"
@@ -128,9 +127,6 @@
         >
     </mat-paginator>
   </div>
-
-
-
   
     <div *ngIf="carregando" class="spinner">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
@@ -141,13 +137,14 @@
 <!-- Modal -->
 <!--Bootstrap modal -->
 <div class="modal fade" tabindex="-1" id="imageModal" role="dialog" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Comprovante do Lançamento de ID: {{imgId}} </h5>
       </div>
       <div class="modal-body">
-        <div *ngIf="carregandoImagem" class="spinner">
+        <div *ngIf="carregandoImagem || carregando" class="spinner">
           <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </div>
         <img src="{{imgSrc}}" width="100%" class="image-modal" />
@@ -156,7 +153,7 @@
         <a href="{{ imgSrc }}" download>
           <button type="button" class="btn btn-primary">Download</button>
         </a>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button (click)="closeModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
       </div>
       
     </div>

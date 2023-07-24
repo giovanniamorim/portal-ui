@@ -1,12 +1,12 @@
 import { IModoPagamento } from '../../plano-contas/interfaces/modo-pagamento.interface'
-import { IPlanoContas } from '../../plano-contas/interfaces/plano-contas.interface'
+import { IContas, IPlanoContas } from '../../plano-contas/interfaces/plano-contas.interface'
 import { ITipoComprovante } from '../../plano-contas/interfaces/tipo-comprovante.interface'
 
 export interface ILancamentos {
   id: number
   tipoLancamento: string
   dataLancamento: Date
-  planoConta: IPlanoContas
+  planoConta: IConta
   valor: number
   modoPagamento: IModoPagamento
   tipoComprovante: ITipoComprovante

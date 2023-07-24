@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, of, Subject, tap, throwError } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { environment } from '../../../environments/environment';
@@ -10,17 +10,22 @@ import { ILancamentos } from './interfaces/lancamentos.interface';
   providedIn: 'root',
 })
 export class LancamentosService {
+
   private readonly BaseUrl = environment.apiUrl + '/api/lancamentos'
 
   public token = localStorage.getItem('token')
 
+  private lancamentoRemovidoSubject = new Subject<void>();
+
   public headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
+    'Cache-Control': 'no-cache',
     Accept: 'application/json',
     Authorization: `Bearer  ${this.token}`,
   })
 
   constructor(private httpClient: HttpClient) {}
+
 
   listAll(): Observable<any> {
     return this.httpClient.get<ILancamentos[]>(`${this.BaseUrl}`, {
@@ -81,15 +86,26 @@ export class LancamentosService {
   }
 
   remove(lancamento: ILancamentos) {
-    return this.httpClient.delete(`${this.BaseUrl}/${lancamento.id}`, {
-      headers: this.headers,
-    })
+    return this.httpClient.delete(`${this.BaseUrl}/${lancamento.id}`, { headers: this.headers })
+      .pipe(
+        tap(() => this.lancamentoRemovidoSubject.next()),
+        catchError(this.errorHandler)
+      );
+  }
+
+  get lancamentoRemovido$() {
+    return this.lancamentoRemovidoSubject.asObservable();
   }
 
   loadById(id: number) {
+    console.log("ID no service: ", id);
+    
     return this.httpClient.get<ILancamentos>(`${this.BaseUrl}/${id}`, {
       headers: this.headers,
-    })
+    }).pipe(
+      catchError(this.errorHandler)
+    )
+    
   }
 
   update(lancamento: ILancamentos) {
@@ -121,15 +137,10 @@ export class LancamentosService {
         title: 'Oops...',
         text: errorMessage,
       })
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.message}`
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: errorMessage,
-      })
-    }
+    } 
     return throwError(errorMessage)
   }
+
+
+
 }

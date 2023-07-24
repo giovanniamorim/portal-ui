@@ -1,28 +1,34 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { catchError, concatMap, map, take, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/seguranca/auth.service';
 import Swal from 'sweetalert2';
 
 import { ILancamentos } from '../interfaces/lancamentos.interface';
 import { LancamentosService } from '../lancamentos.service';
+import { EMPTY, Observable, Subject, of } from 'rxjs';
+import { MatTableExporterDirective } from 'mat-table-exporter';
+import { url } from 'inspector';
+import { FilesService } from 'src/app/files/files.service';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-lancamentos',
   templateUrl: './lancamentos.component.html',
   styleUrls: ['./lancamentos.component.scss']
 })
-export class LancamentosComponent implements OnInit, AfterViewInit {
+export class LancamentosComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() searchCriteria: any;
   @Output() sendTipoLancamento = new EventEmitter<string>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatTableExporterDirective) matTableExporter!: MatTableExporterDirective;
 
   displayedColumns: string[] = ['id', 'dataLancamento', 'planoConta',  'modoPagamento', 'tipoComprovante',  'supCaixa', 'valor', 'fileUrl', 'actions'];
   datasource = new MatTableDataSource()
@@ -45,10 +51,12 @@ export class LancamentosComponent implements OnInit, AfterViewInit {
   criterias: any;
   inicialCriteria: any;
   carregandoImagem: boolean = false;
-  
+
+  private unsubscribe = new Subject<void>();
   
   constructor(
     private lancamentoService: LancamentosService,
+    private fileService: FilesService,
     private router: Router,
     private route: ActivatedRoute,
     private _liveAnnouncer: LiveAnnouncer,
@@ -60,6 +68,10 @@ export class LancamentosComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
+
+    this.lancamentoService.lancamentoRemovido$
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(() => this.listarLancamentos(this.criterias));
 
     this.tipoLancamentoPage = this.router.url.substring(13);
     if( this.tipoLancamentoPage === 'receitas') {
@@ -90,6 +102,11 @@ export class LancamentosComponent implements OnInit, AfterViewInit {
 
     this.findRoles();
 
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
   ngAfterViewInit() {
@@ -203,14 +220,12 @@ export class LancamentosComponent implements OnInit, AfterViewInit {
       confirmButtonText: 'Sim, pode remover!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.lancamentoService.remove(lancamento).subscribe( res => {
-          this.listarLancamentos({ page: "0", size: "5" })
-        })
+        this.lancamentoService.remove(lancamento).subscribe(() => {
         Swal.fire(
           'Removido!',
           'O Receita foi removido com sucesso.',
           'success'
-        )
+        )})
       } 
     })
 
@@ -220,17 +235,7 @@ export class LancamentosComponent implements OnInit, AfterViewInit {
     this.router.navigate(['editar', lancamento.id], {relativeTo: this.route})
   }
 
-  onClick(lancamento:any){
-    console.log("Image: ", lancamento);
-    this.imgId = lancamento.id
-    this.carregandoImagem = true
-    setTimeout(() => {
-      this.carregandoImagem = false
-      this.imgSrc = lancamento.fileUrl
-    }, 3000);
 
-    
-  }
 
   findRoles(){
     if(!this.auth.temPermissao('ROLE_CREATE')){
@@ -267,8 +272,88 @@ export class LancamentosComponent implements OnInit, AfterViewInit {
     this.listarLancamentos(this.searchCriteria)
   }
 
+  onClick(lancamento: any): void {
+    console.log("Image: ", lancamento.fileUrl);
+    this.imgId = lancamento.id;
+    this.carregandoImagem = true;
+    this.carregando = true
+
+    // Verificar a existência do arquivo usando a função checkIfFileExists
+    this.checkIfFileExists(lancamento.fileUrl).pipe(
+      concatMap((res: any) => {
+        if (res === true) {
+          // Se o arquivo existe (status 200), abrir o modal com a imagem
+          console.log("Abrindo o modal...");
+          this.openModal(lancamento.fileUrl);
+        } else {
+           // Exibir o mensagem caso o arquivo não exista (status não é 200)
+          this.carregando = false
+          this.closeModal();
+          Swal.fire({
+            title: 'Error!',
+            text: 'O arquivo não foi encontrada no servidor.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          })
+        }
+
+        // Retornar uma observável vazia para continuar a cadeia de operadores
+        return EMPTY;
+      })
+    ).subscribe(() => {
+      // Quando a cadeia de operadores for concluída, atualizar o carregandoImagem para false
+      this.carregandoImagem = false;
+      this.carregando = false
+    });
+  }
+
+  openModal(fileUrl: string): void {
+    // Encontrar o elemento do modal usando seu ID e abrir o modal
+    const modalElement = document.getElementById('imageModal');
+    if (modalElement) {
+      modalElement.classList.add('show'); // Adicionar a classe 'show' para abrir o modal
+      modalElement.style.display = 'block'; // Exibir o modal definindo o estilo 'display' para 'block'
+    }
+
+    // Atualizar a propriedade 'imgSrc' com a URL do arquivo para exibir a imagem no modal
+    this.imgSrc = fileUrl;
+    this.carregandoImagem = false
+    this.carregando = false
+    console.log("this.imgSrc no openaModal: ", this.imgSrc);
+    
+  }
+
+  closeModal(): void {
+    this.carregando = false
+    this.carregandoImagem = false
+    // Encontrar o elemento do modal usando seu ID e fechar o modal
+    const modalElement = document.getElementById('imageModal');
+    if (modalElement) {
+      modalElement.classList.remove('show'); // Remover a classe 'show' para fechar o modal
+      modalElement.style.display = 'none'; // Ocultar o modal definindo o estilo 'display' para 'none'
+    }
+  }
+
+
+  checkIfFileExists(fileUrl: string): Observable<boolean> {
+    const startIndex = fileUrl.lastIndexOf("name=");
+    if (startIndex !== -1) {
+      const fileName = fileUrl.substring(startIndex + "name=".length);
+  
+      return this.fileService.findByName(fileName).pipe(
+        map((response: HttpResponse<any>) => response.status === 200),
+        catchError((error: HttpErrorResponse) => of(error.status !== 404)),  
+      );
+    }
+    // Retorne um Observable com valor false caso "name=" não seja encontrado na URL
+    return of(false);
+  }
+
+ 
+
 
 }
+
 
 
 

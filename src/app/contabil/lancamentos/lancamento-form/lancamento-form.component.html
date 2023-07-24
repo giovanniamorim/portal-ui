@@ -32,7 +32,7 @@
               <div class="col col-sm-12 col-md-4 col-lg-4">
                 <mat-form-field appearance="fill">
                   <mat-label>Tipo de Lançamento</mat-label>
-                  <mat-select [disabled]="isEditLancamento"
+                  <mat-select 
                     placeholder="Selecione uma conta"
                     formControlName="tipoLancamento"
                     (selectionChange)="onSelectChange($event)"
@@ -53,7 +53,7 @@
                   <input
                     matInput
                     [matDatepicker]="picker"
-                    type="text"
+                    type="date"
                     placeholder="Data de Lançamento"
                     formControlName="dataLancamento"
                   />
@@ -63,42 +63,24 @@
                   ></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
+                
               </div>
-                <div class="col col-sm-12 col-md-4 col-lg-4">
-                  <mat-form-field appearance="fill">
-                    <mat-label>Conta</mat-label>
-                    <mat-select
-                      placeholder="Selecione uma opção"
+
+              <div class="col col-sm-12 col-md-4 col-lg-4">
+                <mat-form-field appearance="fill">
+                  <mat-label>Conta</mat-label>
+                  <input type="text"
+                      placeholder="Escolha uma opção"
+                      matInput
                       formControlName="planoConta"
-                    >
-                      <mat-option
-                        *ngFor="let conta of listaContas"
-                        [value]="conta.descricao"
-                      >
-                        {{ conta.descricao }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-
-                <!-- <div class="col col-sm-12 col-md-4 col-lg-4">
-                  <mat-form-field appearance="fill">
-                    <mat-label>Conta X </mat-label>
-                    <mat-select
-                      placeholder="Selecione uma opção"
-                      formControlName="planoConta"
-                    >
-                      <mat-option
-                        *ngFor="let conta of listaContas"
-                        [value]="conta.descricao"
-                      >
-                        {{ conta.descricao }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div> -->
-
-
+                      [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let conta of filteredOptions | async" [value]="conta">
+                      {{conta.descricao}}
+                  </mat-option>
+                  </mat-autocomplete>
+              </mat-form-field>
+            </div>
                 
             </div>
             <div class="row">

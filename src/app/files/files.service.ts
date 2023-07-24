@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpEvent, HttpHeaderResponse, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -42,9 +42,15 @@ export class FilesService {
     })
   }
 
+  findByName(name: string): Observable<any> {
+    return this.httpClient.get(`${this.baseUrl}/file/find?name=${name}`, {
+      headers: this.headers
+    })
+  }
+
   findId(fileName: string): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/file/findId?name=${fileName}`, 
-    {headers: this.headers})
+    return this.httpClient.head(`${this.baseUrl}/file/findId?name=${fileName}`, 
+    {headers: this.headers, observe: 'response'})
   }
 
   getAllFiles(): Observable<any> {
