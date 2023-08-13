@@ -1,11 +1,9 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { from, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
-import { log } from 'console';
 
 export class NotAuthenticatedError { }
 
@@ -15,8 +13,6 @@ export class MoneyHttpInterceptor implements HttpInterceptor {
   constructor(private auth: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log("Entrou no interceptor");
-
     if(req.url.includes("/reset-password")){
       console.log("Caiu no /reset-password");
       return next.handle(req);

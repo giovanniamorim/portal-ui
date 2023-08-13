@@ -55,6 +55,7 @@ export class LancamentosService {
     })
   }
 
+
   buscaReceitas(request?: any): Observable<any> {
     const params = request
     return this.httpClient.get<ILancamentos[]>(`${this.BaseUrl}/busca?tipoLancamento=Receita`, {
@@ -63,13 +64,13 @@ export class LancamentosService {
     })
   }
 
-  buscaDespesas(request?: any): Observable<any> {
-    const params = request
-    return this.httpClient.get<ILancamentos[]>(`${this.BaseUrl}/busca?tipoLancamento=Despesa`, {
-      headers: this.headers,
-      params,
-    })
-  }
+  // buscaDespesas(request?: any): Observable<any> {
+  //   const params = request
+  //   return this.httpClient.get<ILancamentos[]>(`${this.BaseUrl}/busca?tipoLancamento=Despesa`, {
+  //     headers: this.headers,
+  //     params,
+  //   })
+  // }
 
   listDespesas(request: any): Observable<any> {
     const params = request

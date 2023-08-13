@@ -230,6 +230,30 @@ table {
     border-color: none;
     background: #c82630;
   }
+
+  .total-geral {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    font-size: 12px;
+  
+    .total-value {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  }
+
+  .result-search {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    font-size: 12px;
+  
+    .text-search {
+      font-size: 1.0rem;
+      font-weight: bold;
+    }
+  }
 }
   
 
@@ -257,6 +281,11 @@ table {
   display: flex;
   max-height: 480px
 }
+
+
+
+
+
 
 
 

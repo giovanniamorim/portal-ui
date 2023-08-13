@@ -13,30 +13,68 @@
     <h6 class="header-subtitle mb-1">Lista de registros de lançamentos do tipo {{ tipoLancamentoPage === 'receitas' ? 'receitas' : 'despesas' }}</h6>
   </div>
 
-  <app-busca (searchParams)="onSearchCriteria($event)" (resetParams)="onResetParams($event)" [tipoLancamento]="tipoLanc" ></app-busca>
+  <app-busca (searchParams)="onSearchCriteria($event)" (resetParams)="onResetParams()" [tipoLancamento]="tipoLanc" ></app-busca>
 
-  <div *ngIf="showTopMessage">
-    <div *ngIf="typeMessage === 'warning'" class="alert alert-warning alert-dismissible d-flex align-items-center fade show" role="alert">
-      <i class="fa-regular fa-circle-xmark"></i>
-      <div class="icon hidden-xs">
-        <i class="fa fa-exclamation-circle"></i>
+  <div class="row">
+    <div class="col col-sm-12 col-md-6 col-lg-6">
+      <div *ngIf="showTopMessage">
+        <div *ngIf="typeMessage === 'warning'" class="alert alert-warning alert-dismissible d-flex align-items-center fade show" role="alert">
+          <i class="fa-regular fa-circle-xmark"></i>
+          <div class="icon hidden-xs">
+            <i class="fa fa-exclamation-circle"></i>
+          </div>
+          <Br /> {{message}}
+        </div>
+        <div *ngIf="typeMessage === 'success'" class="alert alert-info alert-dismissible d-flex align-items-center fade show" role="alert">
+          <i class="fa-regular fa-circle-xmark"></i>
+          <div class="icon hidden-xs">
+            <i class="fa fa-check-circle"></i>
+          </div>
+          <div class="result-search">
+            Resultado:
+            <div class="text-search">{{message}}</div>
+          </div>
+        </div>
       </div>
-      <Br /> {{message}}
     </div>
-    <div *ngIf="typeMessage === 'success'" class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert">
-      <i class="fa-regular fa-circle-xmark"></i>
-      <div class="icon hidden-xs">
-        <i class="fa fa-check-circle"></i>
+    <div *ngIf="showTopMessage" class="col col-sm-12 col-md-3 col-lg-3">
+
+      <div *ngIf="typeMessage === 'success'" class="alert alert-warning alert-dismissible d-flex align-items-center fade show" role="alert">
+        <i class="fa-regular fa-circle-xmark"></i>
+        <div class="icon hidden-xs">
+          <i class="fa fa-line-chart"></i>
+        </div>
+        <div class="total-geral">
+          Total da Página:
+          <div class="total-value">{{ totalPagina | currency: 'BRL' }}</div>
+        </div>
       </div>
-      <Br /> {{message}}
+
+    </div>
+    <div *ngIf="showTopMessage" class="col col-sm-12 col-md-3 col-lg-3">
+
+      <div *ngIf="typeMessage === 'success'" class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert">
+        <i class="fa-regular fa-circle-xmark"></i>
+        <div class="icon hidden-xs">
+          <i class="fa fa-line-chart"></i>
+        </div>
+        <div class="total-geral">
+          Total Geral da Consulta:
+          <div class="total-value">{{ totalGeral | currency: 'BRL' }}</div>
+        </div>
+      </div>
+      
+
     </div>
   </div>
 
+  <div *ngIf="carregando" class="spinner">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
 
   <div class="table-container" *ngIf="totalElements > 0">
-    <mat-table matTableExporter 
+    <table mat-table
           [dataSource]="datasource" 
-          #exporter="matTableExporter"
           matSort (matSortChange)="listarLancamentos($event)"
           class="mat-elevation-z8">
       <ng-container matColumnDef="id">
@@ -115,9 +153,16 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="cost">
+        <td mat-footer-cell *matFooterCellDef> {{totalGeral}} </td>
+      </ng-container>
+      
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </mat-table>
+
+    </table>
+    
     <mat-paginator 
         [length]="totalElements"
         [showFirstLastButtons]="showFirstLastButtons"
@@ -128,9 +173,7 @@
     </mat-paginator>
   </div>
   
-    <div *ngIf="carregando" class="spinner">
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </div>
+
   
 </div>
 

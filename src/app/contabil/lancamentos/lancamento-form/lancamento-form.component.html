@@ -29,7 +29,7 @@
           <form [formGroup]="form">
             
             <div class="row">
-              <div class="col col-sm-12 col-md-4 col-lg-4">
+              <div class="col col-sm-12 col-md-3 col-lg-3">
                 <mat-form-field appearance="fill">
                   <mat-label>Tipo de Lançamento</mat-label>
                   <mat-select 
@@ -47,13 +47,13 @@
                 </mat-form-field>
               </div>
 
-              <div class="col col-sm-12 col-md-4 col-lg-4">
+              <div class="col col-sm-12 col-md-3 col-lg-3">
                 <mat-form-field appearance="fill">
                   <mat-label>Data de Lançamento</mat-label>
                   <input
                     matInput
                     [matDatepicker]="picker"
-                    type="date"
+                    type="text"
                     placeholder="Data de Lançamento"
                     formControlName="dataLancamento"
                   />
@@ -66,21 +66,21 @@
                 
               </div>
 
-              <div class="col col-sm-12 col-md-4 col-lg-4">
+              <div class="col col-sm-12 col-md-6 col-lg-6">
                 <mat-form-field appearance="fill">
-                  <mat-label>Conta</mat-label>
-                  <input type="text"
-                      placeholder="Escolha uma opção"
-                      matInput
-                      formControlName="planoConta"
-                      [matAutocomplete]="auto">
-                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                  <mat-option *ngFor="let conta of filteredOptions | async" [value]="conta">
-                      {{conta.descricao}}
-                  </mat-option>
-                  </mat-autocomplete>
-              </mat-form-field>
-            </div>
+                    <mat-label>Conta</mat-label>
+                    <input type="text"
+                        placeholder="Escolha uma opção"
+                        matInput
+                        formControlName="planoConta"
+                        [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let conta of filteredOptions | async" [value]="conta.descricao">
+                        {{conta.descricao}}
+                    </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+              </div>
                 
             </div>
             <div class="row">
