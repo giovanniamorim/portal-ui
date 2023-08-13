@@ -182,8 +182,16 @@ export class LancamentosComponent implements OnInit, AfterViewInit, OnDestroy {
       criterias.page = 0
       criterias.size = 5
     }
+
+    if(criterias.planoConta.descricao){
+      criterias.planoConta = criterias.planoConta.descricao
+    } else {
+      criterias.planoConta = criterias.planoConta
+    }
   
     criterias = this.buildQueryParams(criterias);
+
+
     console.log("criterias page depois: ", criterias.page);
     console.log("criterias size depois: ", criterias.size);
     console.log("criterias final: ", criterias);
