@@ -37,7 +37,7 @@ import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrol
 import { CoreSharedModule } from './_core/core-shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
+import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './layout';
 import { SegurancaModule } from './seguranca/seguranca.module';
 import { MatIconModule } from '@angular/material/icon';
 import { NgxMaskModule } from 'ngx-mask';
@@ -49,14 +49,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
 
-const APP_CONTAINERS = [
+const APP_LAYOUT = [
   DefaultFooterComponent,
   DefaultHeaderComponent,
   DefaultLayoutComponent
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS],
+  declarations: [AppComponent, ...APP_LAYOUT],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

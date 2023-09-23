@@ -1,0 +1,99 @@
+<div class="row mt-4 mb-4">
+  <div class="col col-sm-12 col-md-4 col-lg-4">
+      <div class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert">
+        <i class="fa-regular fa-circle-xmark"></i>
+      <div class="icon hidden-xs">
+        <i class="fa fa-line-chart"></i>
+      </div>
+      <div class="total-geral">
+        <div *ngIf="carregando" class="spinner">
+          <mat-progress-spinner color="color" [diameter]="20" mode="indeterminate"></mat-progress-spinner>
+        </div>
+          <span *ngIf="!carregando">Total de {{ criteriaReceita.tipoLancamento }}s do ano {{ criteriaReceita.anoExercicio }}</span>
+          <div *ngIf="!carregando" class="total-value">{{ totalReceita | currency: 'BRL' }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col col-sm-12 col-md-4 col-lg-4">
+    <div class="alert alert-danger alert-dismissible d-flex align-items-center fade show" role="alert">
+      <i class="fa-regular fa-circle-xmark"></i>
+    <div class="icon hidden-xs">
+      <i class="fa fa-line-chart"></i>
+    </div>
+    <div class="total-geral">
+      <div *ngIf="carregando" class="spinner">
+        <mat-progress-spinner color="color" [diameter]="20" mode="indeterminate"></mat-progress-spinner>
+      </div>
+      <span *ngIf="!carregando">Total de {{ criteriaDespesa.tipoLancamento }}s do ano {{ criteriaDespesa.anoExercicio }}</span>
+      <div *ngIf="!carregando" class="total-value">{{ totalDespesa | currency: 'BRL' }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="col col-sm-12 col-md-4 col-lg-4">
+  <div class="alert alert-info alert-dismissible d-flex align-items-center fade show" role="alert">
+    <i class="fa-regular fa-circle-xmark"></i>
+  <div class="icon hidden-xs">
+    <i class="fa fa-line-chart"></i>
+  </div>
+  <div class="total-geral">
+    <div *ngIf="carregando" class="spinner">
+      <mat-progress-spinner color="color" [diameter]="20" mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <span *ngIf="!carregando">Saldo do ano {{ criteriaDespesa.anoExercicio }}</span>
+    <div *ngIf="!carregando" class="total-value">{{ (totalReceita - totalDespesa) | currency: 'BRL' }}</div>
+  </div>
+</div>
+</div>
+</div>
+
+<c-card class="mb-4">
+  <c-card-body>
+    <c-row>
+      <c-col sm="5">
+        <h4 class="card-title mb-0" id="traffic">Lançamentos</h4>
+        <div class="small text-medium-emphasis">Receitas e Despesas - 2023</div>
+      </c-col>
+      <c-col class="d-none d-md-block" sm="7">
+       
+      </c-col>
+    </c-row>
+    <div *ngIf="!lancamentoChart.data" class="spinner">
+      <mat-progress-spinner color="color" [diameter]="20" mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <c-chart *ngIf="lancamentoChart.data"
+      [data]="lancamentoChart.data"
+      [height]="300"
+      [ngStyle]="{ 'marginTop.px': 20 }"
+      [options]="lancamentoChart.options"
+      [type]="lancamentoChart.type"
+    >
+      Main chart
+    </c-chart>
+  </c-card-body>
+  <c-card-footer>
+    <c-row class="text-center" [md]="3" [xs]="1">
+      <c-col class="mb-sm-2 mb-0">
+        <div class="text-medium-emphasis">Total de Receitas</div>
+        <strong>{{ totalReceita | currency: 'BRL' }}</strong>
+        <c-progress class="mt-2" thin>
+          <c-progress-bar color="success" value="100"></c-progress-bar>
+        </c-progress>
+      </c-col>
+      <c-col class="mb-sm-2 mb-0">
+        <div class="text-medium-emphasis">Total de Despesas</div>
+        <strong>{{ totalDespesa | currency: 'BRL' }}</strong>
+        <c-progress class="mt-2" thin>
+          <c-progress-bar color="danger" value="100"></c-progress-bar>
+        </c-progress>
+      </c-col>
+      <c-col class="mb-sm-2 mb-0">
+        <div class="text-medium-emphasis">Saldo</div>
+        <strong>{{ (totalReceita - totalDespesa) | currency: 'BRL' }}</strong>
+        <c-progress class="mt-2" thin>
+          <c-progress-bar color="info" value="100"></c-progress-bar>
+        </c-progress>
+      </c-col>       
+    </c-row>
+  </c-card-footer>
+</c-card> 

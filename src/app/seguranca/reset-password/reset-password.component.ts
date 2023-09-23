@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
-import { UserService } from 'src/app/users/user.service';
+import { UserService } from '../../features/users/user.service';
 
 @Component({
   selector: 'app-reset-password',

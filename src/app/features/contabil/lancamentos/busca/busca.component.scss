@@ -1,0 +1,17 @@
+.mat-card:not([class*="mat-elevation-z"]) {
+    box-shadow: none;
+}
+.mat-card {
+    padding: 0;
+}
+
+.mat-form-field {
+    display: contents;
+    position: relative;
+    text-align: left;
+}
+
+.search-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+}
